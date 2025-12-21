@@ -6,6 +6,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="福岡行程" />
+    <link rel="manifest" href="./manifest.json" />
     <title>旅遊行程隨身手冊</title>
     <style>
       :root {
@@ -1125,6 +1130,38 @@
       }
 
       window.onload = loadTrip;
+
+      // 註冊 Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then((registration) => {
+              console.log('Service Worker 註冊成功:', registration.scope);
+              
+              // 檢查更新
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // 有新版本可用
+                    if (confirm('有新版本可用！點擊確定更新頁面。')) {
+                      newWorker.postMessage({ type: 'SKIP_WAITING' });
+                      window.location.reload();
+                    }
+                  }
+                });
+              });
+            })
+            .catch((error) => {
+              console.log('Service Worker 註冊失敗:', error);
+            });
+          
+          // 監聽 Service Worker 控制器變更
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+          });
+        });
+      }
     </script>
   </body>
 </html>
