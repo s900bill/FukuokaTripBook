@@ -59,7 +59,7 @@
     {
       "day": 1,
       "date": "2026-04-30",
-      "weekday": "四",
+      "weekday": "四(木)",
       "theme": "抵達日:輕鬆逛街+近距離晚餐",
       "areas": ["博多", "中洲", "運河城"],
       "walkLevel": "低",
@@ -70,7 +70,7 @@
     {
       "day": 2,
       "date": "2026-05-01",
-      "weekday": "五",
+      "weekday": "五(金)",
       "theme": "(A)Klook 九州一日遊(湯布院+太宰府)/(B)市區慢逛",
       "areas": ["(A)九州近郊", "(B)博多·天神"],
       "walkLevel": "中(A較長)",
@@ -81,7 +81,7 @@
     {
       "day": 3,
       "date": "2026-05-02",
-      "weekday": "六",
+      "weekday": "六(土)",
       "theme": "天神+大濠公園/美術館+晚上燒肉",
       "areas": ["天神", "大濠", "博多"],
       "walkLevel": "中",
@@ -92,7 +92,7 @@
     {
       "day": 4,
       "date": "2026-05-03",
-      "weekday": "日",
+      "weekday": "日(日)",
       "theme": "(A)teamLab Forest+E・ZO(B)太宰府深度半日+市區甜點",
       "areas": ["(A)PayPay Dome 周邊", "(B)太宰府·天神"],
       "walkLevel": "低～中",
@@ -103,7 +103,7 @@
     {
       "day": 5,
       "date": "2026-05-04",
-      "weekday": "一",
+      "weekday": "一(月)",
       "theme": "回程日:退房+伴手禮+機場",
       "areas": ["博多", "中洲川端", "福岡機場"],
       "walkLevel": "低",
