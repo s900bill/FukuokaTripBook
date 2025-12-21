@@ -768,7 +768,7 @@
                 <div style="flex:1">
                     <div class="between">
                         <strong>${d.theme}</strong>
-                        <span class="badge">${d.weekday}</span>
+                        <span class="badge" style="min-width:50px; font-size:11px; padding:4px 8px">${d.weekday}</span>
                     </div>
                     <div style="font-size:13px; color:var(--text-light)">
                         📍 ${
@@ -795,7 +795,7 @@
             <div class="day-pill ${
               d.day === currentDay ? "active" : ""
             }" onclick="selectDay(${d.day}, this)">
-                Day ${d.day}<br><small>${d.weekday || ""}</small>
+                Day ${d.day}<br><small style="font-size:10px">${d.weekday || ""}</small>
             </div>
         `
           )
