@@ -1,0 +1,500 @@
+{
+  "meta": {
+    "destination": "福岡",
+    "title": "福岡 5天4夜 家庭旅遊行程（8人｜不吃生食）",
+    "dateRange": {
+      "start": "2026-04-30",
+      "end": "2026-05-04"
+    },
+    "timezone": "Asia/Taipei",
+    "people": {
+      "total": 8,
+      "groups": [
+        "父母×2（約60歲）",
+        "姐弟×2（約30歲）"
+      ],
+      "notes": "步行量不硬；同餐期可拆 4+4 行動"
+    },
+    "notes": [
+      "主要給出遊大家『隨時查看』，無需登入/編輯/資料庫。",
+      "可用 ?admin=1 開啟管理模式（匯入/匯出/閱讀版HTML/AI Prompt）。"
+    ],
+    "foodLimit": {
+      "noRawFood": true,
+      "mentaikoSplit": true,
+      "notes": [
+        "不吃生食；同餐期可分『明太子派 / 不明太子派』"
+      ]
+    },
+    "mustHave": {
+      "wants": [
+        "居酒屋/消夜",
+        "燒肉（吃到飽優先）",
+        "可安排吃到飽更佳"
+      ],
+      "splitRules": [
+        "A/B 方案切換",
+        "明太子派/不明太子派切換"
+      ]
+    }
+  },
+  "stay": {
+    "name": "（待填）博多/天神周邊飯店",
+    "address": "（待填）",
+    "checkIn": "17:00",
+    "checkOut": "11:00",
+    "notes": "建議選地鐵站近、可寄放行李、房間多床型選擇"
+  },
+  "flights": {
+    "outbound": {
+      "flightNo": "（待填）",
+      "depart": "2026-04-30T00:00",
+      "arrive": "2026-04-30T00:00",
+      "notes": ""
+    },
+    "inbound": {
+      "flightNo": "（待填）",
+      "depart": "2026-05-04T00:00",
+      "arrive": "2026-05-04T00:00",
+      "notes": ""
+    }
+  },
+  "overview": [
+    {
+      "day": 1,
+      "date": "2026-04-30",
+      "weekday": "四",
+      "theme": "抵達日：輕鬆逛街＋近距離晚餐",
+      "areas": [
+        "博多",
+        "中洲",
+        "運河城"
+      ],
+      "walkLevel": "低",
+      "ticket": "SUICA/SUGOCA 等 IC 卡（全程刷卡最省事）",
+      "rainPlan": "運河城室內逛街（Shop 10:00-21:00；餐廳 11:00-23:00）",
+      "backToStay": "16:30-17:00 回住宿 check-in（最早 17:00）"
+    },
+    {
+      "day": 2,
+      "date": "2026-05-01",
+      "weekday": "五",
+      "theme": "（A）Klook 九州一日遊（湯布院＋太宰府）/（B）市區慢逛",
+      "areas": [
+        "（A）九州近郊",
+        "（B）博多",
+        "（B）天神"
+      ],
+      "walkLevel": "中（A較長）",
+      "ticket": "（A）跟團巴士；（B）地鐵＋步行",
+      "rainPlan": "（B）天神地下街（店鋪 10:00-20:00；飲食到 21:00）",
+      "backToStay": "（A）約 18:00 回市區後休息；（B）15:30-17:00 回住宿午休"
+    },
+    {
+      "day": 3,
+      "date": "2026-05-02",
+      "weekday": "六",
+      "theme": "天神＋大濠公園/美術館＋晚上燒肉",
+      "areas": [
+        "天神",
+        "大濠",
+        "博多"
+      ],
+      "walkLevel": "中",
+      "ticket": "地鐵為主；人多時短程計程車（分 4+4）",
+      "rainPlan": "福岡市美術館（9:30-17:30；週一休）",
+      "backToStay": "15:30-17:00 回住宿休息再出門晚餐"
+    },
+    {
+      "day": 4,
+      "date": "2026-05-03",
+      "weekday": "日",
+      "theme": "（A）teamLab Forest＋E・ZO（B）太宰府深度半日＋市區甜點",
+      "areas": [
+        "（A）PayPay Dome 周邊",
+        "（B）太宰府",
+        "（B）天神"
+      ],
+      "walkLevel": "低～中",
+      "ticket": "（A）地鐵＋接駁/步行；（B）西鐵電車",
+      "rainPlan": "teamLab Forest（大人票價：Regular 2,400 / Peak 2,700）",
+      "backToStay": "晚餐後可安排「深夜咖啡」或提早回住宿"
+    },
+    {
+      "day": 5,
+      "date": "2026-05-04",
+      "weekday": "一",
+      "theme": "回程日：退房＋伴手禮＋機場",
+      "areas": [
+        "博多",
+        "中洲川端",
+        "福岡機場"
+      ],
+      "walkLevel": "低",
+      "ticket": "建議 11:30 前離開市區，12:00-12:15 抵機場報到",
+      "rainPlan": "運河城/地下街可當雨備",
+      "backToStay": "11:00 退房 → 行李寄放 → 11:30 出發前往機場"
+    }
+  ],
+  "days": [
+    {
+      "day": 1,
+      "date": "2026-04-30",
+      "title": "抵達日：運河城＋近距離晚餐",
+      "plans": {
+        "A": [
+          {
+            "timeStart": "15:00",
+            "timeEnd": "16:20",
+            "slot": "移動/入住",
+            "type": "transport",
+            "name": "福岡機場 → 市區 → 放行李",
+            "link": "",
+            "area": "博多/天神",
+            "transport": "地鐵空港線或計程車分乘（4+4）",
+            "costJPY": 0,
+            "booking": "",
+            "notes": "行李多可分流；先讓長輩進房休息",
+            "backup": "",
+            "tags": [
+              "長輩友善",
+              "分流",
+              "交通"
+            ]
+          },
+          {
+            "timeStart": "16:30",
+            "timeEnd": "18:30",
+            "slot": "逛街/休息",
+            "type": "spot",
+            "name": "博多運河城 Canal City Hakata",
+            "link": "https://maps.app.goo.gl/M7D2wTZbSdGgoazH9",
+            "area": "博多/中洲",
+            "transport": "步行/公車（依住宿點）",
+            "costJPY": 0,
+            "booking": "不需",
+            "notes": "室內、廁所多、可坐下休息；雨天最佳備案",
+            "backup": "若太累 → 直接回住宿",
+            "tags": [
+              "室內雨備",
+              "長輩友善",
+              "購物"
+            ]
+          },
+          {
+            "timeStart": "19:00",
+            "timeEnd": "21:00",
+            "slot": "晚餐",
+            "type": "food",
+            "name": "晚餐分流：屋台/居酒屋（至少一晚）",
+            "link": "",
+            "area": "中洲/博多",
+            "transport": "步行/地鐵",
+            "costJPY": 0,
+            "booking": "居酒屋可訂位；屋台多半現場排隊",
+            "notes": "不吃生食：串燒、關東煮、炒麵、煎餃等",
+            "backup": "天候差 → 運河城/車站附近改訂位餐廳",
+            "tags": [
+              "晚餐",
+              "分流",
+              "居酒屋",
+              "需排隊"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "day": 2,
+      "date": "2026-05-01",
+      "title": "A/B 分流日：一日遊 or 市區慢逛",
+      "plans": {
+        "A": [
+          {
+            "timeStart": "08:00",
+            "timeEnd": "18:00",
+            "slot": "一日遊",
+            "type": "tour",
+            "name": "Klook 九州一日遊（湯布院＋太宰府）",
+            "link": "",
+            "area": "九州近郊",
+            "transport": "跟團巴士",
+            "costJPY": 0,
+            "booking": "需預約（Klook）",
+            "notes": "步行量較長；長輩可準備舒適鞋/雨具",
+            "backup": "若取消 → 走 B 市區慢逛",
+            "tags": [
+              "需預約",
+              "A方案",
+              "較長",
+              "雨備"
+            ]
+          },
+          {
+            "timeStart": "19:00",
+            "timeEnd": "21:00",
+            "slot": "晚餐",
+            "type": "food",
+            "name": "晚餐：明太子派 vs 不明太子派",
+            "link": "",
+            "area": "博多/天神",
+            "transport": "地鐵/步行",
+            "costJPY": 0,
+            "booking": "建議預約；8人可拆 4+4",
+            "notes": "明太子派：明太子料理；不明太子派：燒肉/鍋物/定食",
+            "backup": "人多 → 改分店多的連鎖",
+            "tags": [
+              "分流",
+              "明太子",
+              "晚餐",
+              "需預約"
+            ]
+          }
+        ],
+        "B": [
+          {
+            "timeStart": "10:00",
+            "timeEnd": "12:00",
+            "slot": "逛街",
+            "type": "shopping",
+            "name": "天神地下街（慢逛＋休息）",
+            "link": "",
+            "area": "天神",
+            "transport": "地鐵/步行",
+            "costJPY": 0,
+            "booking": "不需",
+            "notes": "雨天強力備案；廁所多、可坐下",
+            "backup": "",
+            "tags": [
+              "室內雨備",
+              "B方案",
+              "購物"
+            ]
+          },
+          {
+            "timeStart": "15:30",
+            "timeEnd": "17:00",
+            "slot": "休息",
+            "type": "rest",
+            "name": "回住宿午休",
+            "link": "",
+            "area": "住宿",
+            "transport": "地鐵/步行",
+            "costJPY": 0,
+            "booking": "",
+            "notes": "長輩優先休息；年輕組可彈性加碼",
+            "backup": "",
+            "tags": [
+              "長輩友善",
+              "休息",
+              "B方案"
+            ]
+          },
+          {
+            "timeStart": "19:00",
+            "timeEnd": "21:00",
+            "slot": "晚餐",
+            "type": "food",
+            "name": "晚餐：明太子派 vs 不明太子派",
+            "link": "",
+            "area": "博多/天神",
+            "transport": "地鐵/步行",
+            "costJPY": 0,
+            "booking": "建議預約；8人可拆 4+4",
+            "notes": "同商圈兩家店分流，集合方便",
+            "backup": "人多 → 改車站附近連鎖/分店多的店",
+            "tags": [
+              "分流",
+              "明太子",
+              "晚餐",
+              "需預約"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "day": 3,
+      "date": "2026-05-02",
+      "title": "天神＋大濠公園/美術館＋晚上燒肉",
+      "plans": {
+        "A": [
+          {
+            "timeStart": "09:30",
+            "timeEnd": "11:30",
+            "slot": "散步",
+            "type": "spot",
+            "name": "大濠公園（平坦好走）",
+            "link": "",
+            "area": "大濠/赤坂",
+            "transport": "地鐵：大濠公園站",
+            "costJPY": 0,
+            "booking": "不需",
+            "notes": "長輩可只逛湖畔平坦區；拍照休息點多",
+            "backup": "雨天 → 福岡市美術館/商場",
+            "tags": [
+              "長輩友善",
+              "公園",
+              "雨備"
+            ]
+          },
+          {
+            "timeStart": "12:00",
+            "timeEnd": "14:00",
+            "slot": "午餐/採買",
+            "type": "shopping",
+            "name": "天神地下街/百貨（休息＋採買）",
+            "link": "",
+            "area": "天神",
+            "transport": "地鐵/步行",
+            "costJPY": 0,
+            "booking": "不需",
+            "notes": "建議今天先把伴手禮買一部分，回程更輕鬆",
+            "backup": "",
+            "tags": [
+              "購物",
+              "室內雨備"
+            ]
+          },
+          {
+            "timeStart": "15:30",
+            "timeEnd": "17:00",
+            "slot": "休息",
+            "type": "rest",
+            "name": "回住宿休息（再出門晚餐）",
+            "link": "",
+            "area": "住宿",
+            "transport": "",
+            "costJPY": 0,
+            "booking": "",
+            "notes": "晚餐前保留體力；可分批回",
+            "backup": "",
+            "tags": [
+              "休息",
+              "分流",
+              "長輩友善"
+            ]
+          },
+          {
+            "timeStart": "18:30",
+            "timeEnd": "20:30",
+            "slot": "晚餐",
+            "type": "food",
+            "name": "燒肉（吃到飽優先）",
+            "link": "",
+            "area": "博多/天神",
+            "transport": "地鐵/步行（依訂位）",
+            "costJPY": 6000,
+            "booking": "強烈建議預約；8人可分桌",
+            "notes": "不吃生食 OK；注意是否有生食前菜可避開",
+            "backup": "改高評價非吃到飽燒肉/牛舌店",
+            "tags": [
+              "必吃",
+              "燒肉",
+              "需預約",
+              "適合8人"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "lists": {
+    "restaurants": [
+      {
+        "name": "（待補）燒肉 吃到飽候選 1",
+        "area": "天神",
+        "tags": [
+          "燒肉",
+          "吃到飽",
+          "適合8人",
+          "需預約"
+        ],
+        "link": "",
+        "booking": "建議預約",
+        "notes": "可拆 4+4"
+      },
+      {
+        "name": "（待補）居酒屋 候選 1",
+        "area": "博多",
+        "tags": [
+          "居酒屋",
+          "適合8人",
+          "需預約"
+        ],
+        "link": "",
+        "booking": "建議預約",
+        "notes": "可選包廂"
+      },
+      {
+        "name": "（待補）不明太子派 晚餐候選",
+        "area": "中洲",
+        "tags": [
+          "定食",
+          "不明太子",
+          "晚餐"
+        ],
+        "link": "",
+        "booking": "",
+        "notes": ""
+      }
+    ],
+    "spots": [
+      {
+        "name": "博多運河城 Canal City Hakata",
+        "area": "博多/中洲",
+        "tags": [
+          "室內雨備",
+          "購物",
+          "長輩友善"
+        ],
+        "link": "https://maps.app.goo.gl/M7D2wTZbSdGgoazH9",
+        "notes": "Shop 10:00-21:00；餐廳 11:00-23:00"
+      },
+      {
+        "name": "大濠公園",
+        "area": "大濠/赤坂",
+        "tags": [
+          "公園",
+          "長輩友善"
+        ],
+        "link": "",
+        "notes": "平坦好走"
+      }
+    ],
+    "souvenirs": [
+      {
+        "name": "（待補）伴手禮清單",
+        "area": "博多站/機場",
+        "tags": [
+          "伴手禮"
+        ],
+        "link": "",
+        "notes": "可先在天神/博多站買一部分"
+      }
+    ],
+    "todos": [
+      {
+        "name": "買 IC 卡（SUGOCA/SUICA）或開啟行動交通卡",
+        "tags": [
+          "交通"
+        ],
+        "dueDay": 1
+      },
+      {
+        "name": "把『需預約』項目提前訂位（燒肉/居酒屋/一日遊）",
+        "tags": [
+          "需預約"
+        ],
+        "dueDay": 0
+      },
+      {
+        "name": "回程日：11:30 前離開市區",
+        "tags": [
+          "提醒"
+        ],
+        "dueDay": 5
+      }
+    ]
+  }
+}

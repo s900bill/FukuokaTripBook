@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>旅遊行程隨身手冊</title>
+    <style>
+      :root {
+        --primary: #2563eb;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #1e293b;
+        --text-light: #64748b;
+        --accent: #f59e0b;
+        --radius: 12px;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        line-height: 1.5;
+        padding-bottom: 80px; /* For bottom tab bar */
+      }
+
+      /* Utils */
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: var(--shadow);
+      }
+      .flex {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .badge {
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 99px;
+        background: #e2e8f0;
+        color: var(--text-light);
+      }
+      .btn {
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      /* Header */
+      header {
+        background: var(--primary);
+        color: white;
+        padding: 24px 16px;
+        border-radius: 0 0 24px 24px;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      header p {
+        margin: 4px 0 0;
+        opacity: 0.9;
+        font-size: 0.9rem;
+      }
+
+      /* Tabs */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        display: flex;
+        border-top: 1px solid #e2e8f0;
+        z-index: 100;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .nav-item {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 11px;
+        color: var(--text-light);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .nav-item.active {
+        color: var(--primary);
+        font-weight: bold;
+      }
+      .nav-item svg {
+        display: block;
+        margin: 0 auto 4px;
+        width: 24px;
+        height: 24px;
+      }
+
+      /* Day Selection */
+      .day-scroller {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 4px 0 16px;
+        scroll-snap-type: x mandatory;
+      }
+      .day-scroller::-webkit-scrollbar {
+        display: none;
+      }
+      .day-pill {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        padding: 8px 16px;
+        background: white;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        text-align: center;
+        cursor: pointer;
+      }
+      .day-pill.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      /* Plan Items */
+      .timeline {
+        position: relative;
+        padding-left: 24px;
+        border-left: 2px solid #e2e8f0;
+        margin-left: 8px;
+      }
+      .timeline-item {
+        position: relative;
+        margin-bottom: 24px;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -31px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: white;
+        border: 2px solid var(--primary);
+      }
+      .item-time {
+        font-size: 13px;
+        font-weight: bold;
+        color: var(--primary);
+        margin-bottom: 4px;
+      }
+      .item-title {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+      .item-meta {
+        font-size: 13px;
+        color: var(--text-light);
+        margin-bottom: 4px;
+      }
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 8px;
+      }
+
+      /* Special Logic UI */
+      .selector-group {
+        background: #f1f5f9;
+        padding: 4px;
+        border-radius: 8px;
+        display: inline-flex;
+        margin-bottom: 12px;
+      }
+      .selector-btn {
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+        background: transparent;
+      }
+      .selector-btn.active {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        font-weight: bold;
+      }
+
+      /* Admin UI */
+      .admin-zone {
+        border: 2px dashed #cbd5e1;
+        padding: 16px;
+        margin-top: 24px;
+        border-radius: var(--radius);
+      }
+      .error-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 20px;
+        text-align: center;
+      }
+
+      /* Icons (Inline SVG) */
+      .icon {
+        fill: currentColor;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="error-ui" class="error-overlay hidden">
+      <h2>無法載入行程檔案</h2>
+      <p>
+        請確認資料夾中存有 trip.json，或者透過下方手動選取。若您是直接以檔案開啟
+        (file://)，請改用本機靜態伺服器（例如 Python 或
+        Node），以避免瀏覽器的本機檔案取用限制：
+      </p>
+      <input
+        type="file"
+        id="file-input"
+        accept=".json"
+        style="margin: 20px 0"
+      />
+      <button
+        class="btn btn-primary"
+        onclick="document.getElementById('file-input').click()"
+      >
+        選擇 JSON 檔案
+      </button>
+    </div>
+
+    <header id="header-ui">
+      <div class="container">
+        <h1 id="trip-title">載入中...</h1>
+        <p id="trip-dates">--</p>
+      </div>
+    </header>
+
+    <div class="container" id="main-content">
+      <!-- Summary Tab -->
+      <div id="tab-summary" class="tab-view">
+        <div class="card">
+          <h3 style="margin-top: 0">旅程摘要</h3>
+          <p
+            id="meta-notes"
+            style="font-size: 14px; color: var(--text-light)"
+          ></p>
+          <hr
+            style="border: 0; border-top: 1px solid #f1f5f9; margin: 12px 0"
+          />
+          <div id="summary-cards"></div>
+        </div>
+
+        <h3>行程總覽</h3>
+        <div id="overview-list"></div>
+      </div>
+
+      <!-- Daily Tab -->
+      <div id="tab-daily" class="tab-view hidden">
+        <div class="day-scroller" id="day-scroller"></div>
+
+        <div id="daily-controls" class="between" style="margin-bottom: 12px">
+          <div class="selector-group" id="plan-selector">
+            <button class="selector-btn active" onclick="switchPlan('A')">
+              方案 A
+            </button>
+            <button
+              class="selector-btn"
+              onclick="switchPlan('B')"
+              id="btn-plan-b"
+            >
+              方案 B
+            </button>
+          </div>
+          <button
+            class="selector-btn active"
+            id="btn-mentaiko-toggle"
+            style="background: #f1f5f9; padding: 6px 14px; border-radius: 8px"
+          >
+            🍽️ 全部顯示
+          </button>
+        </div>
+
+        <div id="day-detail-content" class="timeline"></div>
+      </div>
+
+      <!-- Lists Tab -->
+      <div id="tab-lists" class="tab-view hidden">
+        <h3>餐廳與店家清單</h3>
+        <div id="restaurant-tags" style="margin-bottom: 12px"></div>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px">
+          <input
+            id="restaurant-filter"
+            placeholder="篩選餐廳 / 區域 / 標籤"
+            style="
+              flex: 1;
+              padding: 8px;
+              border-radius: 8px;
+              border: 1px solid #e2e8f0;
+            "
+          />
+          <button class="btn" onclick="renderLists()">搜尋</button>
+          <button class="btn" onclick="clearRestaurantFilter()">清除</button>
+        </div>
+        <div
+          id="restaurant-list"
+          style="max-height: 60vh; overflow-y: auto"
+        ></div>
+        <h3>待辦與購物項目</h3>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px">
+          <input
+            id="todo-filter"
+            placeholder="篩選待辦/購物項目"
+            style="
+              flex: 1;
+              padding: 8px;
+              border-radius: 8px;
+              border: 1px solid #e2e8f0;
+            "
+          />
+          <button class="btn" onclick="renderLists()">搜尋</button>
+        </div>
+        <div id="todo-list"></div>
+      </div>
+
+      <!-- Admin Tab -->
+      <div id="tab-admin" class="tab-view hidden">
+        <div class="admin-zone">
+          <h3>管理模式</h3>
+          <p>您可以匯出目前資料或產出 AI Prompt。</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+            <button class="btn" onclick="exportJSON()">匯出 JSON</button>
+            <button class="btn" onclick="copyPrompt()">複製 AI Prompt</button>
+            <button
+              class="btn"
+              onclick="document.getElementById('file-input-admin').click()"
+            >
+              匯入 JSON
+            </button>
+          </div>
+          <input
+            type="file"
+            id="file-input-admin"
+            class="hidden"
+            onchange="handleFile(this.files[0])"
+          />
+        </div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a class="nav-item active" onclick="switchTab('summary', this)">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        總覽
+      </a>
+      <a class="nav-item" onclick="switchTab('daily', this)">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path
+            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"
+          />
+        </svg>
+        每日行程
+      </a>
+      <a class="nav-item" onclick="switchTab('lists', this)">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+        </svg>
+        清單
+      </a>
+    </nav>
+
+    <script>
+      let tripData = null;
+      let currentDay = 1;
+      let currentPlan = "A";
+      let showMentaiko = "all"; // 'mentaiko' | 'no-mentaiko' | 'all'
+      const isAdmin =
+        new URLSearchParams(window.location.search).get("admin") === "1";
+
+      // UI Utilities
+      function switchTab(tabId, el) {
+        document
+          .querySelectorAll(".tab-view")
+          .forEach((t) => t.classList.add("hidden"));
+        document.getElementById("tab-" + tabId).classList.remove("hidden");
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((n) => n.classList.remove("active"));
+        el.classList.add("active");
+        window.scrollTo(0, 0);
+      }
+
+      function switchPlan(plan) {
+        currentPlan = plan;
+        document
+          .querySelectorAll("#plan-selector .selector-btn")
+          .forEach((btn, idx) => {
+            btn.classList.toggle(
+              "active",
+              (idx === 0 && plan === "A") || (idx === 1 && plan === "B")
+            );
+          });
+        renderDayDetail();
+      }
+
+      // Data Loading
+      async function loadTrip() {
+        try {
+          const res = await fetch("./trip.json");
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const data = await res.json();
+          initApp(data);
+          return;
+        } catch (e) {
+          console.warn("Failed to fetch ./trip.json —", e);
+        }
+
+        // Try fallback to sample file for easier debugging during development
+        try {
+          const res2 = await fetch("./trip.sample.json");
+          if (res2.ok) {
+            const data2 = await res2.json();
+            console.info("Loaded fallback ./trip.sample.json");
+            initApp(data2);
+            return;
+          } else {
+            console.warn("Fallback trip.sample.json returned", res2.status);
+          }
+        } catch (e2) {
+          console.warn("Failed to fetch ./trip.sample.json —", e2);
+        }
+
+        // If both attempts fail, show error UI
+        document.getElementById("error-ui").classList.remove("hidden");
+      }
+
+      document.getElementById("file-input").onchange = (e) =>
+        handleFile(e.target.files[0]);
+
+      function handleFile(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            initApp(data);
+            document.getElementById("error-ui").classList.add("hidden");
+          } catch (err) {
+            alert("JSON 格式錯誤");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function initApp(data) {
+        tripData = data;
+        renderHeader();
+        renderSummary();
+        renderOverview();
+        renderDayPills();
+        renderLists();
+        if (isAdmin) {
+          const adminNavItem = document.createElement("a");
+          adminNavItem.className = "nav-item";
+          adminNavItem.onclick = function () {
+            switchTab("admin", this);
+          };
+          adminNavItem.innerHTML =
+            '<svg viewBox="0 0 24 24" class="icon"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.24 2 14 2h-4c-.24 0-.46.18-.5.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.12.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.40 1.08.73 1.69.98l.38 2.65c.04.24.26.42.5.42h4c.24 0 .46-.18.5-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>管理';
+          document.querySelector(".bottom-nav").appendChild(adminNavItem);
+        }
+
+        // Auto select today or Day 1
+        currentDay = 1;
+        // attach mentaiko toggle handler
+        const toggleBtn = document.getElementById("btn-mentaiko-toggle");
+        if (toggleBtn) {
+          toggleBtn.onclick = () => {
+            // 循環切換：all → mentaiko → no-mentaiko → all
+            if (showMentaiko === "all") {
+              showMentaiko = "mentaiko";
+              toggleBtn.innerText = "🌶️ 明太子派";
+            } else if (showMentaiko === "mentaiko") {
+              showMentaiko = "no-mentaiko";
+              toggleBtn.innerText = "🚫 不明太子派";
+            } else {
+              showMentaiko = "all";
+              toggleBtn.innerText = "🍽️ 全部顯示";
+            }
+            renderDayDetail();
+          };
+        }
+        renderDayDetail();
+      }
+
+      function renderHeader() {
+        const title =
+          (tripData.meta &&
+            (tripData.meta.title || tripData.meta.destination)) ||
+          "未命名行程";
+        document.getElementById("trip-title").innerText = title;
+
+        // dateRange can be a string or an object
+        let dates = "";
+        if (tripData.meta) {
+          if (typeof tripData.meta.dateRange === "string")
+            dates = tripData.meta.dateRange;
+          else if (tripData.meta.dateRange && tripData.meta.dateRange.start)
+            dates = `${tripData.meta.dateRange.start} → ${
+              tripData.meta.dateRange.end || ""
+            }`;
+          else if (tripData.meta.createdAt) dates = tripData.meta.createdAt;
+        }
+        document.getElementById("trip-dates").innerText = dates || "--";
+      }
+
+      function renderSummary() {
+        document.getElementById("meta-notes").innerHTML = `
+          📌 參加本次旅行，即視為同意以下條款：<br>
+          不說「好累」、不問「還要多久」、不對行程提出異議。<br><br>
+          📌 本行程一經參與，代表你已簽署：<br>
+          快樂出門條款、隨遇而安條款、笑著回家條款。<br><br>
+          📌 報名即同意：<br>
+          行程怎麼走都說「好」，吃什麼都說「可以」。
+        `;
+        const grid = document.getElementById("summary-cards");
+
+        // 住宿資訊
+        const stayName = (tripData.stay && tripData.stay.name) || "無住宿資料";
+        const stayAddress = (tripData.stay && tripData.stay.address) || "";
+        const checkIn = (tripData.stay && tripData.stay.checkIn) || "";
+        const checkOut = (tripData.stay && tripData.stay.checkOut) || "";
+        const navLink = stayAddress
+          ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+              stayAddress + " " + stayName
+            )}`
+          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              stayName
+            )}`;
+
+        // 航班資訊
+        let outboundFlight = "無航班資料";
+        let outboundTime = "";
+        let outboundAirport = "";
+        let outboundTerminal = "";
+        let outboundNavLink = "";
+        let inboundFlight = "無航班資料";
+        let inboundTime = "";
+        let inboundAirport = "";
+        let inboundTerminal = "";
+        let inboundNavLink = "";
+
+        if (tripData.flights) {
+          if (typeof tripData.flights.outbound === "string") {
+            outboundFlight = tripData.flights.outbound;
+          } else if (
+            tripData.flights.outbound &&
+            tripData.flights.outbound.flightNo
+          ) {
+            const ob = tripData.flights.outbound;
+            outboundFlight = ob.flightNo;
+            const depart = ob.depart
+              ? new Date(ob.depart).toLocaleTimeString("zh-TW", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "";
+            const arrive = ob.arrive
+              ? new Date(ob.arrive).toLocaleTimeString("zh-TW", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "";
+            if (depart && arrive) outboundTime = `${depart}-${arrive}`;
+            outboundAirport = ob.departAirport || "";
+            outboundTerminal = ob.departTerminal || "";
+            if (outboundAirport) {
+              outboundNavLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                outboundAirport
+              )}`;
+            }
+          }
+
+          if (typeof tripData.flights.inbound === "string") {
+            inboundFlight = tripData.flights.inbound;
+          } else if (
+            tripData.flights.inbound &&
+            tripData.flights.inbound.flightNo
+          ) {
+            const ib = tripData.flights.inbound;
+            inboundFlight = ib.flightNo;
+            const depart = ib.depart
+              ? new Date(ib.depart).toLocaleTimeString("zh-TW", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "";
+            const arrive = ib.arrive
+              ? new Date(ib.arrive).toLocaleTimeString("zh-TW", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "";
+            if (depart && arrive) inboundTime = `${depart}-${arrive}`;
+            inboundAirport = ib.departAirport || "";
+            inboundTerminal = ib.departTerminal || "";
+            if (inboundAirport) {
+              inboundNavLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                inboundAirport
+              )}`;
+            }
+          }
+        }
+
+        grid.innerHTML = `
+            <div style="display:grid; gap:12px">
+                <div class="card" style="margin:0; background:#e0f2fe; box-shadow:none">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start">
+                        <div style="flex:1">
+                            <small style="color:#0369a1; font-weight:600">✈️ 去程航班</small><br>
+                            <strong style="font-size:16px">${outboundFlight}</strong>
+                            ${
+                              outboundTime
+                                ? `<div style="font-size:13px; color:var(--text-light); margin-top:2px">${outboundTime}</div>`
+                                : ""
+                            }
+                            ${
+                              outboundAirport
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">📍 ${outboundAirport} ${outboundTerminal}</div>`
+                                : ""
+                            }
+                        </div>
+                        ${
+                          outboundNavLink
+                            ? `<a href="${outboundNavLink}" target="_blank" style="background:#0284c7; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
+                            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            導航
+                        </a>`
+                            : ""
+                        }
+                    </div>
+                </div>
+                <div class="card" style="margin:0; background:#fef3c7; box-shadow:none">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start">
+                        <div style="flex:1">
+                            <small style="color:#92400e; font-weight:600">✈️ 回程航班</small><br>
+                            <strong style="font-size:16px">${inboundFlight}</strong>
+                            ${
+                              inboundTime
+                                ? `<div style="font-size:13px; color:var(--text-light); margin-top:2px">${inboundTime}</div>`
+                                : ""
+                            }
+                            ${
+                              inboundAirport
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">📍 ${inboundAirport} ${inboundTerminal}</div>`
+                                : ""
+                            }
+                        </div>
+                        ${
+                          inboundNavLink
+                            ? `<a href="${inboundNavLink}" target="_blank" style="background:#d97706; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
+                            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            導航
+                        </a>`
+                            : ""
+                        }
+                    </div>
+                </div>
+                <div class="card" style="margin:0; background:#dcfce7; box-shadow:none">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start">
+                        <div style="flex:1">
+                            <small style="color:#166534; font-weight:600">🏨 住宿點</small><br>
+                            <strong style="font-size:16px">${stayName}</strong>
+                            ${
+                              stayAddress
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">${stayAddress}</div>`
+                                : ""
+                            }
+                            ${
+                              checkIn || checkOut
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">入住 ${checkIn} / 退房 ${checkOut}</div>`
+                                : ""
+                            }
+                        </div>
+                        <a href="${navLink}" target="_blank" style="background:#16a34a; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
+                            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            導航
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+      }
+
+      function renderOverview() {
+        const list = document.getElementById("overview-list");
+        const overview =
+          tripData.overview ||
+          (Array.isArray(tripData.days)
+            ? tripData.days.map((d) => ({
+                day: d.day || 0,
+                weekday: d.weekday || "",
+                theme: d.title || d.theme || "",
+                areas: d.areas || d.area || "",
+                walkLevel: d.walkLevel || "",
+              }))
+            : []);
+        list.innerHTML = overview
+          .map(
+            (d) => `
+            <div class="card flex" onclick="goToDay(${d.day})">
+                <div style="width:50px; text-align:center; border-right:1px solid #eee; margin-right:8px">
+                    <div style="font-size:12px">Day</div>
+                    <div style="font-weight:bold; font-size:18px">${d.day}</div>
+                </div>
+                <div style="flex:1">
+                    <div class="between">
+                        <strong>${d.theme}</strong>
+                        <span class="badge">${d.weekday}</span>
+                    </div>
+                    <div style="font-size:13px; color:var(--text-light)">
+                        📍 ${
+                          Array.isArray(d.areas) ? d.areas.join(" | ") : d.areas
+                        } | 🚶 步行: ${d.walkLevel}
+                    </div>
+                </div>
+            </div>
+        `
+          )
+          .join("");
+      }
+
+      function renderDayPills() {
+        const scroller = document.getElementById("day-scroller");
+        const overview =
+          tripData.overview ||
+          (Array.isArray(tripData.days)
+            ? tripData.days.map((d) => ({ day: d.day, weekday: d.weekday }))
+            : []);
+        scroller.innerHTML = overview
+          .map(
+            (d) => `
+            <div class="day-pill ${
+              d.day === currentDay ? "active" : ""
+            }" onclick="selectDay(${d.day}, this)">
+                Day ${d.day}<br><small>${d.weekday || ""}</small>
+            </div>
+        `
+          )
+          .join("");
+      }
+
+      function selectDay(day, el) {
+        currentDay = day;
+        document
+          .querySelectorAll(".day-pill")
+          .forEach((p) => p.classList.remove("active"));
+        el.classList.add("active");
+        currentPlan = "A"; // Reset plan when day changes
+        renderDayDetail();
+      }
+
+      function goToDay(day) {
+        currentDay = day;
+        switchTab("daily", document.querySelectorAll(".nav-item")[1]);
+        renderDayPills();
+        renderDayDetail();
+      }
+
+      function renderDayDetail() {
+        const content = document.getElementById("day-detail-content");
+        // support both object-keyed and array-shaped `days`
+        let dayInfo = null;
+        if (!tripData || !tripData.days) dayInfo = null;
+        else if (Array.isArray(tripData.days)) {
+          dayInfo =
+            tripData.days.find((d) => d.day === currentDay) ||
+            tripData.days[currentDay - 1];
+        } else {
+          dayInfo = tripData.days[currentDay] || tripData.days["" + currentDay];
+        }
+
+        if (!dayInfo) {
+          content.innerHTML =
+            '<p style="padding:20px; color:gray">此日期暫無詳細行程資料。</p>';
+          return;
+        }
+
+        // Normalize blocks/plans
+        const blocks = dayInfo.plans || dayInfo.blocks || dayInfo.items || [];
+        let hasPlanB = false;
+        const normalizedItems = [];
+
+        if (Array.isArray(blocks)) {
+          for (const b of blocks) {
+            if (b.plans && b.plans.B) hasPlanB = true;
+            if (b.plans && (b.plans.A || b.plans.B)) {
+              const pick = b.plans[currentPlan] || b.plans.A || b.plans.B;
+              if (Array.isArray(pick)) {
+                for (const p of pick)
+                  normalizedItems.push(
+                    Object.assign({}, p, { slot: b.slot || p.slot })
+                  );
+              } else
+                normalizedItems.push(
+                  Object.assign({}, pick, {
+                    slot: b.slot || (pick && pick.slot),
+                  })
+                );
+            } else {
+              normalizedItems.push(Object.assign({}, b));
+            }
+          }
+        } else if (dayInfo.plans && typeof dayInfo.plans === "object") {
+          // dayInfo.plans may be an object with keys A/B mapping to arrays
+          const arr = dayInfo.plans[currentPlan] || [];
+          for (const it of arr) normalizedItems.push(Object.assign({}, it));
+          hasPlanB = !!dayInfo.plans.B;
+        }
+
+        document
+          .getElementById("btn-plan-b")
+          .classList.toggle("hidden", !hasPlanB);
+
+        // 根據 showMentaiko 過濾項目
+        const filteredItems = normalizedItems.filter((item) => {
+          if (showMentaiko === "all") return true;
+          const tags = item.tags || [];
+          const hasMentaiko = tags.includes("明太子派");
+          const hasNoMentaiko = tags.includes("不明太子派");
+
+          if (showMentaiko === "mentaiko") {
+            // 顯示明太子派項目，以及沒有任何明太子標籤的通用項目
+            return hasMentaiko || (!hasMentaiko && !hasNoMentaiko);
+          } else if (showMentaiko === "no-mentaiko") {
+            // 顯示不明太子派項目，以及沒有任何明太子標籤的通用項目
+            return hasNoMentaiko || (!hasMentaiko && !hasNoMentaiko);
+          }
+          return true;
+        });
+
+        content.innerHTML = filteredItems
+          .map(
+            (item) => `
+            <div class="timeline-item">
+                <div class="item-time">${
+                  item.timeStart || item.slot || ""
+                }</div>
+                <div class="card" style="margin-bottom:0">
+                    <div class="item-title">${
+                      item.name || item.title || ""
+                    }</div>
+                    ${
+                      item.area
+                        ? `<div class="item-meta">📍 ${item.area}</div>`
+                        : ""
+                    }
+                    ${
+                      item.transport
+                        ? `<div class="item-meta">🚌 ${item.transport}</div>`
+                        : ""
+                    }
+                    ${
+                      item.notes
+                        ? `<div style="font-size:14px; margin-top:8px; border-left:3px solid #eee; padding-left:8px; color:var(--text-light)">${item.notes}</div>`
+                        : ""
+                    }
+                    ${
+                      item.link
+                        ? `<button class="btn" onclick="window.open('${item.link}')" style="margin-top:10px; font-size:12px; background:#eee">Google Maps</button>`
+                        : ""
+                    }
+                    <div class="tag-row">
+                        ${(item.tags || [])
+                          .map((t) => `<span class="badge">${t}</span>`)
+                          .join("")}
+                    </div>
+                </div>
+            </div>
+        `
+          )
+          .join("");
+      }
+
+      function filterByTag(tag) {
+        const filterInput = document.getElementById("restaurant-filter");
+        if (filterInput) {
+          filterInput.value = tag;
+          renderLists();
+        }
+      }
+
+      function clearRestaurantFilter() {
+        const filterInput = document.getElementById("restaurant-filter");
+        if (filterInput) {
+          filterInput.value = "";
+          renderLists();
+        }
+      }
+
+      function renderLists() {
+        const rList = document.getElementById("restaurant-list");
+        const filterText = (
+          (document.getElementById("restaurant-filter") &&
+            document.getElementById("restaurant-filter").value) ||
+          ""
+        )
+          .toLowerCase()
+          .trim();
+        if (tripData.lists && Array.isArray(tripData.lists.restaurants)) {
+          // 收集所有唯一的標籤
+          const allTags = new Set();
+          tripData.lists.restaurants.forEach((r) => {
+            if (r.tags && Array.isArray(r.tags)) {
+              r.tags.forEach((tag) => allTags.add(tag));
+            }
+          });
+
+          // 顯示標籤
+          const tagsContainer = document.getElementById("restaurant-tags");
+          if (tagsContainer && allTags.size > 0) {
+            tagsContainer.innerHTML = `
+              <div style="display:flex; flex-wrap:wrap; gap:6px; padding:12px; background:#f8fafc; border-radius:8px">
+                <small style="color:var(--text-light); width:100%; margin-bottom:4px">快速篩選：</small>
+                ${Array.from(allTags)
+                  .sort()
+                  .map(
+                    (tag) =>
+                      `<span class="badge" style="background:#e0e7ff; color:#3730a3; cursor:pointer; padding:4px 10px" onclick="filterByTag('${tag.replace(
+                        /'/g,
+                        "\\'"
+                      )}')"​>${tag}</span>`
+                  )
+                  .join("")}
+              </div>
+            `;
+          }
+
+          const items = tripData.lists.restaurants.filter((r) => {
+            if (!filterText) return true;
+            const hay = `${r.name || ""} ${r.area || r.station || ""} ${(
+              r.tags || []
+            ).join(" ")}`.toLowerCase();
+            return hay.indexOf(filterText) !== -1;
+          });
+          rList.innerHTML = items
+            .map((r) => {
+              const location = r.area || r.station || "";
+              const mapLink =
+                r.link ||
+                r.url ||
+                r.map ||
+                `https://www.google.com/search?q=${encodeURIComponent(
+                  (r.name || "") + " " + location
+                )}`;
+              const tagsHtml = (r.tags || [])
+                .map(
+                  (t) =>
+                    `<span class="badge" style="background:#fef3c7; color:#92400e; cursor:pointer" onclick="filterByTag('${t.replace(
+                      /'/g,
+                      "\\'"
+                    )}')"​>${t}</span>`
+                )
+                .join("");
+              return `
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start">
+                        <div style="flex:1">
+                            <strong>${r.name}</strong>
+                            ${
+                              location
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">📍 ${location}</div>`
+                                : ""
+                            }
+                            ${
+                              r.hours
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">🕒 ${r.hours}</div>`
+                                : ""
+                            }
+                            ${
+                              r.priceRangeJPY
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">💴 ¥${r.priceRangeJPY}</div>`
+                                : ""
+                            }
+                        </div>
+                        <div style="display:flex; gap:6px; align-items:center">
+                            <a class="btn" style="background:#eee; color:#000; padding:6px; text-decoration:none; min-width:32px; height:32px; justify-content:center" href="${mapLink}" target="_blank" title="地圖/搜尋">
+                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; fill:currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tag-row">${tagsHtml}</div>
+                    <div style="font-size:13px; margin-top:4px">${
+                      r.note || ""
+                    }</div>
+                </div>
+            `;
+            })
+            .join("");
+        } else {
+          rList.innerHTML =
+            '<div style="color:var(--text-light);">無餐廳/店家清單資料。</div>';
+        }
+
+        const tList = document.getElementById("todo-list");
+        const todoFilter = (
+          (document.getElementById("todo-filter") &&
+            document.getElementById("todo-filter").value) ||
+          ""
+        )
+          .toLowerCase()
+          .trim();
+        if (tripData.lists && Array.isArray(tripData.lists.todos)) {
+          const todos = tripData.lists.todos.filter((t) => {
+            if (!todoFilter) return true;
+            if (typeof t === "string")
+              return t.toLowerCase().indexOf(todoFilter) !== -1;
+            // if object
+            const hay = `${t.title || t.name || ""} ${
+              t.note || ""
+            }`.toLowerCase();
+            return hay.indexOf(todoFilter) !== -1;
+          });
+          tList.innerHTML = todos
+            .map(
+              (t) => `
+                <div class="card" style="padding:10px 16px; display:flex; gap:8px; align-items:center">
+                    <input type="checkbox"> <span>${
+                      typeof t === "string" ? t : t.title || t.name || ""
+                    }</span>
+                </div>
+            `
+            )
+            .join("");
+        } else {
+          tList.innerHTML =
+            '<div style="color:var(--text-light);">無待辦/購物清單。</div>';
+        }
+      }
+
+      // Admin Tools
+      function exportJSON() {
+        const blob = new Blob([JSON.stringify(tripData, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "trip_export.json";
+        a.click();
+      }
+
+      function copyPrompt() {
+        const text = `我正在規劃${
+          tripData.meta.title
+        }。目前行程：${JSON.stringify(
+          tripData.overview
+        )}。請幫我優化這份行程，特別考慮${
+          tripData.meta.foodLimit
+        }，並提供更多在${tripData.stay.name}附近的宵夜建議。`;
+        const el = document.createElement("textarea");
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+        alert("Prompt 已複製到剪貼簿，可貼給 AI 使用。");
+      }
+
+      window.onload = loadTrip;
+    </script>
+  </body>
+</html>
