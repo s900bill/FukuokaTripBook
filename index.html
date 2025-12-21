@@ -721,16 +721,17 @@
                         <div style="flex:1">
                             <small style="color:#166534; font-weight:600">🏨 住宿點</small><br>
                             <strong style="font-size:16px">${stayName}</strong>
+                                ${
+                                  checkIn || checkOut
+                                    ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">入住 ${checkIn} / 退房 ${checkOut}</div>`
+                                    : ""
+                                }
                             ${
                               stayAddress
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">${stayAddress}</div>`
+                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">📍${stayAddress}</div>`
                                 : ""
                             }
-                            ${
-                              checkIn || checkOut
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">入住 ${checkIn} / 退房 ${checkOut}</div>`
-                                : ""
-                            }
+                        
                         </div>
                         <a href="${navLink}" target="_blank" style="background:#16a34a; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
                             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
@@ -768,7 +769,7 @@
                 <div style="flex:1">
                     <div class="between">
                         <strong>${d.theme}</strong>
-                        <span class="badge">${d.weekday.split('(')[0]}</span>
+                        <span class="badge">${d.weekday.split("(")[0]}</span>
                     </div>
                     <div style="font-size:13px; color:var(--text-light)">
                         📍 ${
@@ -795,7 +796,9 @@
             <div class="day-pill ${
               d.day === currentDay ? "active" : ""
             }" onclick="selectDay(${d.day}, this)">
-                Day ${d.day}<br><small style="font-size:10px">${d.weekday || ""}</small>
+                Day ${d.day}<br><small style="font-size:10px">${
+              d.weekday || ""
+            }</small>
             </div>
         `
           )
