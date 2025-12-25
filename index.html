@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="福岡行程" />
     <link rel="manifest" href="./manifest.json" />
-    <title>旅遊行程隨身手冊</title>
+    <title>不喊累旅行社</title>
     <style>
       :root {
         --primary: #2563eb;
@@ -36,6 +36,55 @@
         margin: 0;
         line-height: 1.5;
         padding-bottom: 80px; /* For bottom tab bar */
+        font-size: 16px;
+        transition: font-size 0.3s;
+      }
+
+      /* 字體大小變體 */
+      body.font-large {
+        font-size: 18px;
+      }
+      body.font-xlarge {
+        font-size: 20px;
+      }
+
+      /* 字體控制按鈕 */
+      .font-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .font-control span {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+      .font-control button {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .font-control button:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+      .font-control button.active {
+        background: white;
+        color: var(--primary);
+        border-color: white;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
       }
 
       /* Utils */
@@ -62,7 +111,7 @@
         align-items: center;
       }
       .badge {
-        font-size: 12px;
+        font-size: 0.75em;
         padding: 2px 8px;
         border-radius: 99px;
         background: #e2e8f0;
@@ -119,7 +168,7 @@
         flex: 1;
         text-align: center;
         padding: 12px 0;
-        font-size: 11px;
+        font-size: 0.69em;
         color: var(--text-light);
         text-decoration: none;
         cursor: pointer;
@@ -185,18 +234,18 @@
         border: 2px solid var(--primary);
       }
       .item-time {
-        font-size: 13px;
+        font-size: 0.81rem;
         font-weight: bold;
         color: var(--primary);
         margin-bottom: 4px;
       }
       .item-title {
         font-weight: bold;
-        font-size: 16px;
+        font-size: 1rem;
         margin-bottom: 4px;
       }
       .item-meta {
-        font-size: 13px;
+        font-size: 1rem;
         color: var(--text-light);
         margin-bottom: 4px;
       }
@@ -218,7 +267,7 @@
       .selector-btn {
         padding: 4px 12px;
         border-radius: 6px;
-        font-size: 13px;
+        font-size: 0.81em;
         border: none;
         cursor: pointer;
         background: transparent;
@@ -282,6 +331,29 @@
       <div class="container">
         <h1 id="trip-title">載入中...</h1>
         <p id="trip-dates">--</p>
+        <!-- 字體大小控制 -->
+
+        <div class="font-control">
+          <span>文字大小:</span>
+          <button
+            onclick="setFontSize('normal')"
+            id="font-normal"
+            class="active"
+            title="標準字體"
+          >
+            小
+          </button>
+          <button onclick="setFontSize('large')" id="font-large" title="大字體">
+            中
+          </button>
+          <button
+            onclick="setFontSize('xlarge')"
+            id="font-xlarge"
+            title="超大字體"
+          >
+            大
+          </button>
+        </div>
       </div>
     </header>
 
@@ -292,7 +364,7 @@
           <h3 style="margin-top: 0">旅程摘要</h3>
           <p
             id="meta-notes"
-            style="font-size: 14px; color: var(--text-light)"
+            style="font-size: 0.88em; color: var(--text-light)"
           ></p>
           <hr
             style="border: 0; border-top: 1px solid #f1f5f9; margin: 12px 0"
@@ -397,6 +469,182 @@
       </div>
     </div>
 
+    <!-- 行前準備清單頁 -->
+    <div id="tab-checklist" class="tab-view hidden">
+      <div class="container">
+        <h1>🎒 行前準備清單</h1>
+
+        <!-- 進度條 -->
+        <div class="card" style="margin-bottom: 16px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 8px;
+            "
+          >
+            <span style="font-weight: 600">完成進度</span>
+            <span
+              id="progress-text"
+              style="color: var(--primary); font-weight: 600"
+              >0%</span
+            >
+          </div>
+          <div
+            style="
+              background: #e2e8f0;
+              height: 8px;
+              border-radius: 4px;
+              overflow: hidden;
+            "
+          >
+            <div
+              id="progress-bar"
+              style="
+                background: var(--primary);
+                height: 100%;
+                width: 0%;
+                transition: width 0.3s;
+              "
+            ></div>
+          </div>
+        </div>
+
+        <!-- 快速跳轉分類 -->
+        <div class="card" style="margin-bottom: 16px">
+          <div
+            style="
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+              justify-content: center;
+            "
+          >
+            <a
+              href="#cat-證件"
+              style="
+                padding: 8px 16px;
+                background: #dbeafe;
+                color: var(--primary);
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 0.88em;
+              "
+              >📄 證件</a
+            >
+            <a
+              href="#cat-金錢"
+              style="
+                padding: 8px 16px;
+                background: #fef3c7;
+                color: #d97706;
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 0.88em;
+              "
+              >💰 金錢</a
+            >
+            <a
+              href="#cat-電子"
+              style="
+                padding: 8px 16px;
+                background: #ddd6fe;
+                color: #7c3aed;
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 0.88em;
+              "
+              >🔌 電子</a
+            >
+            <a
+              href="#cat-衣物"
+              style="
+                padding: 8px 16px;
+                background: #fce7f3;
+                color: #db2777;
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 0.88em;
+              "
+              >👕 衣物</a
+            >
+            <a
+              href="#cat-藥品"
+              style="
+                padding: 8px 16px;
+                background: #dcfce7;
+                color: #16a34a;
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 0.88em;
+              "
+              >💊 藥品</a
+            >
+            <a
+              href="#cat-其他"
+              style="
+                padding: 8px 16px;
+                background: #e0e7ff;
+                color: #4f46e5;
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 0.88em;
+              "
+              >📦 其他</a
+            >
+          </div>
+        </div>
+
+        <!-- 清單項目（加上滾動） -->
+        <div
+          id="checklist-items"
+          style="
+            max-height: calc(100vh - 380px);
+            overflow-y: auto;
+            overflow-x: hidden;
+          "
+        ></div>
+
+        <!-- 清除已完成 -->
+        <div style="text-align: center; margin-top: 16px; padding-bottom: 16px">
+          <button
+            onclick="clearCompleted()"
+            style="
+              padding: 10px 24px;
+              background: #ef4444;
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              opacity: 0.8;
+            "
+            onmouseover="this.style.opacity='1'"
+            onmouseout="this.style.opacity='0.8'"
+          >
+            🗑️ 清除已完成項目
+          </button>
+          <button
+            onclick="resetChecklist()"
+            style="
+              padding: 10px 24px;
+              background: #64748b;
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              opacity: 0.8;
+              margin-left: 8px;
+            "
+            onmouseover="this.style.opacity='1'"
+            onmouseout="this.style.opacity='0.8'"
+          >
+            🔄 重置所有
+          </button>
+        </div>
+      </div>
+    </div>
+
     <nav class="bottom-nav">
       <a class="nav-item active" onclick="switchTab('summary', this)">
         <svg viewBox="0 0 24 24" class="icon">
@@ -418,6 +666,12 @@
         </svg>
         清單
       </a>
+      <a class="nav-item" onclick="switchTab('checklist', this)">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        </svg>
+        準備清單
+      </a>
     </nav>
 
     <script>
@@ -427,6 +681,239 @@
       let showMentaiko = "all"; // 'mentaiko' | 'no-mentaiko' | 'all'
       const isAdmin =
         new URLSearchParams(window.location.search).get("admin") === "1";
+
+      // 字體大小設定
+      const FONT_SIZE_KEY = "fukuoka-trip-font-size";
+
+      function setFontSize(size) {
+        // 移除所有字體類別
+        document.body.classList.remove("font-large", "font-xlarge");
+
+        // 添加對應類別
+        if (size === "large") {
+          document.body.classList.add("font-large");
+        } else if (size === "xlarge") {
+          document.body.classList.add("font-xlarge");
+        }
+
+        // 更新按鈕狀態
+        document.querySelectorAll(".font-control button").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document.getElementById("font-" + size).classList.add("active");
+
+        // 保存設定
+        localStorage.setItem(FONT_SIZE_KEY, size);
+      }
+
+      function loadFontSize() {
+        const savedSize = localStorage.getItem(FONT_SIZE_KEY) || "normal";
+        setFontSize(savedSize);
+      }
+
+      // Checklist 功能
+      let checklistItems = [];
+      const STORAGE_KEY = "fukuoka-trip-checklist";
+
+      // 預設清單模板
+      const defaultCategories = {
+        證件: [
+          "護照（有效期6個月以上）",
+          "身分證",
+          "國際駕照（若租車）",
+          "機票電子憑證",
+          "旅館訂房確認單",
+          "旅遊保險單",
+        ],
+        金錢: ["日幣現金", "信用卡", "提款卡", "零錢包", "悠遊卡或ICOCA卡"],
+        電子: [
+          "手機",
+          "手機充電器",
+          "行動電源",
+          "相機",
+          "相機記憶卡",
+          "轉接頭",
+          "Wi-Fi分享器或SIM卡",
+        ],
+        衣物: [
+          "換洗衣物（5天份）",
+          "內衣褲",
+          "襪子",
+          "外套（早晚溫差用）",
+          "舒適的走路鞋",
+          "拖鞋",
+          "雨具（折疊傘）",
+          "太陽眼鏡",
+          "帽子",
+        ],
+        藥品: [
+          "個人常備藥",
+          "暈車藥",
+          "腸胃藥",
+          "感冒藥",
+          "OK繃",
+          "防蚊液",
+          "防曬乳",
+          "口罩",
+        ],
+        其他: [
+          "盥洗用品（牙刷、牙膏）",
+          "護膚保養品",
+          "濕紙巾",
+          "面紙",
+          "環保袋（購物用）",
+          "筆記本和筆",
+          "空行李箱空間（買伴手禮）",
+        ],
+      };
+
+      function loadChecklist() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          checklistItems = JSON.parse(saved);
+        } else {
+          // 首次載入，自動初始化所有預設項目
+          initDefaultChecklist();
+        }
+        renderChecklist();
+      }
+
+      function initDefaultChecklist() {
+        checklistItems = [];
+        let idCounter = 1;
+        Object.keys(defaultCategories).forEach((category) => {
+          defaultCategories[category].forEach((text) => {
+            checklistItems.push({
+              id: idCounter++,
+              text: text,
+              completed: false,
+              category: category,
+              addedAt: new Date().toISOString(),
+            });
+          });
+        });
+        saveChecklist();
+      }
+
+      function saveChecklist() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(checklistItems));
+      }
+
+      function resetChecklist() {
+        if (
+          confirm("確定要重置所有項目嗎？這將清除所有勾選記錄並恢復預設清單。")
+        ) {
+          initDefaultChecklist();
+          renderChecklist();
+        }
+      }
+
+      function toggleChecklistItem(id) {
+        const item = checklistItems.find((i) => i.id === id);
+        if (item) {
+          item.completed = !item.completed;
+          saveChecklist();
+          renderChecklist();
+        }
+      }
+
+      function clearCompleted() {
+        const completedCount = checklistItems.filter((i) => i.completed).length;
+        if (completedCount === 0) {
+          alert("目前沒有已完成的項目！");
+          return;
+        }
+
+        if (confirm(`確定要清除 ${completedCount} 個已完成的項目嗎？`)) {
+          checklistItems = checklistItems.filter((i) => !i.completed);
+          saveChecklist();
+          renderChecklist();
+        }
+      }
+
+      function renderChecklist() {
+        const container = document.getElementById("checklist-items");
+        if (!container) return;
+
+        // 計算進度
+        const total = checklistItems.length;
+        const completed = checklistItems.filter((i) => i.completed).length;
+        const percentage =
+          total > 0 ? Math.round((completed / total) * 100) : 0;
+
+        document.getElementById(
+          "progress-text"
+        ).textContent = `${completed}/${total} (${percentage}%)`;
+        document.getElementById("progress-bar").style.width = `${percentage}%`;
+
+        // 按類別分組
+        const grouped = {};
+        checklistItems.forEach((item) => {
+          if (!grouped[item.category]) {
+            grouped[item.category] = [];
+          }
+          grouped[item.category].push(item);
+        });
+
+        // 渲染（按預設順序）
+        let html = "";
+        const categoryOrder = ["證件", "金錢", "電子", "衣物", "藥品", "其他"];
+
+        categoryOrder.forEach((category) => {
+          if (!grouped[category]) return;
+          const items = grouped[category];
+
+          html += `
+            <div id="cat-${category}" class="card" style="margin-bottom: 16px; scroll-margin-top: 16px;">
+              <h3 style="margin: 0 0 12px; font-size: 1em; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                <span>${getCategoryIcon(category)}</span>
+                <span>${category}</span>
+                <span style="color: var(--text-light); font-size: 0.88em; font-weight: normal;">
+                  (${items.filter((i) => i.completed).length}/${items.length})
+                </span>
+              </h3>
+          `;
+
+          items.forEach((item) => {
+            html += `
+              <div style="display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; background: ${
+                item.completed ? "#f0fdf4" : "#fafafa"
+              }; margin-bottom: 6px; transition: all 0.2s;">
+                <input 
+                  type="checkbox" 
+                  ${item.completed ? "checked" : ""}
+                  onchange="toggleChecklistItem(${item.id})"
+                  style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); flex-shrink: 0;"
+                />
+                <span style="flex: 1; ${
+                  item.completed
+                    ? "text-decoration: line-through; opacity: 0.6;"
+                    : ""
+                } font-size: 0.94em;">
+                  ${item.text}
+                </span>
+              </div>
+            `;
+          });
+
+          html += `</div>`;
+        });
+
+        container.innerHTML = html;
+      }
+
+      function getCategoryIcon(category) {
+        const icons = {
+          證件: "📄",
+          金錢: "💰",
+          電子: "🔌",
+          衣物: "👕",
+          藥品: "💊",
+          其他: "📦",
+          自訂: "✏️",
+        };
+        return icons[category] || "📌";
+      }
 
       // UI Utilities
       function switchTab(tabId, el) {
@@ -669,21 +1156,21 @@
                     <div style="display:flex; justify-content:space-between; align-items:flex-start">
                         <div style="flex:1">
                             <small style="color:#0369a1; font-weight:600">✈️ 去程航班</small><br>
-                            <strong style="font-size:16px">${outboundFlight}</strong>
+                            <strong style="font-size:1em">${outboundFlight}</strong>
                             ${
                               outboundTime
-                                ? `<div style="font-size:13px; color:var(--text-light); margin-top:2px">${outboundTime}</div>`
+                                ? `<div style="font-size:0.81em; color:var(--text-light); margin-top:2px">${outboundTime}</div>`
                                 : ""
                             }
                             ${
                               outboundAirport
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">📍 ${outboundAirport} ${outboundTerminal}</div>`
+                                ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:4px">📍 ${outboundAirport} ${outboundTerminal}</div>`
                                 : ""
                             }
                         </div>
                         ${
                           outboundNavLink
-                            ? `<a href="${outboundNavLink}" target="_blank" style="background:#0284c7; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
+                            ? `<a href="${outboundNavLink}" target="_blank" style="background:#0284c7; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:0.75em; white-space:nowrap; display:flex; align-items:center; gap:4px">
                             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
@@ -697,21 +1184,21 @@
                     <div style="display:flex; justify-content:space-between; align-items:flex-start">
                         <div style="flex:1">
                             <small style="color:#92400e; font-weight:600">✈️ 回程航班</small><br>
-                            <strong style="font-size:16px">${inboundFlight}</strong>
+                            <strong style="font-size:1em">${inboundFlight}</strong>
                             ${
                               inboundTime
-                                ? `<div style="font-size:13px; color:var(--text-light); margin-top:2px">${inboundTime}</div>`
+                                ? `<div style="font-size:0.81em; color:var(--text-light); margin-top:2px">${inboundTime}</div>`
                                 : ""
                             }
                             ${
                               inboundAirport
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">📍 ${inboundAirport} ${inboundTerminal}</div>`
+                                ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:4px">📍 ${inboundAirport} ${inboundTerminal}</div>`
                                 : ""
                             }
                         </div>
                         ${
                           inboundNavLink
-                            ? `<a href="${inboundNavLink}" target="_blank" style="background:#d97706; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
+                            ? `<a href="${inboundNavLink}" target="_blank" style="background:#d97706; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:0.75em; white-space:nowrap; display:flex; align-items:center; gap:4px">
                             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
@@ -725,20 +1212,20 @@
                     <div style="display:flex; justify-content:space-between; align-items:flex-start">
                         <div style="flex:1">
                             <small style="color:#166534; font-weight:600">🏨 住宿點</small><br>
-                            <strong style="font-size:16px">${stayName}</strong>
+                            <strong style="font-size:1em">${stayName}</strong>
                                 ${
                                   checkIn || checkOut
-                                    ? `<div style="font-size:12px; color:var(--text-light); margin-top:4px">入住 ${checkIn} / 退房 ${checkOut}</div>`
+                                    ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:4px">入住 ${checkIn} / 退房 ${checkOut}</div>`
                                     : ""
                                 }
                             ${
                               stayAddress
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">📍${stayAddress}</div>`
+                                ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:2px">📍${stayAddress}</div>`
                                 : ""
                             }
                         
                         </div>
-                        <a href="${navLink}" target="_blank" style="background:#16a34a; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px">
+                        <a href="${navLink}" target="_blank" style="background:#16a34a; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:0.75em; white-space:nowrap; display:flex; align-items:center; gap:4px">
                             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
@@ -768,15 +1255,17 @@
             (d) => `
             <div class="card flex" onclick="goToDay(${d.day})">
                 <div style="width:50px; text-align:center; border-right:1px solid #eee; margin-right:8px">
-                    <div style="font-size:12px">Day</div>
-                    <div style="font-weight:bold; font-size:18px">${d.day}</div>
+                    <div style="font-size:0.75em">Day</div>
+                    <div style="font-weight:bold; font-size:1.125em">${
+                      d.day
+                    }</div>
                 </div>
                 <div style="flex:1">
                     <div class="between">
                         <strong>${d.theme}</strong>
                         <span class="badge">${d.weekday.split("(")[0]}</span>
                     </div>
-                    <div style="font-size:13px; color:var(--text-light)">
+                    <div style="font-size:0.81em; color:var(--text-light)">
                         📍 ${
                           Array.isArray(d.areas) ? d.areas.join(" | ") : d.areas
                         } | 🚶 步行: ${d.walkLevel}
@@ -801,7 +1290,7 @@
             <div class="day-pill ${
               d.day === currentDay ? "active" : ""
             }" onclick="selectDay(${d.day}, this)">
-                Day ${d.day}<br><small style="font-size:10px">${
+                Day ${d.day}<br><small style="font-size:0.625em">${
               d.weekday || ""
             }</small>
             </div>
@@ -922,12 +1411,12 @@
                     }
                     ${
                       item.notes
-                        ? `<div style="font-size:14px; margin-top:8px; border-left:3px solid #eee; padding-left:8px; color:var(--text-light)">${item.notes}</div>`
+                        ? `<div style="font-size:0.88em; margin-top:8px; border-left:3px solid #eee; padding-left:8px; color:var(--text-light)">${item.notes}</div>`
                         : ""
                     }
                     ${
                       item.link
-                        ? `<button class="btn" onclick="window.open('${item.link}')" style="margin-top:10px; font-size:12px; background:#eee">Google Maps</button>`
+                        ? `<button class="btn" onclick="window.open('${item.link}')" style="margin-top:10px; font-size:0.75em; background:#eee">Google Maps</button>`
                         : ""
                     }
                     <div class="tag-row">
@@ -1029,17 +1518,17 @@
                             <strong>${r.name}</strong>
                             ${
                               location
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">📍 ${location}</div>`
+                                ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:2px">📍 ${location}</div>`
                                 : ""
                             }
                             ${
                               r.hours
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">🕒 ${r.hours}</div>`
+                                ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:2px">🕒 ${r.hours}</div>`
                                 : ""
                             }
                             ${
                               r.priceRangeJPY
-                                ? `<div style="font-size:12px; color:var(--text-light); margin-top:2px">💴 ¥${r.priceRangeJPY}</div>`
+                                ? `<div style="font-size:0.75em; color:var(--text-light); margin-top:2px">💴 ¥${r.priceRangeJPY}</div>`
                                 : ""
                             }
                         </div>
@@ -1052,7 +1541,7 @@
                         </div>
                     </div>
                     <div class="tag-row">${tagsHtml}</div>
-                    <div style="font-size:13px; margin-top:4px">${
+                    <div style="font-size:0.81em; margin-top:4px">${
                       r.note || ""
                     }</div>
                 </div>
@@ -1129,23 +1618,31 @@
         alert("Prompt 已複製到剪貼簿，可貼給 AI 使用。");
       }
 
-      window.onload = loadTrip;
+      window.onload = function () {
+        loadFontSize();
+        loadTrip();
+        loadChecklist();
+      };
 
       // 註冊 Service Worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./sw.js")
             .then((registration) => {
-              console.log('Service Worker 註冊成功:', registration.scope);
-              
+              console.log("Service Worker 註冊成功:", registration.scope);
+
               // 檢查更新
-              registration.addEventListener('updatefound', () => {
+              registration.addEventListener("updatefound", () => {
                 const newWorker = registration.installing;
-                newWorker.addEventListener('statechange', () => {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                newWorker.addEventListener("statechange", () => {
+                  if (
+                    newWorker.state === "installed" &&
+                    navigator.serviceWorker.controller
+                  ) {
                     // 有新版本可用
-                    if (confirm('有新版本可用！點擊確定更新頁面。')) {
-                      newWorker.postMessage({ type: 'SKIP_WAITING' });
+                    if (confirm("有新版本可用！點擊確定更新頁面。")) {
+                      newWorker.postMessage({ type: "SKIP_WAITING" });
                       window.location.reload();
                     }
                   }
@@ -1153,11 +1650,11 @@
               });
             })
             .catch((error) => {
-              console.log('Service Worker 註冊失敗:', error);
+              console.log("Service Worker 註冊失敗:", error);
             });
-          
+
           // 監聽 Service Worker 控制器變更
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
+          navigator.serviceWorker.addEventListener("controllerchange", () => {
             window.location.reload();
           });
         });
