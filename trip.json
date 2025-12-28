@@ -9,7 +9,10 @@
     "timezone": "Asia/Taipei",
     "people": {
       "total": 8,
-      "groups": ["父母×2(約60歲)", "姐弟×2(約30歲)"],
+      "groups": [
+        "父母×2(約60歲)",
+        "姐弟×2(約30歲)"
+      ],
       "notes": "步行量不硬；同餐期可拆 4+4 行動"
     },
     "notes": [
@@ -19,11 +22,20 @@
     "foodLimit": {
       "noRawFood": true,
       "mentaikoSplit": true,
-      "notes": ["不吃生食；同餐期可分『明太子派 / 不明太子派』"]
+      "notes": [
+        "不吃生食；同餐期可分『明太子派 / 不明太子派』"
+      ]
     },
     "mustHave": {
-      "wants": ["居酒屋/消夜(可選)", "燒肉(藥院一晚)", "甜點(布丁/甜甜圈)"],
-      "splitRules": ["可 4+4 分流", "明太子派/不明太子派切換"]
+      "wants": [
+        "居酒屋/消夜(可選)",
+        "燒肉(藥院一晚)",
+        "甜點(布丁/甜甜圈)"
+      ],
+      "splitRules": [
+        "可 4+4 分流",
+        "明太子派/不明太子派切換"
+      ]
     }
   },
   "stay": {
@@ -60,63 +72,84 @@
       "day": 1,
       "date": "2026-04-30",
       "weekday": "四(木)",
-      "theme": "抵達日：博多站午餐＋布丁休息 → 住宿 check-in → 運河城逛街",
-      "areas": ["福岡機場", "博多", "春吉", "運河城"],
+      "theme": "抵達日：運河城(逛街/鰻魚飯) → check-in → 一蘭消夜",
+      "areas": [
+        "福岡機場",
+        "運河城",
+        "春吉"
+      ],
       "walkLevel": "低",
-      "ticket": "SUICA/SUGOCA 類 IC 卡(全程刷卡最省事)",
-      "rainPlan": "運河城(室內商場)當雨備；咖啡/甜點在車站或室內點",
-      "backToStay": "16:30-17:00 回住宿 check-in(最早 17:00)"
+      "ticket": "SUICA/SUGOCA 類 IC 卡",
+      "rainPlan": "運河城(室內商場)",
+      "backToStay": "Check-in 後可休息或吃消夜"
     },
     {
       "day": 2,
       "date": "2026-05-01",
       "weekday": "五(金)",
-      "theme": "Klook 一日遊：太宰府＋別府纜車＋由布院；回程搭「由布院之森」返回博多",
-      "areas": ["太宰府", "別府", "由布院", "博多"],
+      "theme": "Klook 一日遊(太宰府/別府/由布院) → 釜飯/半熟起司蛋糕 → 回博多晚餐",
+      "areas": [
+        "太宰府",
+        "別府",
+        "由布院",
+        "博多"
+      ],
       "walkLevel": "中(以跟團移動為主)",
-      "ticket": "Klook 跟團巴士 +（回程）由布院之森列車",
-      "rainPlan": "照常出團；景點多可室內/商店街分流",
-      "backToStay": "約 19:30 後回博多（依選擇的由布院之森班次）"
+      "ticket": "Klook 一日遊巴士 + Klook 由布院之森列車",
+      "rainPlan": "照常出團；室內景點為主",
+      "backToStay": "約 19:30-20:00 回博多"
     },
     {
       "day": 3,
       "date": "2026-05-02",
       "weekday": "六(土)",
-      "theme": "teamLab Forest → 大濠/舞鶴公園散步；餐點：元村炸牛排 or 炉端ノいとおかし(全預約制)",
-      "areas": ["PayPay Dome 周邊", "大濠", "舞鶴", "天神"],
-      "walkLevel": "低～中",
-      "ticket": "teamLab 建議先買時段票；其餘地鐵＋計程車(4+4)",
-      "rainPlan": "teamLab(室內)＋美術館/百貨；公園視天氣改短",
-      "backToStay": "15:30-17:00 回住宿休息"
+      "theme": "teamLab Forest → 西新初喜午餐 → MARK IS / 大濠公園 → 燒肉 Benjamin",
+      "areas": [
+        "PayPay Dome",
+        "西新",
+        "大濠",
+        "藥院/警固"
+      ],
+      "walkLevel": "中",
+      "ticket": "teamLab 門票 (11:00)",
+      "rainPlan": "teamLab(室內)＋MARK IS(商場)",
+      "backToStay": "晚餐後回住宿"
     },
     {
       "day": 4,
       "date": "2026-05-03",
       "weekday": "日(日)",
-      "theme": "櫛田神社 → 鰻のエイト(運河城) → 天神地下街 → daco → 藥院燒肉",
-      "areas": ["博多", "運河城", "天神", "藥院"],
-      "walkLevel": "低",
-      "ticket": "地鐵＋地下街；晚餐建議預約",
-      "rainPlan": "天神地下街/運河城室內逛街；甜點照吃",
-      "backToStay": "晚餐後可自由加碼夜咖/回住宿"
+      "theme": "櫛田神社 → 炸牛排 → 天神地下街(治一郎/daco) → 雞皮串燒",
+      "areas": [
+        "博多",
+        "天神",
+        "春吉"
+      ],
+      "walkLevel": "中",
+      "ticket": "晚餐(とりかわ宝家)建議預約",
+      "rainPlan": "天神地下街/百貨",
+      "backToStay": "晚餐後回住宿"
     },
     {
       "day": 5,
       "date": "2026-05-04",
       "weekday": "一(月)",
-      "theme": "TANYA 牛舌早餐 → 退房 → 前往機場返台",
-      "areas": ["博多", "福岡機場"],
+      "theme": "TANYA 牛舌早餐 → 退房 → 機場返台",
+      "areas": [
+        "博多",
+        "福岡機場"
+      ],
       "walkLevel": "低",
-      "ticket": "建議 11:30 前離開市區，12:00-12:15 抵機場報到",
-      "rainPlan": "若下雨：車站內採買＋機場內用餐",
-      "backToStay": "11:00 退房 → 行李寄放/直接出發"
+      "ticket": "地鐵",
+      "rainPlan": "車站地下街/機場",
+      "backToStay": "11:00 退房"
     }
   ],
   "days": [
     {
       "day": 1,
       "date": "2026-04-30",
-      "title": "機場→博多站午餐＋布丁休息→check-in→博多運河城",
+      "title": "抵達日：運河城(逛街/鰻魚飯) → check-in → 一蘭消夜",
       "plans": {
         "A": [
           {
@@ -124,75 +157,90 @@
             "timeEnd": "15:10",
             "slot": "入境/移動",
             "type": "transport",
-            "name": "抵達福岡(FUK)→ 入境/領行李 → 地鐵進市區(博多)",
-            "link": "",
-            "area": "福岡機場→博多",
-            "transport": "地鐵: 福岡空港→博多(約 5 分)",
-            "costJPY": 300,
+            "name": "抵達福岡(FUK)→ 入境 → 前往運河城",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Canal+City+Hakata",
+            "area": "福岡機場→運河城",
+            "transport": "地鐵博多站轉計程車/巴士 或 直接計程車(4+4)",
+            "costJPY": 1000,
             "booking": "",
-            "notes": "8人先講好集合點：國際線到達大廳或國內線地鐵入口；可分兩排走",
-            "backup": "若入境久：先車站內用餐/甜點，行程不趕",
-            "tags": ["交通", "長輩友善", "分流"]
-          },
-          {
-            "timeStart": "15:10",
-            "timeEnd": "16:10",
-            "slot": "午餐",
-            "type": "food",
-            "name": "博多站午餐：黑毛和牛 牛まぶし 武蔵（博多站筑紫口）",
-            "link": "https://hakata-gyumabushi-musashi.owst.jp/",
-            "area": "博多站",
-            "transport": "博多站筑紫口步行約 2 分",
-            "costJPY": 3500,
-            "booking": "建議可先電話/線上確認；8人可拆 4+4",
-            "notes": "定休日：週二(遇假日可能調整)；尖峰可能需候位",
-            "backup": "若滿席：改車站內餐廳或先吃便當再去甜點",
-            "tags": ["午餐", "和牛", "適合8人", "分流", "建議確認營業"]
-          },
-          {
-            "timeStart": "16:10",
-            "timeEnd": "16:40",
-            "slot": "甜點/休息",
-            "type": "food",
-            "name": "布丁休息：治一郎(JR博多シティ) 布丁 / 或改去 FUK COFFEE(想坐著休息)",
-            "link": "https://www.jrhakatacity.com/floor/detail/?cd=000399",
-            "area": "博多站",
-            "transport": "JR博多シティ(站內)；若去 FUK COFFEE PARKS：地鐵至大濠公園站步行約3分",
-            "costJPY": 600,
-            "booking": "免預約",
-            "notes": "治一郎在博多站內好買好帶；FUK COFFEE PARKS 週末假日營業到晚間(較好坐)",
-            "backup": "人多：外帶到車站座位區吃",
-            "tags": ["甜點", "布丁", "長輩友善", "雨備"]
-          },
-          {
-            "timeStart": "16:40",
-            "timeEnd": "17:20",
-            "slot": "入住/休息",
-            "type": "transport",
-            "name": "回住宿：LA CHIC Stay Hakata（check-in 17:00）",
-            "link": "",
-            "area": "春吉/天神南附近",
-            "transport": "地鐵＋步行/短程計程車(行李多建議計程車 5-10 分)",
-            "costJPY": 800,
-            "booking": "",
-            "notes": "先分房、放行李、長輩優先休息",
+            "notes": "行李多建議直接計程車去運河城或先去住宿放行李(看路線順暢度，此處依需求先排運河城)",
             "backup": "",
-            "tags": ["交通", "長輩友善"]
+            "tags": [
+              "交通",
+              "入境"
+            ]
+          },
+          {
+            "timeStart": "15:30",
+            "timeEnd": "18:00",
+            "slot": "逛街",
+            "type": "shopping",
+            "name": "博多運河城 Canal City 逛街",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Canal+City+Hakata",
+            "area": "運河城",
+            "transport": "步行",
+            "costJPY": 0,
+            "booking": "",
+            "notes": "每整點有水舞秀；Uniqlo/藥妝/迪士尼商店",
+            "backup": "",
+            "tags": [
+              "購物",
+              "室內"
+            ]
           },
           {
             "timeStart": "18:00",
+            "timeEnd": "19:30",
+            "slot": "晚餐",
+            "type": "food",
+            "name": "鰻のエイト キャナルシティ博多店",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Unagi+no+Eight+Canal+City",
+            "area": "運河城 Grand Bldg. B1F",
+            "transport": "運河城內步行",
+            "costJPY": 3500,
+            "booking": "現場/訂位",
+            "notes": "營業至 23:00；一本鰻/鰻魚飯",
+            "backup": "運河城內其他餐廳",
+            "tags": [
+              "晚餐",
+              "鰻魚",
+              "長輩友善"
+            ]
+          },
+          {
+            "timeStart": "20:00",
             "timeEnd": "20:30",
-            "slot": "逛街/晚餐彈性",
-            "type": "shopping",
-            "name": "博多運河城 Canal City 逛街＋晚餐(室內雨備)",
-            "link": "https://maps.app.goo.gl/M7D2wTZbSdGgoazH9",
-            "area": "運河城",
-            "transport": "住宿→計程車/步行(視距離)；或地鐵到櫛田神社前站步行",
+            "slot": "入住",
+            "type": "transport",
+            "name": "LA CHIC Stay Hakata Check-in",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=LA+CHIC+Stay+Hakata",
+            "area": "春吉",
+            "transport": "運河城步行約 10 分/計程車",
             "costJPY": 0,
-            "booking": "免預約",
-            "notes": "第一天不排硬行程，想吃什麼就運河城解決；8人可分散找餐廳",
-            "backup": "若太累：回住宿附近找居酒屋/便利商店",
-            "tags": ["購物", "室內雨備", "彈性", "長輩友善"]
+            "booking": "Booking ID",
+            "notes": "17:00 後可 Check-in",
+            "backup": "",
+            "tags": [
+              "住宿"
+            ]
+          },
+          {
+            "timeStart": "21:30",
+            "timeEnd": "22:30",
+            "slot": "消夜",
+            "type": "food",
+            "name": "一蘭 本社総本店 (24H)",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Ichiran+Main+Branch+Fukuoka",
+            "area": "中洲",
+            "transport": "住宿步行約 10 分",
+            "costJPY": 1200,
+            "booking": "現場排隊",
+            "notes": "24小時營業，消夜場排隊人潮可能較少",
+            "backup": "中洲屋台街",
+            "tags": [
+              "消夜",
+              "拉麵"
+            ]
           }
         ]
       }
@@ -200,24 +248,9 @@
     {
       "day": 2,
       "date": "2026-05-01",
-      "title": "Klook 太宰府＋別府＋由布院一日遊（回程由布院之森）",
+      "title": "Klook 一日遊＋由布院吃喝＋博多晚餐",
       "plans": {
         "A": [
-          {
-            "timeStart": "07:30",
-            "timeEnd": "08:10",
-            "slot": "早餐/集合前",
-            "type": "food",
-            "name": "簡易早餐（車站/便利商店）",
-            "link": "",
-            "area": "博多站周邊",
-            "transport": "步行",
-            "costJPY": 800,
-            "booking": "",
-            "notes": "一日遊移動長，建議先吃點東西、準備水/暈車藥",
-            "backup": "若想正式早餐：TANYA 博多（牛舌早餐）可改 Day5 或提早去",
-            "tags": ["長輩友善", "提醒"]
-          },
           {
             "timeStart": "08:10",
             "timeEnd": "08:30",
@@ -231,7 +264,11 @@
             "booking": "Klook 訂單/憑證",
             "notes": "出發前一天 20:00–21:00 會寄信通知導遊與車輛資訊（可能進垃圾信箱），旺季可能延後；以最新郵件為準",
             "backup": "找不到人：先回到憑證集合點周邊，立刻聯絡憑證上的緊急電話/客服",
-            "tags": ["需預約", "A方案", "集合"]
+            "tags": [
+              "需預約",
+              "A方案",
+              "集合"
+            ]
           },
           {
             "timeStart": "08:30",
@@ -246,7 +283,9 @@
             "booking": "Klook",
             "notes": "實際時間依當天路況/導遊安排",
             "backup": "",
-            "tags": ["跟團"]
+            "tags": [
+              "跟團"
+            ]
           },
           {
             "timeStart": "10:00",
@@ -261,7 +300,10 @@
             "booking": "跟團包含（個人消費自理）",
             "notes": "走累可在參道找座位休息；黃金週人多請跟緊集合時間",
             "backup": "下雨：參道商店街分流、以室內店鋪為主",
-            "tags": ["觀光", "長輩友善"]
+            "tags": [
+              "觀光",
+              "長輩友善"
+            ]
           },
           {
             "timeStart": "11:10",
@@ -276,7 +318,10 @@
             "booking": "纜車現場購票",
             "notes": "纜車可能因天候停駛；以當日公告為準",
             "backup": "若無法乘坐：依團體替代行程安排（以憑證/導遊公告為準）",
-            "tags": ["觀光", "自費"]
+            "tags": [
+              "觀光",
+              "自費"
+            ]
           },
           {
             "timeStart": "14:30",
@@ -291,7 +336,47 @@
             "booking": "跟團包含（個人消費自理）",
             "notes": "走累就找咖啡/甜點店坐；集合時間務必看清楚",
             "backup": "下雨：花卉村/商店內分流",
-            "tags": ["觀光", "購物", "長輩友善"]
+            "tags": [
+              "觀光",
+              "購物",
+              "長輩友善"
+            ]
+          },
+          {
+            "timeStart": "14:40",
+            "timeEnd": "15:40",
+            "slot": "午餐/下午茶",
+            "type": "food",
+            "name": "由布まぶし「心」金鱗湖本店",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Yufu+Mabushi+Shin+Kinrinko",
+            "area": "金鱗湖周邊",
+            "transport": "步行",
+            "costJPY": 3000,
+            "booking": "現場排隊/部分可訂",
+            "notes": "豐後牛/地雞釜飯；建議一到由布院先去登記或避開尖峰",
+            "backup": "站前分店 或 街邊小吃",
+            "tags": [
+              "必吃",
+              "釜飯"
+            ]
+          },
+          {
+            "timeStart": "16:00",
+            "timeEnd": "16:30",
+            "slot": "甜點",
+            "type": "food",
+            "name": "由布院 Milch (ミルヒ) 本店",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Yufuin+Milch",
+            "area": "由布院車站附近",
+            "transport": "步行",
+            "costJPY": 500,
+            "booking": "",
+            "notes": "半熟起司蛋糕/布丁；回程集合前購買剛好",
+            "backup": "",
+            "tags": [
+              "甜點",
+              "外帶"
+            ]
           },
           {
             "timeStart": "17:17",
@@ -306,22 +391,29 @@
             "booking": "Klook（含列車方案）",
             "notes": "Klook 頁面提供班次：15:56–18:10、17:17–19:28（推薦後者）；實際以憑證/出票為準。座位不保證相鄰",
             "backup": "若列車方案無法成行：依團體安排改巴士回博多（以導遊公告為準）",
-            "tags": ["必做", "列車", "需預約"]
+            "tags": [
+              "必做",
+              "列車",
+              "需預約"
+            ]
           },
           {
-            "timeStart": "20:15",
-            "timeEnd": "22:00",
+            "timeStart": "20:00",
+            "timeEnd": "21:30",
             "slot": "晚餐",
             "type": "food",
-            "name": "Shin-Shin 博多拉麵（天神本店/分店）",
-            "link": "https://maps.app.goo.gl/WjEjuH9qf214DbSP9",
-            "area": "天神/博多",
-            "transport": "地鐵/步行（依住宿點）",
-            "costJPY": 1500,
-            "booking": "現場排隊",
-            "notes": "黃金週排隊可能較長；8人建議分批",
-            "backup": "備案：一蘭（24H）或 達摩拉麵",
-            "tags": ["晚餐", "需排隊", "分批"]
+            "name": "晚餐二選一: 博多牛まぶし 武蔵 或 Shin-Shin KITTE博多店",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Hakata+Gyumabushi+Musashi",
+            "area": "博多站",
+            "transport": "博多站筑紫口/KITTE博多",
+            "costJPY": 3000,
+            "booking": "武蔵建議訂位/Shin-Shin排隊",
+            "notes": "武蔵：和牛蓋飯；Shin-Shin：拉麵 (KITTE店營業至24:00)",
+            "backup": "博多站內其他餐廳",
+            "tags": [
+              "晚餐",
+              "二選一"
+            ]
           }
         ]
       }
@@ -329,83 +421,98 @@
     {
       "day": 3,
       "date": "2026-05-02",
-      "title": "teamLab → 大濠/舞鶴公園 → 餐點二選一(元村炸牛排 / 炉端ノいとおかし)",
+      "title": "teamLab → 初喜午餐 → 逛街/公園 → 燒肉 Benjamin",
       "plans": {
         "A": [
           {
             "timeStart": "10:30",
-            "timeEnd": "12:30",
-            "slot": "室內展",
-            "type": "spot",
-            "name": "teamLab Forest 福岡(BOSS E・ZO)",
-            "link": "https://www.teamlab.art/jp/e/forest/",
-            "area": "PayPay Dome 周邊",
-            "transport": "地鐵→唐人町站，再步行/接駁(約 15-25 分)",
-            "costJPY": 2700,
-            "booking": "建議先買時段票",
-            "notes": "黃金週人多請保留緩衝；室內展雨天也OK",
-            "backup": "若買不到票：改運河城/地下街",
-            "tags": ["室內雨備", "需購票", "熱門"]
-          },
-          {
-            "timeStart": "13:10",
-            "timeEnd": "14:10",
-            "slot": "散步",
-            "type": "spot",
-            "name": "大濠公園散步(平緩好走)",
-            "link": "",
-            "area": "大濠",
-            "transport": "地鐵→大濠公園站",
-            "costJPY": 0,
-            "booking": "",
-            "notes": "步行量可控；長輩可隨時找椅子休息",
-            "backup": "下雨：縮短公園時間，改室內咖啡/百貨",
-            "tags": ["公園", "長輩友善", "彈性"]
-          },
-          {
-            "timeStart": "14:20",
-            "timeEnd": "15:20",
-            "slot": "散步",
-            "type": "spot",
-            "name": "舞鶴公園(福岡城跡周邊)散步拍照",
-            "link": "",
-            "area": "舞鶴/大濠旁",
-            "transport": "步行/地鐵＋步行(視路線)",
-            "costJPY": 0,
-            "booking": "",
-            "notes": "公園開放時間依季節；4-9月一般為 5:30-21:00",
-            "backup": "若天候不佳：改回市區逛街",
-            "tags": ["公園", "拍照", "彈性"]
-          },
-          {
-            "timeStart": "17:30",
-            "timeEnd": "19:30",
-            "slot": "用餐",
-            "type": "food",
-            "name": "餐點二選一：牛かつ もと村(天神西通り) 或 炉端ノ いとおかし(六本松｜全預約制)",
-            "link": "",
-            "area": "天神/六本松",
-            "transport": "地鐵＋步行；8人可拆 4+4",
-            "costJPY": 3000,
-            "booking": "もと村不可預約需排隊；いとおかし全預約制(7人以上通常需店家確認)",
-            "notes": "いとおかし營業偏早(早午餐/午餐時段)且日祝休，若想吃請改成午餐/早午餐預約；晚餐建議選もと村或其他燒肉/定食",
-            "backup": "排隊太久：改車站拉麵街/連鎖燒肉(可訂)",
-            "tags": ["分流", "需排隊", "需預約", "不吃生食OK"]
-          },
-          {
-            "timeStart": "20:00",
-            "timeEnd": "21:00",
-            "slot": "休息/自由",
-            "type": "rest",
-            "name": "回住宿休息或自由加碼甜點/夜咖",
-            "link": "",
-            "area": "春吉/天神南",
-            "transport": "地鐵/計程車短程",
-            "costJPY": 0,
-            "booking": "",
-            "notes": "前兩天累的話，這晚建議早睡補體力",
+            "timeEnd": "11:00",
+            "slot": "移動",
+            "type": "transport",
+            "name": "前往 teamLab (預約 11:00)",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=teamLab+Forest+Fukuoka",
+            "area": "唐人町/PayPay Dome",
+            "transport": "地鐵唐人町站+步行/計程車",
+            "costJPY": 300,
+            "booking": "teamLab 門票",
+            "notes": "",
             "backup": "",
-            "tags": ["休息", "彈性"]
+            "tags": [
+              "交通"
+            ]
+          },
+          {
+            "timeStart": "11:00",
+            "timeEnd": "12:30",
+            "slot": "展覽",
+            "type": "spot",
+            "name": "teamLab Forest 福岡",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=teamLab+Forest+Fukuoka",
+            "area": "BOSS E・ZO FUKUOKA",
+            "transport": "室內",
+            "costJPY": 2400,
+            "booking": "事先購票",
+            "notes": "光影互動展，好拍照",
+            "backup": "",
+            "tags": [
+              "景點",
+              "室內"
+            ]
+          },
+          {
+            "timeStart": "13:00",
+            "timeEnd": "14:30",
+            "slot": "午餐",
+            "type": "food",
+            "name": "西新初喜 マークイズ福岡ももち店",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Nishijin+Hatsuki+Mark+Is",
+            "area": "MARK IS 福岡 (同區)",
+            "transport": "步行",
+            "costJPY": 3000,
+            "booking": "建議預約",
+            "notes": "老牌黑毛和牛燒肉分店；商場內方便",
+            "backup": "MARK IS 美食街",
+            "tags": [
+              "午餐",
+              "和牛"
+            ]
+          },
+          {
+            "timeStart": "14:30",
+            "timeEnd": "17:00",
+            "slot": "逛街/散步",
+            "type": "shopping",
+            "name": "MARK IS 逛街 或 大濠公園/舞鶴公園散步",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=MARK+IS+Fukuoka+Momochi",
+            "area": "百道濱/大濠",
+            "transport": "步行 或 計程車移動至大濠",
+            "costJPY": 0,
+            "booking": "",
+            "notes": "視體力決定，想逛街留 MARK IS，想風景去公園",
+            "backup": "下雨則留 MARK IS",
+            "tags": [
+              "彈性",
+              "逛街",
+              "公園"
+            ]
+          },
+          {
+            "timeStart": "18:00",
+            "timeEnd": "20:00",
+            "slot": "晚餐",
+            "type": "food",
+            "name": "焼肉ベンジャミン (Yakiniku Benjamin)",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Yakiniku+Benjamin",
+            "area": "警固/藥院",
+            "transport": "計程車前往",
+            "costJPY": 5000,
+            "booking": "需預約",
+            "notes": "高評價燒肉；熟成肉",
+            "backup": "",
+            "tags": [
+              "晚餐",
+              "燒肉"
+            ]
           }
         ]
       }
@@ -413,83 +520,97 @@
     {
       "day": 4,
       "date": "2026-05-03",
-      "title": "櫛田神社→鰻のエイト→天神地下街→daco→藥院燒肉",
+      "title": "櫛田神社 → 炸牛排 → 天神地下街(甜點) → 雞皮串燒",
       "plans": {
         "A": [
           {
             "timeStart": "09:30",
             "timeEnd": "10:30",
-            "slot": "參拜/散步",
+            "slot": "參拜",
             "type": "spot",
-            "name": "櫛田神社(博多總鎮守)",
-            "link": "https://www.crossroadfukuoka.jp/spot/12510",
-            "area": "博多",
-            "transport": "地鐵→櫛田神社前站步行約2分",
+            "name": "櫛田神社",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Kushida+Shrine",
+            "area": "博多/中洲",
+            "transport": "地鐵櫛田神社前站",
             "costJPY": 0,
             "booking": "",
-            "notes": "開門時間一般 4:00-22:00；社務 9:00-17:00；無休",
-            "backup": "人多：拍照後直接往運河城用餐",
-            "tags": ["景點", "短程", "長輩友善"]
+            "notes": "博多總鎮守，看山笠",
+            "backup": "",
+            "tags": [
+              "景點"
+            ]
           },
           {
-            "timeStart": "11:00",
-            "timeEnd": "12:30",
+            "timeStart": "11:30",
+            "timeEnd": "13:00",
             "slot": "午餐",
             "type": "food",
-            "name": "鰻のエイト(運河城B1) 鰻魚飯",
-            "link": "https://canalcity.co.jp/shop/shop_type/2/detail/726",
-            "area": "運河城",
-            "transport": "步行/地鐵到櫛田神社前站步行",
-            "costJPY": 3500,
-            "booking": "可用訂位平台/現場候位(視店家規則)",
-            "notes": "運河城內、好分流；營業時間平日午/晚、假日 11:00-23:00；定休日なし",
-            "backup": "候位久：運河城內其他餐廳分散吃",
-            "tags": ["午餐", "長輩友善", "室內雨備"]
+            "name": "牛かつ もと村 天神西通り店",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Gyukatsu+Motomura+Tenjin",
+            "area": "天神",
+            "transport": "地鐵/步行",
+            "costJPY": 2500,
+            "booking": "不可預約，需現場排",
+            "notes": "石板煎炸牛排；人氣店",
+            "backup": "若排太長改天神周邊其他",
+            "tags": [
+              "午餐",
+              "炸牛排"
+            ]
           },
           {
             "timeStart": "13:30",
             "timeEnd": "15:00",
             "slot": "逛街",
             "type": "shopping",
-            "name": "天神地下街慢逛(室內、好走)",
-            "link": "",
+            "name": "天神地下街逛街",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Tenjin+Underground+Shopping+Center",
             "area": "天神",
-            "transport": "地鐵→天神站直達",
+            "transport": "直結",
             "costJPY": 0,
             "booking": "",
-            "notes": "雨天首選；8人可分流購物＋固定集合點",
-            "backup": "人多：改百貨公司(Parco/大丸)",
-            "tags": ["購物", "室內雨備", "長輩友善", "分流"]
+            "notes": "舒適地下街",
+            "backup": "",
+            "tags": [
+              "購物",
+              "室內"
+            ]
           },
           {
-            "timeStart": "15:15",
-            "timeEnd": "16:15",
+            "timeStart": "15:00",
+            "timeEnd": "16:30",
             "slot": "甜點",
             "type": "food",
-            "name": "daco 甜甜圈/麵包(今泉)",
-            "link": "https://maps.app.goo.gl/kno5D52h4kUtD2cy5",
-            "area": "天神/今泉",
-            "transport": "天神/西鐵福岡(天神)步行約 8-12 分",
+            "name": "治一郎 福岡Parco店 / daco 甜甜圈",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Jiichiro+Fukuoka+Parco",
+            "area": "天神 Parco / 今泉",
+            "transport": "步行",
             "costJPY": 1000,
-            "booking": "不可預約；現場排隊/外帶",
-            "notes": "常見營業 11:00-19:00(L.O.18:30)；熱門時段可能售完",
-            "backup": "售完：改咖啡店或回車站甜點",
-            "tags": ["甜點", "可能售完", "分流"]
+            "booking": "",
+            "notes": "治一郎買布丁/年輪蛋糕；daco 買生甜甜圈(可能排隊)",
+            "backup": "",
+            "tags": [
+              "甜點",
+              "外帶"
+            ]
           },
           {
             "timeStart": "18:00",
-            "timeEnd": "19:30",
+            "timeEnd": "20:00",
             "slot": "晚餐",
             "type": "food",
-            "name": "藥院燒肉：大衆焼肉 薬院のたまや(可預約)",
-            "link": "https://www.hotpepper.jp/strJ003941854/",
-            "area": "藥院/渡辺通",
-            "transport": "西鐵藥院站步行約 3 分；或地鐵七隈線",
-            "costJPY": 4500,
-            "booking": "建議先網路訂位；8人可拆 4+4 或詢問大桌",
-            "notes": "Hot Pepper 顯示無定休；部分平台標示不定休，建議出發前再確認",
-            "backup": "若臨時休：改連鎖燒肉(可訂)或回運河城/車站餐廳",
-            "tags": ["晚餐", "燒肉", "需預約", "適合8人", "長輩友善"]
+            "name": "とりかわ宝家 福岡春吉本店 (雞皮串燒)",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Torikawa+Takaraya+Haruyoshi",
+            "area": "春吉",
+            "transport": "步行/計程車",
+            "costJPY": 3000,
+            "booking": "建議預約",
+            "notes": "博多名物雞皮；17:30 營業",
+            "backup": "",
+            "tags": [
+              "晚餐",
+              "居酒屋"
+            ]
           }
         ]
       }
@@ -497,83 +618,59 @@
     {
       "day": 5,
       "date": "2026-05-04",
-      "title": "TANYA 牛舌早餐 → 退房 → 福岡機場返台",
+      "title": "TANYA早餐 → 機場返台",
       "plans": {
         "A": [
           {
-            "timeStart": "07:00",
-            "timeEnd": "07:50",
+            "timeStart": "08:00",
+            "timeEnd": "09:30",
             "slot": "早餐",
             "type": "food",
-            "name": "TANYA博多(牛舌早餐)",
-            "link": "https://maps.app.goo.gl/bnnejmgrngsjiTfd8",
+            "name": "TANYA博多 (牛舌早餐)",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Hakata+Tanya",
             "area": "博多站",
-            "transport": "地鐵/步行到 JR 博多站地下街",
-            "costJPY": 2200,
-            "booking": "免預約/現場排隊",
-            "notes": "朝食多為 7:00-10:00；黃金週人多請提早",
-            "backup": "改便利商店＋車站座位",
-            "tags": ["早餐", "長輩友善"]
+            "transport": "地鐵/步行",
+            "costJPY": 1500,
+            "booking": "現場排",
+            "notes": "博多一番街內；早晨牛舌",
+            "backup": "車站咖啡店",
+            "tags": [
+              "早餐"
+            ]
           },
           {
-            "timeStart": "08:10",
-            "timeEnd": "10:30",
-            "slot": "整理/退房",
-            "type": "rest",
-            "name": "回住宿收行李、分工退房(最晚 11:00)",
-            "link": "",
-            "area": "住宿",
-            "transport": "—",
-            "costJPY": 0,
+            "timeStart": "11:00",
+            "timeEnd": "11:30",
+            "slot": "退房",
+            "type": "check-out",
+            "name": "退房 / 前往機場",
+            "link": "https://www.google.com/maps/dir/?api=1&destination=Fukuoka+Airport",
+            "area": "住宿→機場",
+            "transport": "計程車/地鐵",
+            "costJPY": 1500,
             "booking": "",
-            "notes": "建議 11:30 前離開市區較安心",
+            "notes": "12:00 抵達機場",
             "backup": "",
-            "tags": ["回程", "分工", "長輩友善"]
-          },
-          {
-            "timeStart": "11:30",
-            "timeEnd": "12:00",
-            "slot": "移動",
-            "type": "transport",
-            "name": "前往福岡機場(預留報到安檢)",
-            "link": "",
-            "area": "博多→機場",
-            "transport": "地鐵: 博多→福岡空港(短程)；時間緊可計程車(4+4)",
-            "costJPY": 300,
-            "booking": "",
-            "notes": "建議 12:00-12:15 抵達機場較安心",
-            "backup": "若人潮爆量：更早出發",
-            "tags": ["回程", "交通", "提醒"]
-          },
-          {
-            "timeStart": "12:00",
-            "timeEnd": "13:30",
-            "slot": "機場",
-            "type": "shopping",
-            "name": "機場午餐/最後採買",
-            "link": "",
-            "area": "福岡機場",
-            "transport": "步行",
-            "costJPY": 2500,
-            "booking": "",
-            "notes": "避開生食店即可；以機場現場為準",
-            "backup": "",
-            "tags": ["回程", "伴手禮"]
+            "tags": [
+              "回程"
+            ]
           },
           {
             "timeStart": "14:15",
             "timeEnd": "15:45",
             "slot": "航班",
-            "type": "transport",
-            "name": "JX841 起飛返台",
+            "type": "flight",
+            "name": "JX841 返台",
             "link": "",
-            "area": "—",
-            "transport": "—",
+            "area": "福岡機場",
+            "transport": "飛機",
             "costJPY": 0,
             "booking": "",
-            "notes": "",
+            "notes": "13:30 登機",
             "backup": "",
-            "tags": ["回程", "航班"]
+            "tags": [
+              "航班"
+            ]
           }
         ]
       }
@@ -582,493 +679,172 @@
   "lists": {
     "restaurants": [
       {
-        "name": "元村炸牛排(牛かつもと村 天神西通り)",
-        "link": "https://maps.app.goo.gl/eUyDeBrmaWjX9eX18",
-        "type": "炸牛排",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(建議 4+4)",
-        "reservable": false,
-        "booking": "不可訂位，提早到排隊",
-        "priceRangeJPY": "1,500-2,500",
-        "hours": "11:00-22:00(L.O.21:00)",
-        "station": "天神/西鐵福岡(天神)步行約 5-8 分",
-        "tags": ["午餐", "需排隊", "適合8人", "分流", "不吃生食OK"],
-        "notes": "可要求全熟;尖峰排隊常見"
-      },
-      {
-        "name": "達摩拉麵 本店",
-        "link": "https://maps.app.goo.gl/eb6cqu4Q8XavLhJF9eXavLhJF9",
-        "type": "拉麵",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(翻桌快)",
-        "reservable": false,
-        "booking": "現場排隊",
-        "priceRangeJPY": "1,000-1,800",
-        "hours": "11:30-翌1:00(L.O.24:30)",
-        "station": "(以店址為準)",
-        "tags": ["拉麵", "宵夜", "需排隊"],
-        "notes": "不吃生食 OK;濃厚豚骨"
-      },
-      {
-        "name": "一蘭本社總本店",
-        "link": "https://maps.app.goo.gl/FxvstHQXkwsqyzAU7",
-        "type": "拉麵",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(分散座位)",
-        "reservable": false,
-        "booking": "現場取號/排隊",
-        "priceRangeJPY": "1,000-2,000",
-        "hours": "24 小時",
-        "station": "中洲川端/天神一帶",
-        "tags": ["拉麵", "24H", "深夜備案"],
-        "notes": "個人隔板、穩定"
-      },
-      {
-        "name": "努努雞(NENE CHICKEN 天神大名)",
-        "link": "https://maps.app.goo.gl/kEmm9owbo9uDoRFk8",
-        "type": "韓式炸雞",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(建議 4+4)",
-        "reservable": true,
-        "booking": "Hot Pepper 訂位",
-        "priceRangeJPY": "2,000-3,500",
-        "hours": "11:00-23:00(料理L.O.22:00)",
-        "station": "赤坂站步行約 7 分",
-        "tags": ["晚餐", "適合8人", "需預約", "不吃生食OK"],
-        "notes": "口味偏重;可點不辣"
-      },
-      {
-        "name": "TANYA博多(牛舌)",
-        "link": "https://maps.app.goo.gl/bnnejmgrngsjiTfd8",
-        "type": "牛舌定食/早餐",
-        "mentaikoFriendly": false,
-        "fitFor8": "可",
-        "reservable": "部分可(尖峰仍排隊)",
-        "booking": "車站店多為現場",
-        "priceRangeJPY": "900-2,500",
-        "hours": "7:00-22:00(OS 21:00;朝食 7:00-10:00)",
-        "station": "JR 博多站地下街",
-        "tags": ["早餐", "長輩友善", "不吃生食OK"],
-        "notes": "早上最順"
-      },
-      {
-        "name": "炉端ノ いとおかし(六本松)",
-        "link": "https://maps.app.goo.gl/KCRMM42V6RjhdCRa9",
-        "type": "炉端/定食(全預約)",
-        "mentaikoFriendly": false,
-        "fitFor8": "不太適合8人(需先問店家)",
-        "reservable": true,
-        "booking": "TableCheck(7人以上需直接聯絡)",
-        "priceRangeJPY": "2,000-4,000",
-        "hours": "8:00-14:00;日祝休",
-        "station": "六本松站步行約 5 分",
-        "tags": ["早午餐", "需預約"],
-        "notes": "完全預約制"
-      },
-      {
-        "name": "一蘭 太宰府參道店(限定五角碗)",
-        "link": "https://maps.app.goo.gl/ZXGnry27FwNnFcY79",
-        "type": "拉麵",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(分批)",
-        "reservable": false,
-        "booking": "現場排隊",
-        "priceRangeJPY": "1,000-2,000",
-        "hours": "9:00-19:00(L.O.18:45)",
-        "station": "太宰府站步行 1 分",
-        "tags": ["觀光", "需排隊"],
-        "notes": "假日人多;可當「拍照+打卡」分流"
-      },
-      {
-        "name": "鰻のエイト(キャナルシティ)",
-        "link": "https://maps.app.goo.gl/TdsyjCxghZMhcL598",
+        "name": "鰻のエイト キャナルシティ博多店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Unagi+no+Eight+Canal+City",
         "type": "鰻魚飯",
         "mentaikoFriendly": false,
-        "fitFor8": "可(可拆桌)",
-        "reservable": "部分可",
-        "booking": "以運河城/店家為準",
-        "priceRangeJPY": "2,000-4,500",
-        "hours": "平日 11:00-15:00(L.O.14:30)/17:00-23:00(L.O.22:00);假日 11:00-23:00(L.O.22:00)",
-        "station": "運河城內",
-        "tags": ["熟食", "長輩友善"],
-        "notes": "尖峰候位"
+        "fitFor8": "可",
+        "reservable": "可",
+        "booking": "電話/網站",
+        "priceRangeJPY": "3000-5000",
+        "hours": "11:00-23:00",
+        "station": "博多運河城",
+        "tags": [
+          "晚餐",
+          "長輩友善"
+        ],
+        "notes": "一本鰻名店"
       },
       {
-        "name": "博多牛まぶし 武蔵",
-        "link": "https://maps.app.goo.gl/63YDCXShkVFyY6bx7",
-        "type": "和牛蓋飯",
+        "name": "Shin-Shin 博多拉麵 KITTE博多店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Shin+Shin+KITTE+Hakata",
+        "type": "拉麵",
         "mentaikoFriendly": false,
         "fitFor8": "可",
-        "reservable": "可/部分可",
-        "booking": "(常見:Tabelog/電話)",
-        "priceRangeJPY": "2,500-4,500",
-        "hours": "以店家/Google Maps 當日為準(易變動)",
-        "station": "市區(以店址為準)",
-        "tags": ["熟食", "午餐"],
-        "notes": "建議事先查當日營業"
-      },
-      {
-        "name": "FUGLEN FUKUOKA",
-        "link": "https://maps.app.goo.gl/eua8SgAzAH8477Uv5",
-        "type": "咖啡",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(分桌)",
         "reservable": false,
-        "booking": "不需訂位",
-        "priceRangeJPY": "800-2,000",
-        "hours": "月-木 7:00-20:00(L.O.19:30);五 7:00-22:00(L.O.21:30);六日/假日 8:00-22:00(L.O.21:30)",
-        "station": "博多站步行約 5-8 分",
-        "tags": ["咖啡", "休息點"],
-        "notes": "可當「長輩休息點」"
+        "booking": "現場排隊",
+        "priceRangeJPY": "1000-1500",
+        "hours": "11:00-24:00",
+        "station": "博多站",
+        "tags": [
+          "拉麵"
+        ],
+        "notes": "人氣細麵豚骨"
       },
       {
-        "name": "Full full(天神;明太子麵包)",
-        "link": "https://maps.app.goo.gl/KvCQgQifS6t2ioN77",
-        "type": "麵包店",
-        "mentaikoFriendly": true,
-        "fitFor8": "可(外帶)",
-        "reservable": "不一定",
-        "booking": "可電話預留/現場",
-        "priceRangeJPY": "400-1,500",
-        "hours": "IG 標示:10:00-20:00;週二休(以當日公告為準)",
-        "station": "天神站步行約 5-8 分",
-        "tags": ["明太子派", "外帶", "可能售完"],
-        "notes": "可能售完;建議一出爐就買"
-      },
-      {
-        "name": "daco(甜甜圈)",
-        "link": "https://maps.app.goo.gl/kno5D52h4kUtD2cy5",
-        "type": "甜點/麵包咖啡",
+        "name": "西新初喜 マークイズ福岡ももち店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Nishijin+Hatsuki+Mark+Is",
+        "type": "燒肉/壽喜燒",
         "mentaikoFriendly": false,
-        "fitFor8": "可(分批)",
-        "reservable": false,
-        "booking": "不可訂位",
-        "priceRangeJPY": "400-1,500",
-        "hours": "11:00-19:00(L.O.18:30)",
-        "station": "西鐵福岡(天神)步行約 8-12 分",
-        "tags": ["甜點", "可能售完"],
-        "notes": "下午較容易賣完"
+        "fitFor8": "可",
+        "reservable": "可",
+        "booking": "建議預約",
+        "priceRangeJPY": "2500-5000",
+        "hours": "11:00-22:00",
+        "station": "唐人町/Mark Is",
+        "tags": [
+          "午餐",
+          "和牛"
+        ],
+        "notes": "老字號肉舖直營"
       },
       {
         "name": "焼肉ベンジャミン",
-        "link": "https://maps.app.goo.gl/h1f7aTuM66e3eizm9",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Yakiniku+Benjamin",
         "type": "燒肉",
         "mentaikoFriendly": false,
-        "fitFor8": "可(建議訂位)",
-        "reservable": true,
-        "booking": "(常見:電話/Tabelog)",
-        "priceRangeJPY": "5,000-9,000",
-        "hours": "以店家/Google Maps 當日為準(易變動)",
-        "station": "市區(以店址為準)",
-        "tags": ["燒肉", "需預約", "適合8人"],
-        "notes": "若想「吃到飽」請看備案:焼肉きんぐ(連鎖好訂)"
+        "fitFor8": "可",
+        "reservable": "可",
+        "booking": "需預約",
+        "priceRangeJPY": "5000-8000",
+        "hours": "晚餐時段",
+        "station": "警固/藥院",
+        "tags": [
+          "晚餐",
+          "燒肉"
+        ],
+        "notes": "熟成肉專門"
       },
       {
-        "name": "Nikuichi 博多店",
-        "link": "https://maps.app.goo.gl/tZ8C7iWYRNr391Hw8",
-        "type": "燒肉",
+        "name": "牛かつ もと村 天神西通り店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Gyukatsu+Motomura+Tenjin",
+        "type": "炸牛排",
         "mentaikoFriendly": false,
-        "fitFor8": "可(建議訂位)",
-        "reservable": true,
-        "booking": "(常見:電話/Tabelog)",
-        "priceRangeJPY": "5,000-8,000",
-        "hours": "以店家/Google Maps 當日為準(易變動)",
-        "station": "博多站周邊",
-        "tags": ["燒肉", "需預約", "適合8人"],
-        "notes": "8人建議拆 4+4 或預約包廂"
-      },
-      {
-        "name": "cafe KIKUYA(深夜咖啡)",
-        "link": "https://maps.app.goo.gl/8kshr1jnriH8qfNY8",
-        "type": "咖啡/夜咖",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(分桌)",
-        "reservable": false,
-        "booking": "不可訂位",
-        "priceRangeJPY": "700-1,800",
-        "hours": "平日 09:00-01:00(L.O.00:30);週六 09:00-03:00(L.O.02:30)",
-        "station": "中洲川端站步行約 7 分",
-        "tags": ["夜咖", "休息點"],
-        "notes": "適合當「晚餐後分流休息點」"
-      },
-      {
-        "name": "Shin-Shin 博多拉麵(天神本店)",
-        "link": "https://maps.app.goo.gl/WjEjuH9qf214DbSP9",
-        "type": "拉麵",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(翻桌快)",
+        "fitFor8": "稍擠",
         "reservable": false,
         "booking": "現場排隊",
-        "priceRangeJPY": "1,000-1,800",
-        "hours": "11:00-03:00(L.O.02:30);週三休",
-        "station": "天神站步行約 4-5 分",
-        "tags": ["拉麵", "宵夜", "需排隊"],
-        "notes": "宵夜強;排隊常見"
+        "priceRangeJPY": "2000-3000",
+        "hours": "11:00-22:00",
+        "station": "天神",
+        "tags": [
+          "午餐"
+        ],
+        "notes": "石板煎炸牛排"
       },
       {
-        "name": "極味屋(博多)",
-        "link": "https://maps.app.goo.gl/JLQnEbFLndCvs66A7",
-        "type": "漢堡排",
+        "name": "とりかわ宝家 福岡春吉本店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Torikawa+Takaraya+Haruyoshi",
+        "type": "居酒屋/串燒",
         "mentaikoFriendly": false,
-        "fitFor8": "可(可拆)",
+        "fitFor8": "可",
+        "reservable": "可",
+        "booking": "建議預約",
+        "priceRangeJPY": "3000-5000",
+        "hours": "17:30-01:00",
+        "station": "春吉/天神南",
+        "tags": [
+          "晚餐",
+          "雞皮"
+        ],
+        "notes": "博多名物"
+      },
+      {
+        "name": "治一郎 福岡パルコ店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Jiichiro+Fukuoka+Parco",
+        "type": "甜點",
+        "mentaikoFriendly": false,
+        "fitFor8": "外帶",
         "reservable": false,
-        "booking": "不可預約;現場排隊",
-        "priceRangeJPY": "1,800-3,000",
-        "hours": "11:00-22:00(受付終了目安 20:30)",
-        "station": "博多站步行約 5-10 分",
-        "tags": ["晚餐", "需排隊", "分流"],
-        "notes": "人多排隊久;當備案/分流很適合"
+        "booking": "",
+        "priceRangeJPY": "500-2000",
+        "hours": "10:00-20:30",
+        "station": "天神 Parco",
+        "tags": [
+          "甜點",
+          "伴手禮"
+        ],
+        "notes": "年輪蛋糕/布丁"
       },
       {
-        "name": "屋台炒拉麵 小金ちゃん",
-        "link": "https://maps.app.goo.gl/wneQ3g8aRHYx2gqt8",
-        "type": "屋台/炒拉麵",
-        "mentaikoFriendly": "可選(有明太子玉子燒)",
-        "fitFor8": "不適合8人同坐(建議分批)",
+        "name": "daco (Fukuoka)",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=daco+fukuoka",
+        "type": "甜點/麵包",
+        "mentaikoFriendly": false,
+        "fitFor8": "外帶",
         "reservable": false,
-        "booking": "現場排隊",
-        "priceRangeJPY": "800-1,800",
-        "hours": "18:00-翌2:00(OS 1:30);定休 木/日",
-        "station": "天神站周邊",
-        "tags": ["屋台", "消夜", "需排隊", "分批"],
-        "notes": "下雨可能不開或更難排"
+        "booking": "",
+        "priceRangeJPY": "400-1000",
+        "hours": "11:00-19:00",
+        "station": "今泉/天神",
+        "tags": [
+          "甜點",
+          "網紅店"
+        ],
+        "notes": "生甜甜圈名店 Amam Dacotan 姊妹店"
       },
       {
-        "name": "もち吉博多本店",
-        "link": "https://maps.app.goo.gl/TcqhDGMyLDyfHjpa7",
-        "type": "和菓子/喫茶",
+        "name": "由布まぶし「心」金鱗湖本店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Yufu+Mabushi+Shin+Kinrinko",
+        "type": "釜飯",
         "mentaikoFriendly": false,
-        "fitFor8": "可(外帶為主)",
+        "fitFor8": "可(建議預約)",
+        "reservable": "部分可",
+        "booking": "電話/現場",
+        "priceRangeJPY": "2500-3500",
+        "hours": "10:30-18:30",
+        "station": "由布院(金鱗湖)",
+        "tags": [
+          "午餐",
+          "釜飯"
+        ],
+        "notes": "豐後牛釜飯必吃"
+      },
+      {
+        "name": "由布院 Milch (ミルヒ) 本店",
+        "link": "https://www.google.com/maps/dir/?api=1&destination=Yufuin+Milch",
+        "type": "甜點",
+        "mentaikoFriendly": false,
+        "fitFor8": "外帶",
         "reservable": false,
-        "booking": "免預約",
-        "priceRangeJPY": "300-1,000",
-        "hours": "09:00-19:00;年中無休(1/1休)",
-        "station": "祇園站步行 1 分",
-        "tags": ["伴手禮", "外帶"],
-        "notes": "伴手禮分流好買"
-      },
-      {
-        "name": "Pain Stock 天神店",
-        "link": "https://maps.app.goo.gl/YS1wgou1Jkb5ubEQ7",
-        "type": "麵包店",
-        "mentaikoFriendly": "可選(有明太口味)",
-        "fitFor8": "可(外帶)",
-        "reservable": false,
-        "booking": "免預約",
-        "priceRangeJPY": "500-1,800",
-        "hours": "08:00-20:00;週一休+第1/3火休(以當日為準)",
-        "station": "中洲川端站步行約 5-7 分",
-        "tags": ["早餐", "外帶", "可能售完"],
-        "notes": "可能賣完;早點去"
-      },
-      {
-        "name": "博多水炊鍋専門 橙",
-        "link": "https://maps.app.goo.gl/UgNbC9pGW7SG873n9",
-        "type": "水炊鍋",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(建議訂位)",
-        "reservable": true,
-        "booking": "ぐるなび/電話;每月 1 日開放隔月訂位",
-        "priceRangeJPY": "3,000-6,000",
-        "hours": "12:00-22:00(L.O.21:30;最終入店 20:30)",
-        "station": "大濠公園站步行 3 分",
-        "tags": ["晚餐", "需預約", "長輩友善"],
-        "notes": "熟食、長輩友善;規則需看清楚"
-      },
-      {
-        "name": "博多牛腸鍋 前田屋",
-        "link": "https://maps.app.goo.gl/sT6Av2FCSnLNcida8",
-        "type": "牛腸鍋",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(建議訂位/拆桌)",
-        "reservable": true,
-        "booking": "常見可 Tabelog/電話",
-        "priceRangeJPY": "3,500-5,500",
-        "hours": "以分店/當日為準(易變動)",
-        "station": "博多/天神皆有店",
-        "tags": ["晚餐", "需預約", "長輩友善"],
-        "notes": "熱門;不吃生食 OK"
-      },
-      {
-        "name": "FUK COFFEE",
-        "link": "https://maps.app.goo.gl/bcHKSVXhPFAxYHSWA",
-        "type": "咖啡/甜點（冰淇淋＋布丁）",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(分桌/外帶)",
-        "reservable": false,
-        "booking": "免預約（現場）",
-        "priceRangeJPY": "1,000-1,999",
-        "hours": "08:00-20:00",
-        "station": "櫛田神社前站步行 1 分（亦可：祇園站步行 6 分／博多站步行 8 分）",
-        "tags": ["甜點", "咖啡", "布丁", "冰淇淋", "休息點", "外帶可"],
-        "notes": "最新資訊建議以官方 IG 公告為準；熱門時段可能需候位"
-      },
-      {
-        "name": "菓匠きくたろう 博多店",
-        "link": "https://maps.app.goo.gl/EHgYyNsbpiQ9QcdFA",
-        "type": "和菓子/喫茶（銅鑼燒）",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(分桌/外帶)",
-        "reservable": false,
-        "booking": "免預約（現場）",
-        "priceRangeJPY": "1,000-1,999",
-        "hours": "09:30-21:00（KIKUTARO Cafe L.O. 20:00；午餐 11:30 起；不定休）",
-        "station": "博多站步行約 3 分（約 178m；都ホテル博多 1F）",
-        "tags": ["甜點", "和菓子", "銅鑼燒", "喫茶", "伴手禮", "外帶"],
-        "notes": "不定休；咖啡最後點餐 20:00，建議晚餐前或下午茶時段安排"
-      },
-      {
-        "name": "治一郎（JR博多シティ店）",
-        "link": "https://maps.app.goo.gl/Qu7BDS1ScLPUVtxJ6",
-        "type": "甜點（布丁、年輪蛋糕）",
-        "mentaikoFriendly": false,
-        "fitFor8": "可(外帶為主)",
-        "reservable": true,
-        "booking": "可預約/現場購買（以店家規則為準）",
-        "priceRangeJPY": "1,000-1,999",
-        "hours": "10:00-21:00（依 JR 博多シティ 為準）",
-        "station": "JR 博多站中央改札口步行 1 分（博多デイトス いっぴん通り 1F）",
-        "tags": ["甜點", "布丁", "年輪蛋糕", "伴手禮", "外帶"],
-        "notes": "百貨店型可能遇到館方臨時調整營業時間；若要大量採買建議避開晚間尖峰"
-      }
-    ],
-    "spots": [
-      {
-        "name": "天神地下街",
-        "area": "天神",
-        "type": "室內商圈",
-        "priceJPY": 0,
-        "hours": "店鋪 10:00-20:00(飲食到 21:00);開門 5:30-24:30(週五到 24:50)",
-        "stayMins": "60-120",
-        "transport": "地鐵:天神站直達",
-        "seniorFriendly": "平坦好走、雨天首選",
-        "link": "",
-        "tags": ["室內雨備", "購物", "長輩友善"],
-        "notes": "部分月份有休館日，當日以官方為準"
-      },
-      {
-        "name": "博多運河城 Canal City Hakata",
-        "area": "博多/中洲",
-        "type": "大型商場(室內)",
-        "priceJPY": 0,
-        "hours": "Shop 10:00-21:00;Restaurant 11:00-23:00",
-        "stayMins": "120-180",
-        "transport": "地鐵:櫛田神社前/中洲川端+步行 8-12 分",
-        "seniorFriendly": "好休息、好分流(咖啡/餐廳多)",
-        "link": "https://maps.app.goo.gl/M7D2wTZbSdGgoazH9",
-        "tags": ["室內雨備", "購物", "長輩友善"],
-        "notes": "可安排最後一天採買"
-      },
-      {
-        "name": "櫛田神社",
-        "area": "博多/中洲川端",
-        "type": "神社",
-        "priceJPY": 0,
-        "hours": "參拜時間請以現場/官方公告為準(活動期可能調整)",
-        "stayMins": "30-60",
-        "transport": "地鐵:櫛田神社前站步行 3-5 分",
-        "seniorFriendly": "路程短、可坐著休息",
-        "link": "https://maps.app.goo.gl/1BsiUGiW8RtRU2go6",
-        "tags": ["短程", "長輩友善"],
-        "notes": "可順逛川端通商店街(下雨也較好走)"
-      },
-      {
-        "name": "teamLab 森林 福岡(BOSS E・ZO)",
-        "area": "PayPay Dome 周邊",
-        "type": "數位展(室內)",
-        "priceJPY": "2,400-2,700",
-        "hours": "以場館時段制為主(建議先買票)",
-        "stayMins": "90-120",
-        "transport": "地鐵:唐人町站+步行/接駁",
-        "seniorFriendly": "室內、不用走太遠",
-        "link": "https://maps.app.goo.gl/kEdcV9jQVu7aTtq76",
-        "tags": ["室內雨備", "需購票"],
-        "notes": "熱門時段請提早訂"
-      },
-      {
-        "name": "福岡市立美術館",
-        "area": "大濠",
-        "type": "美術館",
-        "priceJPY": "200 起(常設)",
-        "hours": "9:30-17:30;週一休(遇假日順延)",
-        "stayMins": "90-150",
-        "transport": "地鐵:大濠公園站+步行",
-        "seniorFriendly": "室內、有座位可休息",
-        "link": "",
-        "tags": ["室內雨備", "長輩友善"],
-        "notes": "特展費用另計，依當期展覽為準"
-      }
-    ],
-    "souvenirs": [
-      {
-        "name": "石村萬盛堂(本店)",
-        "area": "中洲川端",
-        "tags": ["伴手禮"],
-        "link": "https://maps.app.goo.gl/8B7vWPCYoSv3XJ4m8",
-        "notes": "10:00-19:00;每月第3水曜休(以官方/現場為準)"
-      },
-      {
-        "name": "もち吉博多本店",
-        "area": "祇園",
-        "tags": ["伴手禮", "和菓子"],
-        "link": "https://maps.app.goo.gl/TcqhDGMyLDyfHjpa7",
-        "notes": "09:00-19:00;年中無休(1/1休);外帶為主"
-      }
-    ],
-    "todos": [
-      {
-        "name": "Klook 九州一日遊(Day2 A)下單/確認集合點",
-        "tags": ["需預約", "A方案"],
-        "dueDay": 2,
-        "leadTime": "建議 1-2 週前(熱門日更早)",
-        "platform": "Klook",
-        "changePolicy": "依 Klook 訂單頁規則",
-        "notes": "集合點、出發時間以憑證為準;長輩可備暈車藥"
-      },
-      {
-        "name": "teamLab Forest(Day4 A)選時段購票",
-        "tags": ["需購票", "A方案"],
-        "dueDay": 4,
-        "leadTime": "建議 3-7 天前(熱門時段更早)",
-        "platform": "官網/售票平台",
-        "changePolicy": "依購票平台規則",
-        "notes": "建議選人少時段(早場)"
-      },
-      {
-        "name": "燒肉(Nikuichi/Benjamine)訂位",
-        "tags": ["需預約", "必吃"],
-        "dueDay": 3,
-        "leadTime": "強烈建議 3-7 天前",
-        "platform": "電話/Tabelog/店家訂位",
-        "changePolicy": "依店家規則",
-        "notes": "8人建議拆 4+4 或訂包廂"
-      },
-      {
-        "name": "水炊鍋「橙」訂位(Day4 晚餐)",
-        "tags": ["需預約", "長輩友善"],
-        "dueDay": 4,
-        "leadTime": "建議 2-4 週前",
-        "platform": "ぐるなび/電話(每月 1 日開放隔月訂位)",
-        "changePolicy": "注意訂位規則/取消費",
-        "notes": "最終入店 20:30"
-      },
-      {
-        "name": "屋台 小金ちゃん(Day1)不接受預約 → 當天提早排隊",
-        "tags": ["需排隊", "屋台"],
-        "dueDay": 1,
-        "leadTime": "當天提早到",
-        "platform": "現場",
-        "changePolicy": "—",
-        "notes": "定休 木/日;下雨可能不穩"
-      },
-      {
-        "name": "麵包:Dacomecca / Pain Stock(Day3 早餐)熱門品可能售完 → 早點到/分流購買",
-        "tags": ["可能售完", "早餐"],
-        "dueDay": 3,
-        "leadTime": "當天早一點",
-        "platform": "現場/部分可網路",
-        "changePolicy": "—",
-        "notes": "賣完就用備案店替換"
+        "booking": "",
+        "priceRangeJPY": "150-500",
+        "hours": "10:30-17:30",
+        "station": "由布院",
+        "tags": [
+          "甜點",
+          "半熟起司蛋糕"
+        ],
+        "notes": "熱騰騰起司蛋糕"
       }
     ]
   }
