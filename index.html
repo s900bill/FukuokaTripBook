@@ -467,12 +467,9 @@
           />
         </div>
       </div>
-    </div>
-
-    <!-- 行前準備清單頁 -->
-    <div id="tab-checklist" class="tab-view hidden">
-      <div class="container">
-        <h1>🎒 行前準備清單</h1>
+      <!-- 行前準備清單頁 -->
+      <div id="tab-checklist" class="tab-view hidden">
+        <h3>🎒 行前準備清單</h1>
 
         <!-- 進度條 -->
         <div class="card" style="margin-bottom: 16px">
@@ -643,6 +640,208 @@
           </button>
         </div>
       </div>
+
+      <!-- 日語會話頁 -->
+      <div id="tab-japanese" class="tab-view hidden">
+        <h3>🇯🇵 實用日語</h3>
+        <p style="color: var(--text-light); margin-bottom: 16px">
+          點擊卡片即可播放語音
+        </p>
+
+        <div
+          id="japanese-categories"
+          style="
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding-bottom: 4px;
+            margin-bottom: 12px;
+            -webkit-overflow-scrolling: touch;
+          "
+        ></div>
+
+        <div
+          id="japanese-list"
+          style="
+            display: grid;
+            gap: 12px;
+            overflow-y: auto;
+            max-height: calc(100vh - 220px);
+          "
+        ></div>
+      </div>
+
+      <!-- 匯率轉換頁 -->
+      <div id="tab-converter" class="tab-view hidden">
+        <h3>💱 匯率試算</h3>
+        <div class="card">
+          <label
+            style="display: block; color: var(--text-light); margin-bottom: 4px"
+            >匯率 (1 JPY = ? TWD)</label
+          >
+          <div style="display: flex; gap: 10px; margin-bottom: 20px">
+            <input
+              type="number"
+              id="exchange-rate"
+              value="0.22"
+              step="0.001"
+              readonly
+              style="
+                flex: 1;
+                padding: 12px;
+                border: 1px solid #e2e8f0;
+                background-color: #f1f5f9;
+                border-radius: 8px;
+                font-size: 1.2em;
+                color: var(--text-light);
+              "
+            />
+            <button class="btn" onclick="fetchExchangeRate()" title="從網路更新匯率">
+              更新
+            </button>
+          </div>
+
+          <div
+            id="converter-container"
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+              align-items: center;
+            "
+          >
+            <div style="width: 100%" id="container-top">
+              <label
+                id="label-top"
+                style="
+                  display: block;
+                  color: var(--text-light);
+                  margin-bottom: 4px;
+                "
+                >日幣 (JPY)</label
+              >
+              <div style="position: relative">
+                <span
+                  id="symbol-top"
+                  style="
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    font-size: 1.2em;
+                    color: var(--text-light);
+                  "
+                  >¥</span
+                >
+                <input
+                  type="number"
+                  id="input-top"
+                  placeholder="輸入日幣"
+                  style="
+                    width: 100%;
+                    padding: 16px 16px 16px 36px;
+                    border: 2px solid var(--primary);
+                    border-radius: 12px;
+                    font-size: 1.5em;
+                    font-weight: bold;
+                  "
+                />
+              </div>
+            </div>
+
+            <div
+              style="
+                color: var(--text-light);
+                font-size: 1.5em;
+                cursor: pointer;
+                user-select: none;
+                background: #f1f5f9;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+              "
+              onclick="swapCurrencies()"
+              title="交換幣別"
+            >
+              ⇅
+            </div>
+
+            <div style="width: 100%" id="container-bottom">
+              <label
+                id="label-bottom"
+                style="
+                  display: block;
+                  color: var(--text-light);
+                  margin-bottom: 4px;
+                "
+                >台幣 (TWD)</label
+              >
+              <div style="position: relative">
+                <span
+                  id="symbol-bottom"
+                  style="
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    font-size: 1.2em;
+                    color: var(--text-light);
+                  "
+                  >NT$</span
+                >
+                <input
+                  type="number"
+                  id="input-bottom"
+                  placeholder="輸入台幣"
+                  style="
+                    width: 100%;
+                    padding: 16px 16px 16px 48px;
+                    border: 2px solid #64748b;
+                    border-radius: 12px;
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    background: #f1f5f9;
+                  "
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 24px;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 8px;
+            "
+          >
+            <button
+              class="btn"
+              style="justify-content: center; background: #e2e8f0"
+              onclick="setJpy(1000)"
+            >
+              ¥1,000
+            </button>
+            <button
+              class="btn"
+              style="justify-content: center; background: #e2e8f0"
+              onclick="setJpy(5000)"
+            >
+              ¥5,000
+            </button>
+            <button
+              class="btn"
+              style="justify-content: center; background: #e2e8f0"
+              onclick="setJpy(10000)"
+            >
+              ¥10,000
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <nav class="bottom-nav">
@@ -666,7 +865,23 @@
         </svg>
         清單
       </a>
-      <a class="nav-item" onclick="switchTab('checklist', this)">
+      <a class="nav-item" onclick="switchTab('japanese', this)">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+          />
+        </svg>
+        日語
+      </a>
+      <a class="nav-item" onclick="switchTab('converter', this)">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path
+            d="M12.5 6.9c1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4-2.52-.69-2.99-1.49-2.99-2.4 0-1.25 1.32-1.6 2.5-1.6z"
+          />
+        </svg>
+        匯率
+      </a>
+        <a class="nav-item" onclick="switchTab('checklist', this)">
         <svg viewBox="0 0 24 24" class="icon">
           <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
         </svg>
@@ -1618,10 +1833,475 @@
         alert("Prompt 已複製到剪貼簿，可貼給 AI 使用。");
       }
 
+      /* --- Japanese Phrases Feature --- */
+      const japanesePhrases = {
+        greeting: [
+          {
+            text: "こんにちは",
+            romaji: "Konnichiwa",
+            cn: "你好",
+            note: "白天見面時使用",
+          },
+          {
+            text: "ありがとう",
+            romaji: "Arigato",
+            cn: "謝謝",
+            note: "一般感謝",
+          },
+          {
+            text: "すみません",
+            romaji: "Sumimasen",
+            cn: "不好意思/對不起",
+            note: "搭話或道歉用",
+          },
+          { text: "はい", romaji: "Hai", cn: "是/好的", note: "" },
+          { text: "いいえ", romaji: "Iie", cn: "不/不是", note: "" },
+        ],
+        shopping: [
+          {
+            text: "いくらですか？",
+            romaji: "Ikura desu ka?",
+            cn: "請問多少錢？",
+            note: "",
+          },
+          {
+            text: "これが欲しいです",
+            romaji: "Kore ga hoshii desu",
+            cn: "我想要這個",
+            note: "",
+          },
+          {
+            text: "免税できますか？",
+            romaji: "Menzei dekimasu ka?",
+            cn: "可以退稅嗎？",
+            note: "",
+          },
+          {
+            text: "クレジットカードは使えますか？",
+            romaji: "Kurejitto kaado wa tsukaemasu ka?",
+            cn: "可以用信用卡嗎？",
+            note: "",
+          },
+          {
+            text: "袋はいりません",
+            romaji: "Fukuro wa irimasen",
+            cn: "不需要袋子",
+            note: "",
+          },
+        ],
+        dining: [
+          {
+            text: "メニューをください",
+            romaji: "Menyuu o kudasai",
+            cn: "請給我菜單",
+            note: "",
+          },
+          {
+            text: "これをお願いします",
+            romaji: "Kore o onegaishimasu",
+            cn: "我要點這個",
+            note: "",
+          },
+          {
+            text: "お水をください",
+            romaji: "Omizu o kudasai",
+            cn: "請給我水",
+            note: "",
+          },
+          {
+            text: "お会計をお願いします",
+            romaji: "Okaikei o onegaishimasu",
+            cn: "麻煩結帳",
+            note: "",
+          },
+          {
+            text: "美味しいです",
+            romaji: "Oishii desu",
+            cn: "很好吃",
+            note: "",
+          },
+        ],
+        // 新增分類：便利商店 (Konbini) - 日本超商對話很頻繁
+        convenience_store: [
+          {
+            text: "温めてください",
+            romaji: "Atatamete kudasai",
+            cn: "請幫我加熱(微波)",
+            note: "買便當時店員通常會問，直接說這句即可",
+          },
+          {
+            text: "お箸をください",
+            romaji: "Ohashi o kudasai",
+            cn: "請給我筷子",
+            note: "",
+          },
+          {
+            text: "スプーンをください",
+            romaji: "Supuun o kudasai",
+            cn: "請給我湯匙",
+            note: "買布丁或優格時",
+          },
+          {
+            text: "フォークをください",
+            romaji: "Fooku o kudasai",
+            cn: "請給我叉子",
+            note: "買義大利麵時",
+          },
+          {
+            text: "大丈夫です",
+            romaji: "Daijoubu desu",
+            cn: "不用了 / 沒關係",
+            note: "通用拒絕句 (當店員問要不要集點/要不要收據時)",
+          },
+        ],
+        transport: [
+          {
+            text: "駅はどこですか？",
+            romaji: "Eki wa doko desu ka?",
+            cn: "請問車站在哪裡？",
+            note: "",
+          },
+          {
+            text: "トイレはどこですか？",
+            romaji: "Toire wa doko desu ka?",
+            cn: "請問廁所在哪裡？",
+            note: "",
+          },
+          {
+            text: "この電車は博多に行きますか？",
+            romaji: "Kono densha wa Hakata ni ikimasu ka?",
+            cn: "這班車去博多嗎？",
+            note: "",
+          },
+          { text: "降ります", romaji: "Orimasu", cn: "我要下車", note: "" },
+        ],
+        hotel: [
+          {
+            text: "チェックインをお願いします",
+            romaji: "Chekkuin o onegaishimasu",
+            cn: "我要辦理入住",
+            note: "",
+          },
+          {
+            text: "チェックアウトをお願いします",
+            romaji: "Chekkuauto o onegaishimasu",
+            cn: "我要辦理退房",
+            note: "",
+          },
+          {
+            text: "荷物を預かってもらえますか？",
+            romaji: "Nimotsu o azukatte moraemasu ka?",
+            cn: "可以寄放行李嗎？",
+            note: "",
+          },
+          {
+            text: "Wi-Fiのパスワードは何ですか？",
+            romaji: "Wi-Fi no pasuwaado wa nan desu ka?",
+            cn: "Wi-Fi密碼是多少？",
+            note: "",
+          },
+        ],
+        emergency: [
+          {
+            text: "助けてください",
+            romaji: "Tasukete kudasai",
+            cn: "請救救我/幫幫我",
+            note: "",
+          },
+          {
+            text: "警察を呼んでください",
+            romaji: "Keisatsu o yonde kudasai",
+            cn: "請叫警察",
+            note: "",
+          },
+          {
+            text: "救急車を呼んでください",
+            romaji: "Kyuukyuusha o yonde kudasai",
+            cn: "請叫救護車",
+            note: "",
+          },
+          {
+            text: "病院はどこですか？",
+            romaji: "Byouin wa doko desu ka?",
+            cn: "請問醫院在哪裡？",
+            note: "",
+          },
+          {
+            text: "パスポートをなくしました",
+            romaji: "Pasupooto o nakushimashita",
+            cn: "我弄丟了護照",
+            note: "",
+          },
+        ],
+      };
+
+      const japaneseCategories = [
+        { key: "greeting", label: "打招呼" },
+        { key: "shopping", label: "購物" },
+        { key: "dining", label: "餐飲" },
+        { key: "convenience_store", label: "便利商店" },
+        { key: "transport", label: "交通" },
+        { key: "hotel", label: "住宿" },
+        { key: "emergency", label: "緊急", isAlert: true },
+      ];
+
+      function renderJapanese(category) {
+        const list = document.getElementById("japanese-list");
+        const catContainer = document.getElementById("japanese-categories");
+
+        if (!list || !catContainer) return;
+
+        // Render Categories Buttons if empty
+        if (catContainer.innerHTML.trim() === "") {
+          catContainer.innerHTML = japaneseCategories
+            .map((cat) => {
+              const style = cat.isAlert ? "color: #dc2626;" : "";
+              return `
+              <button
+                class="badge"
+                data-key="${cat.key}"
+                onclick="renderJapanese('${cat.key}')"
+                style="
+                  padding: 8px 16px;
+                  font-size: 1em;
+                  background: #e2e8f0;
+                  border: none;
+                  cursor: pointer;
+                  flex-shrink: 0;
+                  ${style}
+                "
+              >
+                ${cat.label}
+              </button>
+            `;
+            })
+            .join("");
+        }
+
+        // Update active button
+        catContainer.querySelectorAll("button").forEach((btn) => {
+          const key = btn.getAttribute("data-key");
+          const isAlert =
+            japaneseCategories.find((c) => c.key === key)?.isAlert || false;
+
+          if (key === category) {
+            btn.style.background = "var(--primary)";
+            btn.style.color = "white";
+          } else {
+            btn.style.background = "#e2e8f0";
+            btn.style.color = isAlert ? "#dc2626" : "var(--text-light)";
+          }
+        });
+
+        const items = japanesePhrases[category] || [];
+        list.innerHTML = items
+          .map(
+            (item) => `
+            <div class="card" onclick="speak('${
+              item.text
+            }')" style="cursor:pointer; active:scale(0.98); transition:transform 0.1s">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start">
+                    <div>
+                        <div style="font-size:1.2em; font-weight:bold; color:var(--text); margin-bottom:4px">${
+                          item.text
+                        }</div>
+                        <div style="font-size:0.9em; color:var(--primary); margin-bottom:4px">${
+                          item.romaji
+                        }</div>
+                        <div style="font-size:1em; color:var(--text-light)">${
+                          item.cn
+                        }</div>
+                    </div>
+                    <div style="font-size:1.5em">🔊</div>
+                </div>
+                ${
+                  item.note
+                    ? `<div style="margin-top:8px; font-size:0.8em; color:var(--text-light); border-top:1px solid #eee; padding-top:4px">${item.note}</div>`
+                    : ""
+                }
+            </div>
+        `
+          )
+          .join("");
+      }
+
+      function speak(text) {
+        if ("speechSynthesis" in window) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "ja-JP";
+          window.speechSynthesis.speak(utterance);
+        } else {
+          alert("您的瀏覽器不支援語音播放");
+        }
+      }
+
+      /* --- Currency Converter Feature --- */
+      let exchangeRate = 0.22;
+      let isJpyToTwd = true; // true: JPY -> TWD, false: TWD -> JPY
+
+      function initConverter() {
+        const savedRate = localStorage.getItem("fukuoka-rate");
+        if (savedRate) {
+          exchangeRate = parseFloat(savedRate);
+          document.getElementById("exchange-rate").value = exchangeRate;
+        }
+
+        const inputTop = document.getElementById("input-top");
+        const inputBottom = document.getElementById("input-bottom");
+
+        if (inputTop && inputBottom) {
+          // Top Input Handler
+          inputTop.addEventListener("input", function () {
+            const val = parseFloat(this.value);
+            if (!isNaN(val)) {
+              if (isJpyToTwd) {
+                // JPY -> TWD
+                inputBottom.value = Math.round(val * exchangeRate);
+              } else {
+                // TWD -> JPY
+                inputBottom.value = Math.round(val / exchangeRate);
+              }
+            } else {
+              inputBottom.value = "";
+            }
+          });
+
+          // Bottom Input Handler
+          inputBottom.addEventListener("input", function () {
+            const val = parseFloat(this.value);
+            if (!isNaN(val)) {
+              if (isJpyToTwd) {
+                // TWD calculated from JPY
+                // User typing in TWD field, reverse calculate JPY
+                inputTop.value = Math.round(val / exchangeRate);
+              } else {
+                // JPY calculated from TWD
+                // User typing in JPY field (bottom), reverse calculate TWD
+                inputTop.value = Math.round(val * exchangeRate);
+              }
+            } else {
+              inputTop.value = "";
+            }
+          });
+        }
+        updateConverterUI();
+      }
+
+      function swapCurrencies() {
+        isJpyToTwd = !isJpyToTwd;
+        // Swap values if they exist
+        const inputTop = document.getElementById("input-top");
+        const inputBottom = document.getElementById("input-bottom");
+        const topVal = inputTop.value;
+        const bottomVal = inputBottom.value;
+
+        inputTop.value = bottomVal;
+        inputBottom.value = topVal;
+
+        updateConverterUI();
+      }
+
+      function updateConverterUI() {
+        const labelTop = document.getElementById("label-top");
+        const labelBottom = document.getElementById("label-bottom");
+        const symbolTop = document.getElementById("symbol-top");
+        const symbolBottom = document.getElementById("symbol-bottom");
+        const inputTop = document.getElementById("input-top");
+        const inputBottom = document.getElementById("input-bottom");
+
+        if (isJpyToTwd) {
+          labelTop.textContent = "日幣 (JPY)";
+          symbolTop.textContent = "¥";
+          inputTop.placeholder = "輸入日幣";
+
+          labelBottom.textContent = "台幣 (TWD)";
+          symbolBottom.textContent = "NT$";
+          inputBottom.placeholder = "輸入台幣";
+        } else {
+          labelTop.textContent = "台幣 (TWD)";
+          symbolTop.textContent = "NT$";
+          inputTop.placeholder = "輸入台幣";
+
+          labelBottom.textContent = "日幣 (JPY)";
+          symbolBottom.textContent = "¥";
+          inputBottom.placeholder = "輸入日幣";
+        }
+      }
+
+      async function fetchExchangeRate() {
+        try {
+          const btn = document.querySelector('button[onclick="fetchExchangeRate()"]');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = "⏳...";
+          btn.disabled = true;
+
+          const res = await fetch(
+            "https://api.exchangerate-api.com/v4/latest/JPY"
+          );
+          if (!res.ok) throw new Error("Network response was not ok");
+          const data = await res.json();
+          const rate = data.rates.TWD;
+
+          if (rate) {
+            document.getElementById("exchange-rate").value = rate;
+            updateRate(false); // Update without default alert
+            alert(`匯率已更新為 ${rate} (來源: exchangerate-api)`);
+          } else {
+            throw new Error("Rate not found");
+          }
+
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        } catch (e) {
+          console.error(e);
+          alert("無法取得即時匯率，請檢查網路連線。");
+          const btn = document.querySelector('button[onclick="fetchExchangeRate()"]');
+          if (btn) {
+            btn.innerHTML = "☁️ Auto";
+            btn.disabled = false;
+          }
+        }
+      }
+
+      function updateRate(showMsg = true) {
+        const rateInput = document.getElementById("exchange-rate");
+        const newRate = parseFloat(rateInput.value);
+        if (!isNaN(newRate) && newRate > 0) {
+          exchangeRate = newRate;
+          localStorage.setItem("fukuoka-rate", newRate);
+
+          // Re-calculate based on top input
+          const inputTop = document.getElementById("input-top");
+          if (inputTop && inputTop.value) {
+            inputTop.dispatchEvent(new Event("input"));
+          }
+          if (showMsg) alert("匯率已更新！");
+        } else {
+          alert("請輸入有效的匯率");
+        }
+      }
+
+      function setJpy(amount) {
+        // Quick buttons always set JPY amount
+        // If JPY is on top (isJpyToTwd=true), set top
+        // If JPY is on bottom (isJpyToTwd=false), set bottom
+        if (isJpyToTwd) {
+          const input = document.getElementById("input-top");
+          input.value = amount;
+          input.dispatchEvent(new Event("input"));
+        } else {
+          const input = document.getElementById("input-bottom");
+          input.value = amount;
+          input.dispatchEvent(new Event("input"));
+        }
+      }
+
       window.onload = function () {
         loadFontSize();
         loadTrip();
         loadChecklist();
+        renderJapanese("greeting");
+        initConverter();
       };
 
       // 註冊 Service Worker
