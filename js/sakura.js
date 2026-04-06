@@ -10,8 +10,9 @@
   const ctx = canvas.getContext("2d");
   let petals = [];
   let settledPetals = []; // 落地花瓣
-  const MAX_PETALS = 60;
-  const SETTLED_MAX = 100; // 底部最多累積數量
+  const MAX_PETALS = 30; // 稍微增加數量讓累積更有感
+  const SETTLED_MAX = 150; // 底部最多累積數量
+  const GROUND_OFFSET = 80; // 避開底部導航欄的高度 (px)
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -42,14 +43,28 @@
       targetCtx.translate(this.x, this.y);
       targetCtx.rotate(this.rotation);
       targetCtx.globalAlpha = this.opacity;
-      
+
       targetCtx.beginPath();
       targetCtx.moveTo(0, 0);
       // 繪製更精緻的花瓣 (Bezier 曲線)
       // 頂部 V 型缺口感
-      targetCtx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size);
-      targetCtx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
-      
+      targetCtx.bezierCurveTo(
+        -this.size,
+        -this.size,
+        -this.size,
+        this.size,
+        0,
+        this.size,
+      );
+      targetCtx.bezierCurveTo(
+        this.size,
+        this.size,
+        this.size,
+        -this.size,
+        0,
+        0,
+      );
+
       targetCtx.fillStyle = this.color;
       targetCtx.fill();
       targetCtx.restore();
@@ -61,9 +76,16 @@
       this.rotation += this.spin;
 
       // 檢查是否落地
-      if (this.y > canvas.height - 5) {
+      if (this.y > canvas.height - GROUND_OFFSET) {
         // 落地累積邏輯
-        addSettledPetal(this.x, canvas.height - Math.random() * 5, this.size, this.rotation, this.color, this.opacity);
+        addSettledPetal(
+          this.x,
+          canvas.height - GROUND_OFFSET + Math.random() * 10 - 5,
+          this.size,
+          this.rotation,
+          this.color,
+          this.opacity,
+        );
         this.reset();
       }
     }
@@ -79,31 +101,31 @@
   function init() {
     resize();
     for (let i = 0; i < MAX_PETALS; i++) {
-        petals.push(new Petal());
+      petals.push(new Petal());
     }
     animate();
   }
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // 繪製已累積的花瓣
-    settledPetals.forEach(p => {
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rotation);
-        ctx.globalAlpha = p.opacity;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(-p.size, -p.size, -p.size, p.size, 0, p.size);
-        ctx.bezierCurveTo(p.size, p.size, p.size, -p.size, 0, 0);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-        ctx.restore();
+    settledPetals.forEach((p) => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.globalAlpha = p.opacity;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-p.size, -p.size, -p.size, p.size, 0, p.size);
+      ctx.bezierCurveTo(p.size, p.size, p.size, -p.size, 0, 0);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      ctx.restore();
     });
 
     // 繪製移動中的花瓣
-    petals.forEach(p => {
+    petals.forEach((p) => {
       p.update();
       p.draw();
     });
@@ -115,6 +137,6 @@
     resize();
     settledPetals = []; // 視窗縮放時清除累積，避免座標偏移
   });
-  
+
   init();
 })();
