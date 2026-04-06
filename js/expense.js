@@ -176,6 +176,21 @@ function deleteExpense(id) {
   }
 }
 
+function toggleSettleExpense(id, currentState) {
+  if (isFirebaseConnected && expenseRef) {
+    expenseRef.child(id).update({ isSettled: !currentState });
+  } else {
+    const idx = expenses.findIndex((e) => e.id === id);
+    if (idx !== -1) {
+      expenses[idx].isSettled = !currentState;
+      saveExpensesLocal();
+      renderExpenseList();
+      renderSettlement();
+      renderExpenseSummaryBar();
+    }
+  }
+}
+
 // ──────────────────────────────────────────────
 //  Render: Summary Bar
 // ──────────────────────────────────────────────
@@ -242,17 +257,22 @@ function renderExpenseList() {
             ? `${e.paidBy} 付 · ${e.splitWith.length}人均攤`
             : `${e.paidBy} 付`;
         html += `
-        <div class="expense-item">
+        <div class="expense-item" style="${e.isSettled ? 'opacity:0.6;' : ''}">
           <div class="expense-item-emoji">${getCatEmoji(e.category)}</div>
           <div class="expense-item-body">
-            <div class="expense-item-title">${e.desc}</div>
+            <div class="expense-item-title">${e.isSettled ? '✅[已結清] ' : ''}${e.desc}</div>
             <div class="expense-item-meta">${splitStr}</div>
           </div>
           <div class="expense-item-amount">
-            <div class="expense-item-jpy">¥${(e.amountJPY || 0).toLocaleString()}</div>
+            <div class="expense-item-jpy" style="${e.isSettled ? 'text-decoration:line-through' : ''}">¥${(e.amountJPY || 0).toLocaleString()}</div>
             <div class="expense-item-twd">NT$${(e.amountTWD || 0).toLocaleString()}</div>
           </div>
-          <button class="delete-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-left:4px;">
+            <button class="delete-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
+            <button onclick="toggleSettleExpense('${e.id}', ${!!e.isSettled})" style="border:none; background:#e2e8f0; color:#475569; font-size:0.7em; padding:2px 6px; border-radius:4px; cursor:pointer;" title="標示結清">
+              ${e.isSettled ? '復原' : '結清'}
+            </button>
+          </div>
         </div>
       `;
       });
@@ -278,6 +298,7 @@ function renderSettlement() {
   expenseMembers.forEach((m) => (balance[m] = 0));
 
   expenses.forEach((e) => {
+    if (e.isSettled) return;
     const splitCount = e.splitWith ? e.splitWith.length : expenseMembers.length;
     if (splitCount === 0) return;
     const shareJPY = (e.amountJPY || 0) / splitCount;

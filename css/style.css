@@ -109,13 +109,14 @@ body.font-xlarge { font-size: 24px; }
 }
 
 .btn {
-  border: none;
+  border: 1px solid transparent;
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
 }
 
@@ -352,6 +353,8 @@ header p {
 .expense-form-group input,
 .expense-form-group select {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 10px 12px;
   border: 1.5px solid #e2e8f0;
   border-radius: 8px;
