@@ -1,7 +1,7 @@
 :root {
-  /* === 和風手繪旅行日誌配色 === */
-  --primary: #C9604A;       /* 珊瑚橘 - 主色 */
-  --primary-dark: #A8452F;  /* 深珊瑚橘 - hover */
+  /* === 和風櫻花旅行日誌配色 === */
+  --primary: #C9607B;       /* 櫻花深粉 - 主色 */
+  --primary-dark: #A8455F;  /* 深櫻花 - hover */
   --bg: #FFF8EC;            /* 米黃 - 全頁背景 */
   --card: #FFFDF8;          /* 暖白 - 卡片底色 */
   --text: #3D2B1F;          /* 深咖啡 - 主文字 */
@@ -9,9 +9,9 @@
   --accent: #E8A045;        /* 暖橙 - badge/重點 */
   --sakura: #F4A7B9;        /* 櫻花粉 - 裝飾色 */
   --green: #6A9E72;         /* 和風抹茶綠 */
-  --dashed: #C9845A;        /* 虛線路徑棕 */
+  --dashed: #D4698A;        /* 虛線路徑 - 櫻花棕粉 */
   --radius: 16px;
-  --shadow: 0 4px 12px rgba(150, 90, 50, 0.12);
+  --shadow: 0 4px 12px rgba(180, 80, 120, 0.1);
 }
 
 * {
@@ -111,7 +111,7 @@ body.font-xlarge { font-size: 24px; }
   font-size: 0.75em;
   padding: 3px 10px;
   border-radius: 99px;
-  background: #F2DDD0;
+  background: #F7D0DC;
   color: var(--primary);
   font-weight: 600;
 }
@@ -137,15 +137,15 @@ body.font-xlarge { font-size: 24px; }
   display: none !important;
 }
 
-/* Header — 和風橫幅帶 */
+/* Header — 櫻花橫幅帶 */
 header {
-  background: linear-gradient(160deg, #C9604A 0%, #D97B50 50%, #E8A045 100%);
+  background: linear-gradient(160deg, #BE5573 0%, #D9799B 50%, #F4A7B9 100%);
   color: white;
   padding: 24px 16px 32px;
   border-radius: 0 0 32px 32px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(180, 80, 50, 0.3);
+  box-shadow: 0 6px 20px rgba(180, 60, 100, 0.3);
 }
 
 header::before {
@@ -187,10 +187,10 @@ header p {
   right: 0;
   background: var(--card);
   display: flex;
-  border-top: 2px solid #F2DDD0;
+  border-top: 2px solid #F2D0DC;
   z-index: 100;
   padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -4px 16px rgba(150, 80, 50, 0.08);
+  box-shadow: 0 -4px 16px rgba(180, 60, 100, 0.08);
 }
 
 .nav-item {
@@ -245,7 +245,7 @@ header p {
   background: var(--primary);
   color: white;
   border-color: var(--primary);
-  box-shadow: 0 3px 10px rgba(200, 80, 50, 0.35);
+  box-shadow: 0 3px 10px rgba(180, 60, 100, 0.35);
   transform: translateY(-1px);
 }
 
@@ -272,7 +272,7 @@ header p {
   border-radius: 50%;
   background: var(--sakura);
   border: 2.5px solid var(--primary);
-  box-shadow: 0 0 0 3px rgba(201, 96, 74, 0.12);
+  box-shadow: 0 0 0 3px rgba(201, 96, 123, 0.15);
 }
 
 .item-time {
@@ -303,9 +303,9 @@ header p {
   margin-top: 8px;
 }
 
-/* Special Logic UI — 和風按鈕 */
+/* Special Logic UI — 櫻花風按鈕 */
 .selector-group {
-  background: #F2DDD0;
+  background: #F7D0DC;
   padding: 4px;
   border-radius: 10px;
   display: inline-flex;
@@ -578,7 +578,7 @@ header p {
 }
 
 .expense-summary-bar {
-  background: linear-gradient(135deg, #C9604A, #E8A045);
+  background: linear-gradient(135deg, #BE5573, #D9799B, #F4A7B9);
   color: white;
   border-radius: 16px;
   padding: 14px 16px;
@@ -586,7 +586,7 @@ header p {
   display: flex;
   justify-content: space-around;
   text-align: center;
-  box-shadow: 0 4px 14px rgba(200, 80, 50, 0.25);
+  box-shadow: 0 4px 14px rgba(180, 60, 100, 0.25);
 }
 
 .expense-summary-item .label {
