@@ -108,7 +108,7 @@ function updateFirebaseStatusBadge(status) {
   const badge = document.getElementById("firebase-status-badge");
   if (!badge) return;
   if (status === "online") {
-    badge.textContent = "🟢 Firebase 已連線";
+    badge.textContent = "🟢 已連線";
     badge.className = "firebase-status";
   } else if (status === "connecting") {
     badge.textContent = "🟡 連線中…";
@@ -257,20 +257,20 @@ function renderExpenseList() {
             ? `${e.paidBy} 付 · ${e.splitWith.length}人均攤`
             : `${e.paidBy} 付`;
         html += `
-        <div class="expense-item" style="${e.isSettled ? 'opacity:0.6;' : ''}">
+        <div class="expense-item" style="${e.isSettled ? "opacity:0.6;" : ""}">
           <div class="expense-item-emoji">${getCatEmoji(e.category)}</div>
           <div class="expense-item-body">
-            <div class="expense-item-title">${e.isSettled ? '✅[已結清] ' : ''}${e.desc}</div>
+            <div class="expense-item-title">${e.isSettled ? "✅[已結清] " : ""}${e.desc}</div>
             <div class="expense-item-meta">${splitStr}</div>
           </div>
           <div class="expense-item-amount">
-            <div class="expense-item-jpy" style="${e.isSettled ? 'text-decoration:line-through' : ''}">¥${(e.amountJPY || 0).toLocaleString()}</div>
+            <div class="expense-item-jpy" style="${e.isSettled ? "text-decoration:line-through" : ""}">¥${(e.amountJPY || 0).toLocaleString()}</div>
             <div class="expense-item-twd">NT$${(e.amountTWD || 0).toLocaleString()}</div>
           </div>
           <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-left:4px;">
             <button class="delete-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
             <button onclick="toggleSettleExpense('${e.id}', ${!!e.isSettled})" style="border:none; background:#e2e8f0; color:#475569; font-size:0.7em; padding:2px 6px; border-radius:4px; cursor:pointer;" title="標示結清">
-              ${e.isSettled ? '復原' : '結清'}
+              ${e.isSettled ? "復原" : "結清"}
             </button>
           </div>
         </div>
@@ -278,6 +278,19 @@ function renderExpenseList() {
       });
     });
   container.innerHTML = html;
+}
+
+function toggleSettlementView() {
+  const container = document.getElementById("expense-settlement-container");
+  const icon = document.getElementById("settlement-toggle-icon");
+  if (!container || !icon) return;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    icon.textContent = "🔽";
+  } else {
+    container.style.display = "none";
+    icon.textContent = "🔼";
+  }
 }
 
 // ──────────────────────────────────────────────
@@ -380,15 +393,16 @@ function renderExpensePage() {
   }
 
   // Populate split-with chips
-  const splitContainer = document.getElementById("exp-split-chips");
-  if (splitContainer) {
-    splitContainer.innerHTML = expenseMembers
+  const splitEl = document.getElementById("exp-split-chips");
+  if (splitEl) {
+    const allChip = `<div class="member-chip selected" id="chip-select-all" onclick="toggleAllSplitMembers(this)">全員均分</div>`;
+    const memberChips = expenseMembers
       .map(
-        (m) => `
-      <div class="member-chip selected" data-member="${m}" onclick="toggleSplitMember(this)">${m}</div>
-    `,
+        (m) =>
+          `<div class="member-chip person-chip selected" data-member="${m}" onclick="toggleSplitMember(this)">${m}</div>`
       )
       .join("");
+    splitEl.innerHTML = allChip + memberChips;
   }
 
   // Populate category chips
@@ -416,7 +430,7 @@ function renderExpensePage() {
   // Setup live currency sync between JPY and TWD inputs
   const jpyInput = document.getElementById("exp-amount-jpy");
   const twdInput = document.getElementById("exp-amount-twd");
-  
+
   if (jpyInput && twdInput) {
     jpyInput.addEventListener("input", () => {
       const jpy = parseFloat(jpyInput.value);
@@ -440,8 +454,29 @@ function renderExpensePage() {
   }
 }
 
+function toggleAllSplitMembers(el) {
+  const isSelected = el.classList.toggle("selected");
+  document
+    .querySelectorAll("#exp-split-chips .person-chip")
+    .forEach((chip) => {
+      chip.classList.toggle("selected", isSelected);
+    });
+}
+
 function toggleSplitMember(el) {
   el.classList.toggle("selected");
+  
+  const allChips = document.querySelectorAll("#exp-split-chips .person-chip");
+  const selectedChips = document.querySelectorAll("#exp-split-chips .person-chip.selected");
+  const selectAllChip = document.getElementById("chip-select-all");
+  
+  if (selectAllChip) {
+    if (selectedChips.length === allChips.length) {
+      selectAllChip.classList.add("selected");
+    } else {
+      selectAllChip.classList.remove("selected");
+    }
+  }
 }
 
 function selectCategory(el) {
@@ -481,7 +516,7 @@ function submitExpense() {
   const desc = descEl.value.trim();
   const paidBy = paidByEl.value;
   const splitWith = Array.from(
-    document.querySelectorAll(".member-chip.selected"),
+    document.querySelectorAll("#exp-split-chips .person-chip.selected")
   ).map((el) => el.dataset.member);
   const selectedCat = document.querySelector(".cat-chip.selected");
   const category = selectedCat ? selectedCat.dataset.cat : "other";
