@@ -1,11 +1,11 @@
 {
-  "name": "福岡旅遊行程手冊",
+  "name": "福岡旅遊行程手冊 🌸",
   "short_name": "福岡行程",
-  "description": "福岡5天4夜旅遊行程隨身手冊",
+  "description": "福岡 5天4夜 旅遊行程隨身手冊 (櫻花版)",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#2563eb",
+  "background_color": "#FFF8EC",
+  "theme_color": "#C9607B",
   "orientation": "portrait",
   "icons": [
     {
