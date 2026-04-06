@@ -9,6 +9,16 @@
     "timezone": "Asia/Taipei",
     "people": {
       "total": 8,
+      "members": [
+        "容爸",
+        "容媽",
+        "容本人",
+        "容弟",
+        "巧爸",
+        "巧媽",
+        "巧姐",
+        "巧弟"
+      ],
       "groups": [
         "父母×2(約60歲)",
         "姐弟×2(約30歲)"
@@ -21,10 +31,7 @@
     ],
     "foodLimit": {
       "noRawFood": true,
-      "mentaikoSplit": true,
-      "notes": [
-        "不吃生食；同餐期可分『明太子派 / 不明太子派』"
-      ]
+      "notes": []
     },
     "mustHave": {
       "wants": [
@@ -33,8 +40,7 @@
         "甜點(布丁/甜甜圈)"
       ],
       "splitRules": [
-        "可 4+4 分流",
-        "明太子派/不明太子派切換"
+        "可 4+4 分流"
       ]
     }
   },
