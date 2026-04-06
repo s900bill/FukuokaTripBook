@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="theme-color" content="#C9604A" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="福岡行程" />
@@ -14,12 +14,17 @@
       name="description"
       content="福岡 5天4夜 旅行手冊 - 每日行程、記帳拆帳、實用日語、匯率換算"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link rel="manifest" href="./manifest.json" />
     <link rel="stylesheet" href="./css/style.css" />
     <title>不喊累旅行社</title>
   </head>
 
   <body>
+    <!-- Sakura canvas background -->
+    <canvas id="sakura-canvas"></canvas>
     <!-- Error Overlay -->
     <div id="error-ui" class="error-overlay hidden">
       <h2>無法載入行程檔案</h2>
@@ -90,6 +95,8 @@
         <div class="card" style="padding: 0; overflow: hidden">
           <img
             src="tripmap.png"
+            loading="lazy"
+            decoding="async"
             style="width: 100%; display: block"
             alt="行程地圖"
           />
@@ -590,8 +597,9 @@
         </div>
 
         <!-- Settlement -->
-        <div class="expense-section-title">
+        <div class="expense-section-title" onclick="toggleSettlementView()" style="cursor: pointer;">
           <span>💸 結清建議</span>
+          <span id="settlement-toggle-icon" style="font-size:1.2em">🔽</span>
         </div>
         <div
           id="expense-settlement-container"
@@ -648,13 +656,11 @@
             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
           />
         </svg>
-        日語
+        日語翻譯
       </a>
       <a class="nav-item" onclick="switchTab('converter', this)">
         <svg viewBox="0 0 24 24" class="icon">
-          <path
-            d="M12.5 6.9c1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4-2.52-.69-2.99-1.49-2.99-2.4 0-1.25 1.32-1.6 2.5-1.6z"
-          />
+          <path d="M22 8l-4-4v3H3v2h15v3l4-4zM2 16l4 4v-3h15v-2H6v-3l-4 4z" />
         </svg>
         匯率
       </a>
@@ -748,5 +754,6 @@
     <script src="./js/daily.js"></script>
     <script src="./js/expense.js"></script>
     <script src="./js/app.js"></script>
+    <script src="./js/sakura.js" defer></script>
   </body>
 </html>
