@@ -14,13 +14,15 @@
 //  🔧 FIREBASE CONFIG – Replace with your own values
 // ============================================================
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSy_REPLACE_ME",
-  authDomain: "your-project.firebaseapp.com",
-  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000000000",
+  apiKey: "AIzaSyC0qCRwkldvvKjVNyiTrsyRqxyO3-1EmaI",
+  authDomain: "fukuoka-trip-2026-dd259.firebaseapp.com",
+  databaseURL:
+    "https://fukuoka-trip-2026-dd259-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "fukuoka-trip-2026-dd259",
+  storageBucket: "fukuoka-trip-2026-dd259.firebasestorage.app",
+  messagingSenderId: "432553045872",
+  appId: "1:432553045872:web:90398d161e78dc5cf0e9b5",
+  measurementId: "G-6YXEJLB9XT",
 };
 // ============================================================
 
@@ -54,6 +56,10 @@ function getCatEmoji(key) {
 // ──────────────────────────────────────────────
 function initExpense(members) {
   if (members && members.length > 0) expenseMembers = members;
+  // Automatically update exchange rate on load silently
+  if (typeof fetchExchangeRate === "function") {
+    fetchExchangeRate(true);
+  }
   tryInitFirebase();
   renderExpensePage();
 }
@@ -63,8 +69,10 @@ function tryInitFirebase() {
     // Check if Firebase SDK is loaded and config is real (not placeholder)
     if (
       typeof firebase === "undefined" ||
+      !FIREBASE_CONFIG.apiKey ||
       FIREBASE_CONFIG.apiKey.includes("REPLACE_ME") ||
-      FIREBASE_CONFIG.databaseURL.includes("your-project")
+      (FIREBASE_CONFIG.databaseURL &&
+        FIREBASE_CONFIG.databaseURL.includes("your-project"))
     ) {
       console.info("[Expense] Firebase not configured, using localStorage.");
       loadExpensesLocal();
@@ -74,7 +82,8 @@ function tryInitFirebase() {
 
     if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
     firebaseDB = firebase.database();
-    expenseRef = firebaseDB.ref("fukuoka-trip/expenses");
+    // 使用帶有密碼的隱藏路徑，防止掃描機器人或路人偷看
+    expenseRef = firebaseDB.ref("fukuoka-trip-A8xT9k/expenses");
     updateFirebaseStatusBadge("connecting");
 
     // Real-time listener
@@ -88,7 +97,6 @@ function tryInitFirebase() {
       renderSettlement();
       renderExpenseSummaryBar();
     });
-
   } catch (err) {
     console.error("[Expense] Firebase init error:", err);
     loadExpensesLocal();
@@ -176,7 +184,10 @@ function renderExpenseSummaryBar() {
   if (!bar) return;
   const totalJPY = expenses.reduce((s, e) => s + (e.amountJPY || 0), 0);
   const totalTWD = expenses.reduce((s, e) => s + (e.amountTWD || 0), 0);
-  const perPerson = expenseMembers.length > 0 ? Math.round(totalJPY / expenseMembers.length) : 0;
+  const perPerson =
+    expenseMembers.length > 0
+      ? Math.round(totalJPY / expenseMembers.length)
+      : 0;
   bar.innerHTML = `
     <div class="expense-summary-item">
       <div class="label">總花費</div>
@@ -201,7 +212,8 @@ function renderExpenseList() {
   if (!container) return;
 
   if (expenses.length === 0) {
-    container.innerHTML = '<div style="text-align:center; color:var(--text-light); padding:40px 0">還沒有任何記錄，點 ＋ 新增第一筆！</div>';
+    container.innerHTML =
+      '<div style="text-align:center; color:var(--text-light); padding:40px 0">還沒有任何記錄，點 ＋ 新增第一筆！</div>';
     return;
   }
 
@@ -213,16 +225,23 @@ function renderExpenseList() {
   });
 
   let html = "";
-  Object.keys(groups).sort().forEach((date) => {
-    const dateObj = new Date(date);
-    const dayStr = dateObj.toLocaleDateString("zh-TW", { month: "numeric", day: "numeric", weekday: "short" });
-    const dayTotal = groups[date].reduce((s, e) => s + (e.amountJPY || 0), 0);
-    html += `<div class="expense-day-header">${dayStr} &nbsp;·&nbsp; 小計 ¥${dayTotal.toLocaleString()}</div>`;
-    groups[date].forEach((e) => {
-      const splitStr = e.splitWith && e.splitWith.length > 0
-        ? `${e.paidBy} 付 · ${e.splitWith.length}人均攤`
-        : `${e.paidBy} 付`;
-      html += `
+  Object.keys(groups)
+    .sort()
+    .forEach((date) => {
+      const dateObj = new Date(date);
+      const dayStr = dateObj.toLocaleDateString("zh-TW", {
+        month: "numeric",
+        day: "numeric",
+        weekday: "short",
+      });
+      const dayTotal = groups[date].reduce((s, e) => s + (e.amountJPY || 0), 0);
+      html += `<div class="expense-day-header">${dayStr} &nbsp;·&nbsp; 小計 ¥${dayTotal.toLocaleString()}</div>`;
+      groups[date].forEach((e) => {
+        const splitStr =
+          e.splitWith && e.splitWith.length > 0
+            ? `${e.paidBy} 付 · ${e.splitWith.length}人均攤`
+            : `${e.paidBy} 付`;
+        html += `
         <div class="expense-item">
           <div class="expense-item-emoji">${getCatEmoji(e.category)}</div>
           <div class="expense-item-body">
@@ -236,8 +255,8 @@ function renderExpenseList() {
           <button class="delete-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
         </div>
       `;
+      });
     });
-  });
   container.innerHTML = html;
 }
 
@@ -249,7 +268,8 @@ function renderSettlement() {
   if (!container) return;
 
   if (expenses.length === 0) {
-    container.innerHTML = '<div style="color:var(--text-light); font-size:0.88em">新增帳目後自動計算結清方式</div>';
+    container.innerHTML =
+      '<div style="color:var(--text-light); font-size:0.88em">新增帳目後自動計算結清方式</div>';
     return;
   }
 
@@ -275,12 +295,15 @@ function renderSettlement() {
   const transactions = settleMinTransactions(balance);
 
   if (transactions.length === 0) {
-    container.innerHTML = '<div style="color:#16a34a; font-size:0.88em; text-align:center; padding:8px">✅ 已全部結清！</div>';
+    container.innerHTML =
+      '<div style="color:#16a34a; font-size:0.88em; text-align:center; padding:8px">✅ 已全部結清！</div>';
     return;
   }
 
   const rate = parseFloat(localStorage.getItem(EXPENSE_RATE_KEY)) || 0.22;
-  container.innerHTML = transactions.map((t) => `
+  container.innerHTML = transactions
+    .map(
+      (t) => `
     <div class="settlement-card">
       <div class="settlement-transfer">
         <span style="font-weight:600">${t.from}</span>
@@ -292,12 +315,15 @@ function renderSettlement() {
         <div style="font-size:0.75em; color:var(--text-light)">NT$${Math.round(t.amount * rate).toLocaleString()}</div>
       </div>
     </div>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 /** Minimum transactions settlement algorithm */
 function settleMinTransactions(balanceMap) {
-  const creditors = [], debtors = [];
+  const creditors = [],
+    debtors = [];
   Object.entries(balanceMap).forEach(([person, bal]) => {
     const rounded = Math.round(bal);
     if (rounded > 0) creditors.push({ person, amount: rounded });
@@ -305,7 +331,8 @@ function settleMinTransactions(balanceMap) {
   });
 
   const transactions = [];
-  let i = 0, j = 0;
+  let i = 0,
+    j = 0;
   while (i < creditors.length && j < debtors.length) {
     const credit = creditors[i];
     const debt = debtors[j];
@@ -326,39 +353,68 @@ function renderExpensePage() {
   // Populate paidBy select
   const paidByEl = document.getElementById("exp-paid-by");
   if (paidByEl) {
-    paidByEl.innerHTML = expenseMembers.map((m) => `<option value="${m}">${m}</option>`).join("");
+    paidByEl.innerHTML = expenseMembers
+      .map((m) => `<option value="${m}">${m}</option>`)
+      .join("");
   }
 
   // Populate split-with chips
   const splitContainer = document.getElementById("exp-split-chips");
   if (splitContainer) {
-    splitContainer.innerHTML = expenseMembers.map((m) => `
+    splitContainer.innerHTML = expenseMembers
+      .map(
+        (m) => `
       <div class="member-chip selected" data-member="${m}" onclick="toggleSplitMember(this)">${m}</div>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   // Populate category chips
   const catContainer = document.getElementById("exp-cat-chips");
   if (catContainer) {
-    catContainer.innerHTML = EXPENSE_CATEGORIES.map((cat, idx) => `
+    catContainer.innerHTML = EXPENSE_CATEGORIES.map(
+      (cat, idx) => `
       <div class="cat-chip ${idx === 0 ? "selected" : ""}" data-cat="${cat.key}" onclick="selectCategory(this)">
         ${cat.emoji} ${cat.label}
       </div>
-    `).join("");
+    `,
+    ).join("");
   }
 
   // Set default date to trip first day
   const dateEl = document.getElementById("exp-date");
-  if (dateEl) dateEl.value = (tripData && tripData.meta && tripData.meta.dateRange && tripData.meta.dateRange.start) || new Date().toISOString().split("T")[0];
+  if (dateEl)
+    dateEl.value =
+      (tripData &&
+        tripData.meta &&
+        tripData.meta.dateRange &&
+        tripData.meta.dateRange.start) ||
+      new Date().toISOString().split("T")[0];
 
-  // Live TWD preview
-  const amtEl = document.getElementById("exp-amount");
-  const twdHint = document.getElementById("exp-twd-hint");
-  if (amtEl && twdHint) {
-    amtEl.addEventListener("input", () => {
-      const jpy = parseFloat(amtEl.value) || 0;
+  // Setup live currency sync between JPY and TWD inputs
+  const jpyInput = document.getElementById("exp-amount-jpy");
+  const twdInput = document.getElementById("exp-amount-twd");
+  
+  if (jpyInput && twdInput) {
+    jpyInput.addEventListener("input", () => {
+      const jpy = parseFloat(jpyInput.value);
       const rate = parseFloat(localStorage.getItem(EXPENSE_RATE_KEY)) || 0.22;
-      twdHint.textContent = jpy > 0 ? `≈ NT$${Math.round(jpy * rate).toLocaleString()}` : "";
+      if (!isNaN(jpy)) {
+        twdInput.value = Math.round(jpy * rate);
+      } else {
+        twdInput.value = "";
+      }
+    });
+
+    twdInput.addEventListener("input", () => {
+      const twd = parseFloat(twdInput.value);
+      const rate = parseFloat(localStorage.getItem(EXPENSE_RATE_KEY)) || 0.22;
+      if (!isNaN(twd)) {
+        jpyInput.value = Math.round(twd / rate);
+      } else {
+        jpyInput.value = "";
+      }
     });
   }
 }
@@ -368,7 +424,9 @@ function toggleSplitMember(el) {
 }
 
 function selectCategory(el) {
-  document.querySelectorAll(".cat-chip").forEach((c) => c.classList.remove("selected"));
+  document
+    .querySelectorAll(".cat-chip")
+    .forEach((c) => c.classList.remove("selected"));
   el.classList.add("selected");
 }
 
@@ -378,26 +436,32 @@ function openExpenseModal() {
 
 function closeExpenseModal() {
   document.getElementById("expense-modal").classList.add("hidden");
-  document.getElementById("exp-amount").value = "";
+  document.getElementById("exp-amount-jpy").value = "";
+  document.getElementById("exp-amount-twd").value = "";
   document.getElementById("exp-desc").value = "";
-  document.getElementById("exp-twd-hint").textContent = "";
   // Reset all split chips to selected
-  document.querySelectorAll(".member-chip").forEach((c) => c.classList.add("selected"));
+  document
+    .querySelectorAll(".member-chip")
+    .forEach((c) => c.classList.add("selected"));
   // Reset category
-  document.querySelectorAll(".cat-chip").forEach((c, i) => c.classList.toggle("selected", i === 0));
+  document
+    .querySelectorAll(".cat-chip")
+    .forEach((c, i) => c.classList.toggle("selected", i === 0));
 }
 
 function submitExpense() {
   const dateEl = document.getElementById("exp-date");
-  const amtEl = document.getElementById("exp-amount");
+  const amtJpyEl = document.getElementById("exp-amount-jpy");
   const descEl = document.getElementById("exp-desc");
   const paidByEl = document.getElementById("exp-paid-by");
 
   const date = dateEl.value;
-  const amountJPY = parseInt(amtEl.value);
+  const amountJPY = parseInt(amtJpyEl.value);
   const desc = descEl.value.trim();
   const paidBy = paidByEl.value;
-  const splitWith = Array.from(document.querySelectorAll(".member-chip.selected")).map((el) => el.dataset.member);
+  const splitWith = Array.from(
+    document.querySelectorAll(".member-chip.selected"),
+  ).map((el) => el.dataset.member);
   const selectedCat = document.querySelector(".cat-chip.selected");
   const category = selectedCat ? selectedCat.dataset.cat : "other";
 

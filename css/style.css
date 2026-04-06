@@ -317,17 +317,18 @@ header p {
   background: rgba(0,0,0,0.5);
   z-index: 200;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
+  padding: 16px;
 }
 
 .expense-modal {
   background: white;
   width: 100%;
-  max-width: 600px;
-  border-radius: 20px 20px 0 0;
+  max-width: 500px;
+  border-radius: 20px;
   padding: 20px;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
 }
 

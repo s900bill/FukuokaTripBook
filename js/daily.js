@@ -84,17 +84,7 @@ function renderDayDetail() {
 
   document.getElementById("btn-plan-b").classList.toggle("hidden", !hasPlanB);
 
-  const filteredItems = normalizedItems.filter((item) => {
-    if (showMentaiko === "all") return true;
-    const tags = item.tags || [];
-    const hasMentaiko = tags.includes("明太子派");
-    const hasNoMentaiko = tags.includes("不明太子派");
-    if (showMentaiko === "mentaiko") return hasMentaiko || (!hasMentaiko && !hasNoMentaiko);
-    if (showMentaiko === "no-mentaiko") return hasNoMentaiko || (!hasMentaiko && !hasNoMentaiko);
-    return true;
-  });
-
-  content.innerHTML = filteredItems
+  content.innerHTML = normalizedItems
     .map(
       (item) => `
       <div class="timeline-item">

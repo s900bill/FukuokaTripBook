@@ -6,7 +6,6 @@
 let tripData = null;
 let currentDay = 1;
 let currentPlan = "A";
-let showMentaiko = "all"; // 'mentaiko' | 'no-mentaiko' | 'all'
 const isAdmin =
   new URLSearchParams(window.location.search).get("admin") === "1";
 
@@ -102,39 +101,15 @@ function initApp(data) {
   }
 
   currentDay = 1;
-  const toggleBtn = document.getElementById("btn-mentaiko-toggle");
-  if (toggleBtn) {
-    toggleBtn.onclick = () => {
-      if (showMentaiko === "all") {
-        showMentaiko = "mentaiko";
-        toggleBtn.innerText = "🌶️ 明太子派";
-      } else if (showMentaiko === "mentaiko") {
-        showMentaiko = "no-mentaiko";
-        toggleBtn.innerText = "🚫 不明太子派";
-      } else {
-        showMentaiko = "all";
-        toggleBtn.innerText = "🍽️ 全部顯示";
-      }
-      renderDayDetail();
-    };
-  }
   renderDayDetail();
 
   // Init expense module with trip members
   if (typeof initExpense === "function") {
-    const members = (data.meta && data.meta.people && data.meta.people.groups)
-      ? extractMemberNames(data.meta.people.groups, data.meta.people.total)
-      : ["Bill", "Amy", "Dad", "Mom", "P5", "P6", "P7", "P8"];
+    const members = (data.meta && data.meta.people && data.meta.people.members)
+      ? data.meta.people.members
+      : [" Bill", "Amy", "Dad", "Mom", "P5", "P6", "P7", "P8"];
     initExpense(members);
   }
-}
-
-function extractMemberNames(groups, total) {
-  // Try to parse member names from groups array like ["父母×2(約60歲)", "姐弟×2(約30歲)"]
-  // Fall back to generic names
-  const defaults = [];
-  for (let i = 1; i <= (total || 8); i++) defaults.push("成員" + i);
-  return defaults;
 }
 
 function renderHeader() {

@@ -64,12 +64,15 @@ function updateConverterUI() {
   }
 }
 
-async function fetchExchangeRate() {
+async function fetchExchangeRate(silent = false) {
   try {
     const btn = document.querySelector('button[onclick="fetchExchangeRate()"]');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = "⏳...";
-    btn.disabled = true;
+    let originalText = "";
+    if (btn) {
+      originalText = btn.innerHTML;
+      btn.innerHTML = "⏳...";
+      btn.disabled = true;
+    }
 
     const res = await fetch("https://api.exchangerate-api.com/v4/latest/JPY");
     if (!res.ok) throw new Error("Network response was not ok");
@@ -79,16 +82,18 @@ async function fetchExchangeRate() {
     if (rate) {
       document.getElementById("exchange-rate").value = rate;
       updateRate(false);
-      alert(`匯率已更新為 ${rate} (來源: exchangerate-api)`);
+      if (!silent) alert(`匯率已更新為 ${rate} (來源: exchangerate-api)`);
     } else {
       throw new Error("Rate not found");
     }
 
-    btn.innerHTML = originalText;
-    btn.disabled = false;
+    if (btn) {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
   } catch (e) {
     console.error(e);
-    alert("無法取得即時匯率，請檢查網路連線。");
+    if (!silent) alert("無法取得即時匯率，請檢查網路連線。");
     const btn = document.querySelector('button[onclick="fetchExchangeRate()"]');
     if (btn) { btn.innerHTML = "☁️ Auto"; btn.disabled = false; }
   }
