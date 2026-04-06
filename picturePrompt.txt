@@ -1,0 +1,13 @@
+A beautiful and detailed hand-drawn illustration style map for a 5-day Fukuoka travel itinerary, layout in a vertical 9:16 aspect ratio. The overall aesthetic is warm, cheerful, and decorated with delicate cherry blossoms (sakura), soft clouds, and classic Japanese patterns, resembling a page from a travel journal with watercolor and colored pencil textures. At the top, a charming banner holds the main title '福岡五天四夜之旅' in Traditional Chinese. The map features a winding dashed path with arrows connecting five distinct daily sections arranged sequentially from top to bottom. Each day's label follows the format 'Day [Number] | [Date]([Day of the week]) [Summary]' and contains a sequence of illustrated locations and foods connected by small arrows.
+
+Day 1 | 4/30(四) 抵達日: 機場 → 飯店 → 運河城 → 鰻魚飯 → 一蘭拉麵. Includes an airplane labeled '福岡機場', a hotel building labeled 'LA CHIC Stay Hakata (住宿)', the stylized '博多運河城 (Canal City)' building with fountains, a bowl of eel rice labeled '鰻のエイト (鰻魚飯)', and a steaming bowl of ramen with chopsticks labeled '一蘭拉麵'.
+
+Day 2 | 5/1(五) 由布院一日遊. The path leads from a bus labeled '龜之井巴士' to a clay pot dish labeled '由布まぶし「心」釜飯', a slice of cheesecake labeled 'Milch 半熟起司蛋糕', a green train labeled '由布院之森列車', and a plate of skewers labeled 'とりかわ宝家 (雞皮串燒)'.
+
+Day 3 | 5/2(六) 市場 → teamLab → 和牛 → 公園 → 燒肉. Features a lively market with stalls labeled '柳橋連合市場', a building with immersive light projections labeled 'teamLab Forest', a grill with cooking beef labeled '西新初喜 (和牛)', a scenic park with a large lake labeled '大濠公園', and a plate of cooked steak with lime labeled '燒肉上'.
+
+Day 4 | 5/3(日) 柳川 → 太宰府 → 天神周邊. Shows small boats on a canal labeled '柳川包船遊河', a bowl of eel rice labeled '鰻魚飯', a large red torii gate and shrine building labeled '太宰府天滿宮', rice cakes on a small plate labeled '梅枝餅', and various shop buildings representing '天神周邊'.
+
+Day 5 | 5/4(一) 早餐 → 退房 → 機場返台. Displays a set meal with rice, soup, and grilled meat labeled 'TANYA 博多牛舌早餐', luggage and a bag labeled '退房', and an airplane taking off with clouds and a moon labeled 'JX841 (福岡機場返台)'.
+
+The entire background is light beige and filled with scattered sakura flowers, petals, small cloud motifs, and abstract Japanese wavy patterns, creating a cohesive and delightful map. All text labels are clearly rendered in Traditional Chinese.
