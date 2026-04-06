@@ -1,5 +1,5 @@
 // Service Worker 版本號 - 每次更新時請修改這個版本號
-const VERSION = "v1.0.2";
+const VERSION = "v1.0.3";
 const CACHE_NAME = `fukuoka-trip-${VERSION}`;
 
 // 需要緩存的文件
@@ -16,7 +16,7 @@ self.addEventListener("install", (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       console.log("[SW] Caching app shell");
       return cache.addAll(urlsToCache);
-    })
+    }),
   );
 });
 
@@ -35,13 +35,13 @@ self.addEventListener("activate", (event) => {
               console.log("[SW] Deleting old cache:", cacheName);
               return caches.delete(cacheName);
             }
-          })
+          }),
         );
       })
       .then(() => {
         // 立即接管所有頁面
         return self.clients.claim();
-      })
+      }),
   );
 });
 
@@ -76,7 +76,7 @@ self.addEventListener("fetch", (event) => {
             }),
           });
         });
-      })
+      }),
   );
 });
 
