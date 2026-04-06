@@ -16,13 +16,15 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link rel="manifest" href="./manifest.json" />
     <link rel="stylesheet" href="./css/style.css" />
     <title>不喊累旅行社</title>
   </head>
 
   <body>
+    <!-- Sakura petals overlay -->
+    <div id="sakura-container" aria-hidden="true"></div>
     <!-- Error Overlay -->
     <div id="error-ui" class="error-overlay hidden">
       <h2>無法載入行程檔案</h2>
@@ -93,6 +95,8 @@
         <div class="card" style="padding: 0; overflow: hidden">
           <img
             src="tripmap.png"
+            loading="lazy"
+            decoding="async"
             style="width: 100%; display: block"
             alt="行程地圖"
           />
@@ -750,5 +754,6 @@
     <script src="./js/daily.js"></script>
     <script src="./js/expense.js"></script>
     <script src="./js/app.js"></script>
+    <script src="./js/sakura.js" defer></script>
   </body>
 </html>
