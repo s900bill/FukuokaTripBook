@@ -1,74 +1,120 @@
 /**
- * sakura.js — 漂浮櫻花花瓣效果
- * 建立 CSS 動畫驅動的花瓣，效能開銷低
+ * sakura.js — 高性能 Canvas 櫻花飄落與累積效果
+ * 基於使用者提供的範例優化，加入精緻路徑與底部堆積邏輯
  */
 
 (function () {
-  const PETAL_COUNT = 18;        // 最大花瓣數
-  const RESPAWN_INTERVAL = 1200; // 每幾ms生一片
+  const canvas = document.getElementById("sakura-canvas");
+  if (!canvas) return;
 
-  // SVG 花瓣形狀（橢圓花瓣）
-  function createPetalSVG(color, size) {
-    return `<svg width="${size}" height="${size * 1.2}" viewBox="0 0 20 24" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="10" cy="12" rx="7" ry="11" fill="${color}" opacity="0.85" transform="rotate(-15 10 12)"/>
-      <ellipse cx="10" cy="12" rx="5" ry="9" fill="${color}" opacity="0.5" transform="rotate(15 10 12)"/>
-    </svg>`;
+  const ctx = canvas.getContext("2d");
+  let petals = [];
+  let settledPetals = []; // 落地花瓣
+  const MAX_PETALS = 60;
+  const SETTLED_MAX = 100; // 底部最多累積數量
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
 
-  const COLORS = ['#F4A7B9', '#F7C5D2', '#FFAABB', '#F9C4D0', '#FBAFC0'];
-
-  function spawnPetal() {
-    const container = document.getElementById('sakura-container');
-    if (!container) return;
-
-    // 限制最大數量
-    if (container.children.length >= PETAL_COUNT) {
-      container.removeChild(container.firstChild);
+  class Petal {
+    constructor() {
+      this.reset();
     }
 
-    const petal = document.createElement('div');
-    petal.className = 'sakura-petal';
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height - canvas.height;
+      this.size = Math.random() * 8 + 4;
+      this.speedX = Math.random() * 1.5 - 0.5;
+      this.speedY = Math.random() * 1.2 + 0.8;
+      this.rotation = Math.random() * 360;
+      this.spin = Math.random() * 0.05 - 0.025;
+      // 櫻花配色
+      const pinks = ["#ffb7c5", "#ffc0cb", "#ffd1dc", "#ffc3d0"];
+      this.color = pinks[Math.floor(Math.random() * pinks.length)];
+      this.opacity = Math.random() * 0.5 + 0.4;
+    }
 
-    const size = 10 + Math.random() * 10;          // 10~20px
-    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-    const startX = Math.random() * 100;            // 0~100vw
-    const duration = 6 + Math.random() * 8;        // 6~14秒飄落
-    const swayDuration = 2 + Math.random() * 3;   // 搖擺週期
-    const delay = Math.random() * -4;              // 隨機起始相位（負delay讓它從中途開始）
-    const swayAmount = 30 + Math.random() * 60;   // 左右搖擺幅度
+    draw(targetCtx = ctx) {
+      targetCtx.save();
+      targetCtx.translate(this.x, this.y);
+      targetCtx.rotate(this.rotation);
+      targetCtx.globalAlpha = this.opacity;
+      
+      targetCtx.beginPath();
+      targetCtx.moveTo(0, 0);
+      // 繪製更精緻的花瓣 (Bezier 曲線)
+      // 頂部 V 型缺口感
+      targetCtx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size);
+      targetCtx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
+      
+      targetCtx.fillStyle = this.color;
+      targetCtx.fill();
+      targetCtx.restore();
+    }
 
-    petal.innerHTML = createPetalSVG(color, size);
-    petal.style.cssText = `
-      left: ${startX}vw;
-      width: ${size}px;
-      height: ${size * 1.2}px;
-      animation:
-        sakura-fall ${duration}s ${delay}s linear forwards,
-        sakura-sway ${swayDuration}s ${delay}s ease-in-out infinite alternate;
-      --sway: ${swayAmount}px;
-    `;
+    update() {
+      this.x += this.speedX + Math.sin(this.y / 50) * 0.5; // 加入一點左右擺動
+      this.y += this.speedY;
+      this.rotation += this.spin;
 
-    container.appendChild(petal);
-
-    // 飄落結束後移除
-    setTimeout(() => {
-      if (petal.parentNode) petal.parentNode.removeChild(petal);
-    }, (duration + Math.abs(delay)) * 1000 + 200);
+      // 檢查是否落地
+      if (this.y > canvas.height - 5) {
+        // 落地累積邏輯
+        addSettledPetal(this.x, canvas.height - Math.random() * 5, this.size, this.rotation, this.color, this.opacity);
+        this.reset();
+      }
+    }
   }
 
-  // 初始化：先撒一批，再定時補發
+  function addSettledPetal(x, y, size, rotation, color, opacity) {
+    settledPetals.push({ x, y, size, rotation, color, opacity });
+    if (settledPetals.length > SETTLED_MAX) {
+      settledPetals.shift(); // 移除最舊的
+    }
+  }
+
   function init() {
-    // 第一批提前撒（用負delay讓畫面一開始就有花瓣）
-    for (let i = 0; i < 10; i++) {
-      setTimeout(spawnPetal, i * 200);
+    resize();
+    for (let i = 0; i < MAX_PETALS; i++) {
+        petals.push(new Petal());
     }
-    // 之後持續補充
-    setInterval(spawnPetal, RESPAWN_INTERVAL);
+    animate();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 繪製已累積的花瓣
+    settledPetals.forEach(p => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha = p.opacity;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-p.size, -p.size, -p.size, p.size, 0, p.size);
+        ctx.bezierCurveTo(p.size, p.size, p.size, -p.size, 0, 0);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.restore();
+    });
+
+    // 繪製移動中的花瓣
+    petals.forEach(p => {
+      p.update();
+      p.draw();
+    });
+
+    requestAnimationFrame(animate);
   }
+
+  window.addEventListener("resize", () => {
+    resize();
+    settledPetals = []; // 視窗縮放時清除累積，避免座標偏移
+  });
+  
+  init();
 })();

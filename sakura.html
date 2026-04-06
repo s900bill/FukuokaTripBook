@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福岡旅遊行程展示</title>
+    <style>
+        :root {
+            --sakura-pink: #ffb7c5;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, #fff5f6 0%, #ffdde1 100%);
+        }
+
+        /* 畫布層：負責櫻花動畫 */
+        #sakura-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 內容層：行程卡片 */
+        .container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #d85a7d;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px dashed #ffb7c5;
+            padding-bottom: 10px;
+        }
+
+        .itinerary-list {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+
+        .itinerary-item {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .itinerary-item::before {
+            content: '🌸';
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .day-label {
+            font-weight: bold;
+            color: #d85a7d;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="sakura-canvas"></canvas>
+
+    <div class="container">
+        <div class="card">
+            <h1>🌸 福岡五天四夜之旅</h1>
+            <ul class="itinerary-list">
+                <li class="itinerary-item">
+                    <span class="day-label">Day 1 (4/30) 抵達與美食</span>
+                    機場 → 飯店 → 運河城水舞 → 鰻魚飯 → 一蘭拉麵
+                </li>
+                <li class="itinerary-item">
+                    <span class="day-label">Day 2 (5/1) 由布院風光</span>
+                    龜之井巴士 → 釜飯 → 半熟起司蛋糕 → 由布院之森 → 雞皮串燒
+                </li>
+                <li class="itinerary-item">
+                    <span class="day-label">Day 3 (5/2) 藝術與公園</span>
+                    柳橋連合市場 → teamLab Forest → 西新初喜 → 大濠公園 → 燒肉
+                </li>
+                <li class="itinerary-item">
+                    <span class="day-label">Day 4 (5/3) 柳川與太宰府</span>
+                    柳川包船 → 鰻魚飯 → 太宰府天滿宮 → 梅枝餅 → 天神商圈
+                </li>
+                <li class="itinerary-item">
+                    <span class="day-label">Day 5 (5/4) 歸途</span>
+                    牛舌早餐 → 退房 → JX841 返台
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sakura-canvas');
+        const ctx = canvas.getContext('2d');
+        let petals = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Petal {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 7 + 3;
+                this.speedX = Math.random() * 1.5 - 0.5;
+                this.speedY = Math.random() * 1.5 + 1;
+                this.rotation = Math.random() * 360;
+                this.spin = Math.random() * 0.04 - 0.02;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                // 畫出簡易花瓣形狀
+                ctx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size);
+                ctx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
+                
+                ctx.fillStyle = "#ffb7c5";
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rotation += this.spin;
+
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+        }
+
+        function init() {
+            resize();
+            for (let i = 0; i < 70; i++) {
+                petals.push(new Petal());
+            }
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            petals.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        init();
+    </script>
+</body>
+</html>
