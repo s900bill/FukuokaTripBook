@@ -34,6 +34,8 @@ let expenses = []; // [{id, date, desc, amountJPY, paidBy, splitWith, category}]
 let firebaseDB = null;
 let expenseRef = null;
 let isFirebaseConnected = false;
+let settleMode = localStorage.getItem("fukuoka-settle-mode") || "pairwise";
+let memberBalances = {}; // Cache for modal
 
 // Category definitions
 const EXPENSE_CATEGORIES = [
@@ -197,27 +199,37 @@ function toggleSettleExpense(id, currentState) {
 function renderExpenseSummaryBar() {
   const bar = document.getElementById("expense-summary-bar");
   if (!bar) return;
+
+  const rate = parseFloat(localStorage.getItem(EXPENSE_RATE_KEY)) || 0.22;
+  
+  const displayRateEl = document.getElementById("expense-rate-display");
+  if (displayRateEl) {
+    displayRateEl.textContent = `目前匯率：1 JPY = ${rate.toFixed(2)} TWD`;
+  }
+
   const totalJPY = expenses.reduce((s, e) => s + (e.amountJPY || 0), 0);
   const totalTWD = expenses.reduce((s, e) => s + (e.amountTWD || 0), 0);
-  const perPerson =
-    expenseMembers.length > 0
-      ? Math.round(totalJPY / expenseMembers.length)
-      : 0;
+  
+  const perPersonJPY = expenseMembers.length > 0
+    ? Math.round(totalJPY / expenseMembers.length)
+    : 0;
+  const perPersonTWD = Math.round(perPersonJPY * rate);
+
   bar.innerHTML = `
     <div class="expense-summary-item">
       <div class="label">總花費</div>
-      <div class="value">¥${totalJPY.toLocaleString()}</div>
+      <div class="expense-summary-val-jpy">¥${totalJPY.toLocaleString()}</div>
+      <div class="expense-summary-val-twd">NT$${totalTWD.toLocaleString()}</div>
     </div>
-    <div class="expense-summary-item">
-      <div class="label">換算台幣</div>
-      <div class="value">NT$${totalTWD.toLocaleString()}</div>
-    </div>
+    <div style="width: 1px; background: #E8C9B8; opacity: 0.5; margin: 4px 0;"></div>
     <div class="expense-summary-item">
       <div class="label">人均花費</div>
-      <div class="value">¥${perPerson.toLocaleString()}</div>
+      <div class="expense-summary-val-jpy">¥${perPersonJPY.toLocaleString()}</div>
+      <div class="expense-summary-val-twd">NT$${perPersonTWD.toLocaleString()}</div>
     </div>
   `;
 }
+
 
 // ──────────────────────────────────────────────
 //  Render: Expense List
@@ -297,8 +309,16 @@ function toggleSettlementView() {
 //  Render: Settlement
 // ──────────────────────────────────────────────
 function renderSettlement() {
-  const container = document.getElementById("expense-settlement-container");
+  const container = document.getElementById("expense-settlement-list");
   if (!container) return;
+
+  // Set toggle buttons initial state
+  const btnPair = document.getElementById("btn-settle-pairwise");
+  const btnGlobal = document.getElementById("btn-settle-global");
+  if (btnPair && btnGlobal) {
+      btnPair.classList.toggle("active", settleMode === 'pairwise');
+      btnGlobal.classList.toggle("active", settleMode === 'global');
+  }
 
   if (expenses.length === 0) {
     container.innerHTML =
@@ -306,9 +326,13 @@ function renderSettlement() {
     return;
   }
 
-  // Calculate each person's net balance
+  // Calculate net balances for the detail modal
   const balance = {};
-  expenseMembers.forEach((m) => (balance[m] = 0));
+  const paidOut = {};
+  const fairShare = {};
+  expenseMembers.forEach((m) => {
+      balance[m] = 0; paidOut[m] = 0; fairShare[m] = 0;
+  });
 
   expenses.forEach((e) => {
     if (e.isSettled) return;
@@ -316,17 +340,24 @@ function renderSettlement() {
     if (splitCount === 0) return;
     const shareJPY = (e.amountJPY || 0) / splitCount;
 
-    // Payer gets credit
+    if (paidOut[e.paidBy] !== undefined) paidOut[e.paidBy] += e.amountJPY || 0;
     if (balance[e.paidBy] !== undefined) balance[e.paidBy] += e.amountJPY || 0;
 
-    // Each participant owes their share
     (e.splitWith || expenseMembers).forEach((member) => {
+      if (fairShare[member] !== undefined) fairShare[member] += shareJPY;
       if (balance[member] !== undefined) balance[member] -= shareJPY;
     });
   });
 
-  // Settle with minimum transactions
-  const transactions = settleMinTransactions(balance);
+  // Cache for modal
+  memberBalances = { balance, paidOut, fairShare };
+
+  let transactions = [];
+  if (settleMode === 'global') {
+      transactions = settleMinTransactions(balance);
+  } else {
+      transactions = settlePairwise();
+  }
 
   if (transactions.length === 0) {
     container.innerHTML =
@@ -356,12 +387,31 @@ function renderSettlement() {
 
 /** Minimum transactions settlement algorithm */
 function settleMinTransactions(balanceMap) {
+  const roundedBalances = {};
+  let totalS = 0;
+  let maxPerson = null;
+  let maxVal = -1;
+
+  Object.entries(balanceMap).forEach(([person, bal]) => {
+    let rb = Math.round(bal);
+    roundedBalances[person] = rb;
+    totalS += rb;
+    if (Math.abs(bal) > maxVal) {
+      maxVal = Math.abs(bal);
+      maxPerson = person;
+    }
+  });
+
+  // Adjust for rounding differences so total sum is exactly 0
+  if (totalS !== 0 && maxPerson) {
+      roundedBalances[maxPerson] -= totalS;
+  }
+
   const creditors = [],
     debtors = [];
-  Object.entries(balanceMap).forEach(([person, bal]) => {
-    const rounded = Math.round(bal);
-    if (rounded > 0) creditors.push({ person, amount: rounded });
-    else if (rounded < 0) debtors.push({ person, amount: -rounded });
+  Object.entries(roundedBalances).forEach(([person, bal]) => {
+    if (bal > 0) creditors.push({ person, amount: bal });
+    else if (bal < 0) debtors.push({ person, amount: -bal });
   });
 
   const transactions = [];
@@ -378,6 +428,103 @@ function settleMinTransactions(balanceMap) {
     if (debt.amount === 0) j++;
   }
   return transactions;
+}
+
+function settlePairwise() {
+  const owes = {};
+  expenseMembers.forEach(m => {
+      owes[m] = {};
+      expenseMembers.forEach(m2 => owes[m][m2] = 0);
+  });
+
+  expenses.forEach(e => {
+      if (e.isSettled) return;
+      const splitWith = e.splitWith && e.splitWith.length > 0 ? e.splitWith : expenseMembers;
+      if (splitWith.length === 0) return;
+      
+      const share = (e.amountJPY || 0) / splitWith.length;
+      splitWith.forEach(debtor => {
+          if (debtor !== e.paidBy && owes[debtor]) {
+              owes[debtor][e.paidBy] += share;
+          }
+      });
+  });
+
+  for (let i = 0; i < expenseMembers.length; i++) {
+      for (let j = i + 1; j < expenseMembers.length; j++) {
+          const m1 = expenseMembers[i];
+          const m2 = expenseMembers[j];
+          const m1OwesM2 = owes[m1][m2];
+          const m2OwesM1 = owes[m2][m1];
+          if (m1OwesM2 > m2OwesM1) {
+              owes[m1][m2] = m1OwesM2 - m2OwesM1;
+              owes[m2][m1] = 0;
+          } else {
+              owes[m2][m1] = m2OwesM1 - m1OwesM2;
+              owes[m1][m2] = 0;
+          }
+      }
+  }
+
+  const transactions = [];
+  expenseMembers.forEach(debtor => {
+      expenseMembers.forEach(creditor => {
+          let amount = Math.round(owes[debtor][creditor]);
+          if (amount > 0) {
+              transactions.push({ from: debtor, to: creditor, amount });
+          }
+      });
+  });
+  return transactions;
+}
+
+function setSettleMode(mode) {
+    settleMode = mode;
+    localStorage.setItem("fukuoka-settle-mode", mode);
+    renderSettlement();
+}
+
+function openSettlementDetails() {
+    const list = document.getElementById("settlement-details-list");
+    if (!list || !memberBalances.balance) return;
+    
+    let html = "";
+    const rate = parseFloat(localStorage.getItem(EXPENSE_RATE_KEY)) || 0.22;
+    
+    expenseMembers.forEach(m => {
+        const bal = memberBalances.balance[m];
+        const paid = memberBalances.paidOut[m];
+        const fair = memberBalances.fairShare[m];
+        
+        let statusColor = bal > 0 ? "var(--primary)" : bal < 0 ? "#16a34a" : "var(--text-light)";
+        let statusText = bal > 0 ? "應收回" : bal < 0 ? "仍需付" : "已打平";
+        let sign = bal > 0 ? "+" : "";
+        
+        html += `
+        <div style="background: var(--card); border: 1.5px solid #E8C9B8; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(150, 80, 50, 0.05);">
+           <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px dashed #f1f5f9; padding-bottom: 10px; margin-bottom: 10px;">
+             <div>
+                <strong style="font-size: 1.1em; color: var(--text);">🧑 ${m}</strong>
+             </div>
+             <div style="color: ${statusColor}; font-weight: bold; text-align: right;">
+               <div style="font-size: 1.1em;">${statusText} ${sign}${Math.round(bal).toLocaleString()}</div>
+               <div style="font-size: 0.8em; opacity: 0.8; margin-top: 2px;">TWD ${Math.round(bal * rate).toLocaleString()}</div>
+             </div>
+           </div>
+           <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: var(--text-light);">
+             <span>實際墊付: ¥${Math.round(paid).toLocaleString()}</span>
+             <span>應負擔: ¥${Math.round(fair).toLocaleString()}</span>
+           </div>
+        </div>
+        `;
+    });
+    
+    list.innerHTML = html;
+    document.getElementById("settlement-details-modal").classList.remove("hidden");
+}
+
+function closeSettlementDetails() {
+    document.getElementById("settlement-details-modal").classList.add("hidden");
 }
 
 // ──────────────────────────────────────────────

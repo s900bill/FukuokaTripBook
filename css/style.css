@@ -1,15 +1,15 @@
 :root {
   /* === 和風櫻花旅行日誌配色 === */
-  --primary: #C9607B;       /* 櫻花深粉 - 主色 */
-  --primary-dark: #A8455F;  /* 深櫻花 - hover */
-  --bg: #FFF8EC;            /* 米黃 - 全頁背景 */
-  --card: #FFFDF8;          /* 暖白 - 卡片底色 */
-  --text: #3D2B1F;          /* 深咖啡 - 主文字 */
-  --text-light: #9C7B61;    /* 暖棕 - 說明文字 */
-  --accent: #E8A045;        /* 暖橙 - badge/重點 */
-  --sakura: #F4A7B9;        /* 櫻花粉 - 裝飾色 */
-  --green: #6A9E72;         /* 和風抹茶綠 */
-  --dashed: #D4698A;        /* 虛線路徑 - 櫻花棕粉 */
+  --primary: #c9607b; /* 櫻花深粉 - 主色 */
+  --primary-dark: #a8455f; /* 深櫻花 - hover */
+  --bg: #fff8ec; /* 米黃 - 全頁背景 */
+  --card: #fffdf8; /* 暖白 - 卡片底色 */
+  --text: #3d2b1f; /* 深咖啡 - 主文字 */
+  --text-light: #9c7b61; /* 暖棕 - 說明文字 */
+  --accent: #e8a045; /* 暖橙 - badge/重點 */
+  --sakura: #f4a7b9; /* 櫻花粉 - 裝飾色 */
+  --green: #6a9e72; /* 和風抹茶綠 */
+  --dashed: #d4698a; /* 虛線路徑 - 櫻花棕粉 */
   --radius: 16px;
   --shadow: 0 4px 12px rgba(180, 80, 120, 0.1);
 }
@@ -20,8 +20,15 @@
 }
 
 body {
-  font-family: "Zen Maru Gothic", "Noto Sans TC", "PingFang TC", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Zen Maru Gothic",
+    "Noto Sans TC",
+    "PingFang TC",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   background-color: var(--bg);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%23F4A7B9' fill-opacity='0.12'%3E%3Ccircle cx='5' cy='5' r='2'/%3E%3Cellipse cx='30' cy='3' rx='1.5' ry='3' transform='rotate(-30 30 3)'/%3E%3Cellipse cx='55' cy='18' rx='1.5' ry='3' transform='rotate(45 55 18)'/%3E%3Ccircle cx='20' cy='35' r='1.5'/%3E%3Cellipse cx='45' cy='50' rx='1.5' ry='3' transform='rotate(15 45 50)'/%3E%3Ccircle cx='8' cy='52' r='1'/%3E%3C/g%3E%3C/svg%3E");
   color: var(--text);
@@ -33,29 +40,26 @@ body {
 }
 
 /* 字體大小變體 */
-body.font-large { font-size: 20px; }
-body.font-xlarge { font-size: 24px; }
+body.font-large {
+  font-size: 20px;
+}
+body.font-xlarge {
+  font-size: 24px;
+}
 
 /* 字體控制按鈕 */
 .font-control {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.font-control span {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9em;
-  font-weight: 500;
+  gap: 6px;
 }
 
 .font-control button {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   cursor: pointer;
   font-size: 0.9em;
@@ -111,7 +115,7 @@ body.font-xlarge { font-size: 24px; }
   font-size: 0.75em;
   padding: 3px 10px;
   border-radius: 99px;
-  background: #F7D0DC;
+  background: #f7d0dc;
   color: var(--primary);
   font-weight: 600;
 }
@@ -139,19 +143,22 @@ body.font-xlarge { font-size: 24px; }
 
 /* Header — 櫻花橫幅帶 */
 header {
-  background: linear-gradient(160deg, #BE5573 0%, #D9799B 50%, #F4A7B9 100%);
+  background: linear-gradient(160deg, #be5573 0%, #d9799b 50%, #f4a7b9 100%);
   color: white;
-  padding: 24px 16px 32px;
-  border-radius: 0 0 32px 32px;
+  padding: 16px 16px 20px;
+  border-radius: 0 0 28px 28px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(180, 60, 100, 0.3);
+  box-shadow: 0 6px 16px rgba(180, 60, 100, 0.25);
 }
 
 header::before {
   content: "";
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M0 40 Q20 20 40 40 Q60 60 80 40' stroke='white' stroke-width='1' fill='none' stroke-opacity='0.08'/%3E%3Cpath d='M0 60 Q20 40 40 60 Q60 80 80 60' stroke='white' stroke-width='1' fill='none' stroke-opacity='0.06'/%3E%3C/svg%3E");
   pointer-events: none;
 }
@@ -170,7 +177,7 @@ header h1 {
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: 0.04em;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 header p {
@@ -187,7 +194,7 @@ header p {
   right: 0;
   background: var(--card);
   display: flex;
-  border-top: 2px solid #F2D0DC;
+  border-top: 2px solid #f2d0dc;
   z-index: 100;
   padding-bottom: env(safe-area-inset-bottom);
   box-shadow: 0 -4px 16px rgba(180, 60, 100, 0.08);
@@ -225,7 +232,9 @@ header p {
   scroll-snap-type: x mandatory;
 }
 
-.day-scroller::-webkit-scrollbar { display: none; }
+.day-scroller::-webkit-scrollbar {
+  display: none;
+}
 
 .day-pill {
   flex: 0 0 auto;
@@ -233,7 +242,7 @@ header p {
   padding: 8px 16px;
   background: var(--card);
   border-radius: 20px;
-  border: 2px solid #E8C9B8;
+  border: 2px solid #e8c9b8;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
@@ -305,7 +314,7 @@ header p {
 
 /* Special Logic UI — 櫻花風按鈕 */
 .selector-group {
-  background: #F7D0DC;
+  background: #f7d0dc;
   padding: 4px;
   border-radius: 10px;
   display: inline-flex;
@@ -353,13 +362,15 @@ header p {
 }
 
 /* Icons (Inline SVG) */
-.icon { fill: currentColor; }
+.icon {
+  fill: currentColor;
+}
 
 /* ===== Expense Tab Styles ===== */
 .expense-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 200;
   display: flex;
   align-items: center;
@@ -551,12 +562,14 @@ header p {
   flex-shrink: 0;
 }
 
-.delete-btn:hover { color: #ef4444; }
+.delete-btn:hover {
+  color: #ef4444;
+}
 
 .settlement-card {
   background: var(--card);
   border-radius: 10px;
-  border: 1.5px dashed #E8C9B8;
+  border: 1.5px dashed #e8c9b8;
   padding: 12px 14px;
   margin-bottom: 8px;
   box-shadow: 0 2px 8px rgba(150, 80, 50, 0.08);
@@ -578,25 +591,36 @@ header p {
 }
 
 .expense-summary-bar {
-  background: linear-gradient(135deg, #BE5573, #D9799B, #F4A7B9);
-  color: white;
+  background: var(--card);
+  color: var(--text);
   border-radius: 16px;
   padding: 14px 16px;
   margin-bottom: 16px;
   display: flex;
   justify-content: space-around;
   text-align: center;
-  box-shadow: 0 4px 14px rgba(180, 60, 100, 0.25);
+  border: 1.5px dashed #e8c9b8;
+  box-shadow: 0 2px 10px rgba(150, 80, 50, 0.08);
 }
 
 .expense-summary-item .label {
-  font-size: 0.72em;
-  opacity: 0.85;
+  font-size: 0.82em;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
-.expense-summary-item .value {
+.expense-summary-val-jpy {
   font-size: 1.1em;
   font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.expense-summary-val-twd {
+  font-size: 0.75em;
+  font-weight: 700;
+  color: var(--text-light);
   margin-top: 2px;
 }
 
