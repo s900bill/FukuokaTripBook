@@ -48,11 +48,12 @@
 
     <!-- Header -->
     <header id="header-ui">
-      <div class="container">
-        <h1 id="trip-title">載入中...</h1>
-        <p id="trip-dates">--</p>
+      <div class="container" style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <h1 id="trip-title">載入中...</h1>
+          <p id="trip-dates" style="margin-bottom: 0;">--</p>
+        </div>
         <div class="font-control">
-          <span>文字大小:</span>
           <button
             onclick="setFontSize('normal')"
             id="font-normal"
@@ -565,7 +566,10 @@
             margin-bottom: 12px;
           "
         >
-          <h3 style="margin: 0">💰 旅途記帳</h3>
+          <div style="display: flex; flex-direction: column;">
+            <h3 style="margin: 0">💰 旅途記帳</h3>
+            <div id="expense-rate-display" style="font-size: 0.75em; color: var(--text-light); margin-top: 4px;">目前匯率：1 JPY = 0.22 TWD</div>
+          </div>
           <div style="display: flex; align-items: center; gap: 8px">
             <span id="firebase-status-badge" class="firebase-status offline"
               >🔴 離線模式</span
@@ -584,30 +588,39 @@
         <div class="expense-summary-bar" id="expense-summary-bar">
           <div class="expense-summary-item">
             <div class="label">總花費</div>
-            <div class="value">¥0</div>
+            <div class="expense-summary-val-jpy">¥0</div>
+            <div class="expense-summary-val-twd">NT$0</div>
           </div>
-          <div class="expense-summary-item">
-            <div class="label">換算台幣</div>
-            <div class="value">NT$0</div>
-          </div>
+          <div style="width: 1px; background: #E8C9B8; opacity: 0.5; margin: 4px 0;"></div>
           <div class="expense-summary-item">
             <div class="label">人均花費</div>
-            <div class="value">¥0</div>
+            <div class="expense-summary-val-jpy">¥0</div>
+            <div class="expense-summary-val-twd">NT$0</div>
           </div>
         </div>
 
+
         <!-- Settlement -->
-        <div class="expense-section-title" onclick="toggleSettlementView()" style="cursor: pointer;">
-          <span>💸 結清建議</span>
-          <span id="settlement-toggle-icon" style="font-size:1.2em">🔽</span>
+        <div class="between" style="margin: 16px 0 8px;">
+          <div class="expense-section-title" style="margin: 0; cursor: pointer;" onclick="toggleSettlementView()">
+            <span>💸 結清建議</span>
+            <span id="settlement-toggle-icon" style="font-size:1.2em; margin-left: 4px;">🔽</span>
+          </div>
+          <button class="btn" style="padding: 4px 10px; font-size: 0.8em; background: white; border: 1.5px solid #E8C9B8; color: var(--text-light);" onclick="openSettlementDetails()">🔍 核對明細</button>
         </div>
         <div
           id="expense-settlement-container"
           class="card"
           style="padding: 12px"
         >
-          <div style="color: var(--text-light); font-size: 0.88em">
-            新增帳目後自動計算結清方式
+          <div class="selector-group" style="display: flex; width: 100%; margin-bottom: 12px; box-sizing: border-box;">
+             <button id="btn-settle-pairwise" class="selector-btn active" style="flex: 1" onclick="setSettleMode('pairwise')">兩兩結算 (直覺)</button>
+             <button id="btn-settle-global" class="selector-btn" style="flex: 1" onclick="setSettleMode('global')">最少筆數 (統籌)</button>
+          </div>
+          <div id="expense-settlement-list">
+            <div style="color: var(--text-light); font-size: 0.88em">
+              新增帳目後自動計算結清方式
+            </div>
           </div>
         </div>
 
@@ -671,6 +684,18 @@
         準備清單
       </a>
     </nav>
+
+    <!-- Settlement Details Modal -->
+    <div id="settlement-details-modal" class="expense-modal-overlay hidden" onclick="if (event.target === this) closeSettlementDetails();">
+      <div class="expense-modal" style="max-height: 80vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+           <h3 style="margin: 0;">🔍 個人帳本明細</h3>
+           <span style="font-size: 1.5em; cursor: pointer; color: var(--text-light); line-height: 1;" onclick="closeSettlementDetails()">&times;</span>
+        </div>
+        <p style="font-size: 0.85em; color: var(--text-light); margin-top: 0; margin-bottom: 12px;">此列表僅計算尚未結清之項目。淨資產大於零代表他人需還款給您。</p>
+        <div id="settlement-details-list" style="overflow-y: auto; flex: 1;"></div>
+      </div>
+    </div>
 
     <!-- Expense Add Modal -->
     <div

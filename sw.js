@@ -1,5 +1,5 @@
 // Service Worker 版本號 - 每次更新時請修改這個版本號
-const VERSION = "v1.1.0";
+const VERSION = "v1.1.1";
 const CACHE_NAME = `fukuoka-trip-${VERSION}`;
 
 // 需要緩存的文件 (App Shell)
@@ -17,7 +17,7 @@ const urlsToCache = [
   "./js/japanese.js",
   "./js/converter.js",
   "./js/admin.js",
-  "./js/lists.js"
+  "./js/lists.js",
 ];
 
 // 安裝 Service Worker
