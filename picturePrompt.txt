@@ -8,6 +8,6 @@ Day 3 | 5/2(六) 市場 → teamLab → 和牛 → 公園 → 燒肉. Features a
 
 Day 4 | 5/3(日) 柳川 → 太宰府 → 天神周邊. Shows small boats on a canal labeled '柳川包船遊河', a bowl of eel rice labeled '鰻魚飯', a large red torii gate and shrine building labeled '太宰府天滿宮', rice cakes on a small plate labeled '梅枝餅', and various shop buildings representing '天神周邊'.
 
-Day 5 | 5/4(一) 早餐 → 退房 → 機場返台. Displays a set meal with rice, soup, and grilled meat labeled 'TANYA 博多牛舌早餐', luggage and a bag labeled '退房', and an airplane taking off with clouds and a moon labeled 'JX841 (福岡機場返台)'.
+Day 5 | 5/4(一) 退房 → 櫛田神社/最後採購 → 機場返台. Displays luggage and a bag labeled '退房', a traditional Japanese shrine gate labeled '櫛田神社', a shopping basket filled with snacks labeled '最後採購', and an airplane taking off with clouds labeled 'JX841 (福岡機場返台)'.
 
 The entire background is light beige and filled with scattered sakura flowers, petals, small cloud motifs, and abstract Japanese wavy patterns, creating a cohesive and delightful map. All text labels are clearly rendered in Traditional Chinese.
