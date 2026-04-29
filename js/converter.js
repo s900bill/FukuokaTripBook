@@ -313,3 +313,117 @@ function closeCouponModal() {
     modal.classList.add("hidden");
   }
 }
+
+// ===== Tax-Free Calculator Features =====
+let taxFreeItems = [];
+
+function addTaxFreeItem() {
+  const inputEl = document.getElementById("taxfree-input");
+  const typeEl = document.getElementById("taxfree-type");
+  const nameEl = document.getElementById("taxfree-name");
+  
+  const val = parseFloat(inputEl.value);
+  if (isNaN(val) || val <= 0) {
+    alert("請輸入有效金額");
+    return;
+  }
+  
+  let itemName = nameEl ? nameEl.value.trim() : "";
+  if (!itemName) {
+    itemName = `商品${taxFreeItems.length + 1}`;
+  }
+  
+  const isTaxed = typeEl.value === "taxed";
+  // 10% tax rate
+  const untaxedPrice = isTaxed ? Math.round(val / 1.1) : val;
+  const taxedPrice = isTaxed ? val : Math.round(val * 1.1);
+  
+  taxFreeItems.push({
+    name: itemName,
+    untaxed: untaxedPrice,
+    taxed: taxedPrice,
+    original: val,
+    isTaxed: isTaxed
+  });
+  
+  inputEl.value = "";
+  if (nameEl) nameEl.value = "";
+  renderTaxFreeItems();
+}
+
+function removeTaxFreeItem(index) {
+  taxFreeItems.splice(index, 1);
+  renderTaxFreeItems();
+}
+
+function clearTaxFreeItems() {
+  taxFreeItems = [];
+  renderTaxFreeItems();
+}
+
+function renderTaxFreeItems() {
+  const container = document.getElementById("taxfree-items");
+  const totalEl = document.getElementById("taxfree-total");
+  const progressEl = document.getElementById("taxfree-progress");
+  const statusEl = document.getElementById("taxfree-status");
+  const resultEl = document.getElementById("taxfree-result");
+  const finalJpyEl = document.getElementById("taxfree-final-jpy");
+  const finalTwdEl = document.getElementById("taxfree-final-twd");
+
+  if (!container) return;
+
+  if (taxFreeItems.length === 0) {
+    container.innerHTML = "";
+    totalEl.textContent = "¥0";
+    progressEl.style.width = "0%";
+    progressEl.style.background = "#ef4444";
+    statusEl.textContent = "還差 ¥5000 免稅";
+    statusEl.style.color = "#ef4444";
+    resultEl.classList.add("hidden");
+    return;
+  }
+
+  let totalUntaxed = 0;
+  
+  container.innerHTML = taxFreeItems.map((item, idx) => {
+    totalUntaxed += item.untaxed;
+    return `
+      <div class="between" style="background: white; padding: 8px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 0.9em;">
+        <div>
+          <div style="font-weight: 700; color: var(--text); margin-bottom: 2px;">${item.name}</div>
+          <span>¥${item.original} <small style="color: var(--text-light);">(${item.isTaxed ? '含稅' : '未稅'})</small></span>
+          <span style="color: var(--primary); margin-left: 6px; font-size: 0.85em;"><small>未稅: ¥${item.untaxed}</small></span>
+        </div>
+        <button class="btn" style="padding: 4px 8px; color: #ef4444; background: #fee2e2;" onclick="removeTaxFreeItem(${idx})">刪除</button>
+      </div>
+    `;
+  }).join("");
+
+  totalEl.textContent = `¥${totalUntaxed}`;
+  
+  let pct = (totalUntaxed / 5000) * 100;
+  if (pct > 100) pct = 100;
+  progressEl.style.width = `${pct}%`;
+  
+  if (totalUntaxed >= 5000) {
+    progressEl.style.background = "#10b981";
+    statusEl.textContent = "✅ 已達免稅門檻！";
+    statusEl.style.color = "#10b981";
+    
+    resultEl.classList.remove("hidden");
+    finalJpyEl.textContent = `¥${totalUntaxed}`;
+    finalTwdEl.textContent = `NT$${Math.round(totalUntaxed * exchangeRate)}`;
+  } else {
+    progressEl.style.background = "#ef4444";
+    statusEl.textContent = `還差 ¥${5000 - totalUntaxed} 免稅`;
+    statusEl.style.color = "#ef4444";
+    resultEl.classList.add("hidden");
+  }
+}
+
+// 攔截並擴充 updateRate 以連動更新台幣估算
+const originalUpdateRate = updateRate;
+updateRate = function(showMsg) {
+  originalUpdateRate(showMsg);
+  if (taxFreeItems.length > 0) renderTaxFreeItems();
+}

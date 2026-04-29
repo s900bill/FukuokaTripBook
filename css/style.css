@@ -388,6 +388,22 @@ header p {
   overflow-y: auto;
 }
 
+/* Modal Custom Scrollbar */
+.expense-modal::-webkit-scrollbar {
+  width: 6px;
+}
+.expense-modal::-webkit-scrollbar-track {
+  background: rgba(200, 140, 90, 0.05);
+  border-radius: 10px;
+}
+.expense-modal::-webkit-scrollbar-thumb {
+  background-color: #f4a7b9; /* var(--sakura) */
+  border-radius: 10px;
+}
+.expense-modal::-webkit-scrollbar-thumb:hover {
+  background-color: #c9607b; /* var(--primary) */
+}
+
 .expense-modal h3 {
   margin: 0 0 16px;
   font-size: 1.1em;
