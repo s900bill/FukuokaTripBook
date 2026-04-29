@@ -95,7 +95,7 @@
         <h3>行程地圖</h3>
         <div class="card" style="padding: 0; overflow: hidden">
           <img
-            src="tripmap.png"
+            src="tripmap.webp"
             loading="lazy"
             decoding="async"
             style="width: 100%; display: block"
@@ -554,6 +554,26 @@
             </button>
           </div>
         </div>
+
+        <h3 style="margin-top: 24px">🏷️ 購物優惠券</h3>
+        <div class="card">
+          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <input
+              id="coupon-filter"
+              placeholder="🔍 搜尋優惠券 (例如: 藥妝)"
+              style="
+                flex: 1;
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid #e2e8f0;
+                font-size: 1em;
+              "
+            />
+          </div>
+          <div id="coupon-grid" class="coupon-grid">
+            <!-- 優惠券會由 JS 產生 -->
+          </div>
+        </div>
       </div>
 
       <!-- Expense Tab (NEW) -->
@@ -763,6 +783,16 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- Coupon Fullscreen Modal -->
+    <div
+      id="coupon-modal"
+      class="coupon-modal-overlay hidden"
+      onclick="closeCouponModal()"
+    >
+      <div class="coupon-modal-close" onclick="closeCouponModal()">&times;</div>
+      <img id="coupon-modal-img" src="" alt="Coupon" />
     </div>
 
     <!-- Firebase SDK (compat version for simple usage) -->
