@@ -1,5 +1,5 @@
 // Service Worker 版本號 - 每次更新時請修改這個版本號
-const VERSION = "v1.1.4";
+const VERSION = "v1.1.7";
 const CACHE_NAME = `fukuoka-trip-${VERSION}`;
 
 // 需要緩存的文件 (App Shell)
