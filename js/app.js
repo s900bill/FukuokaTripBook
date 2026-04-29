@@ -290,3 +290,36 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
+
+// ==========================================
+// 新增功能：緊急聯絡與時刻表 Modal 邏輯
+// ==========================================
+function openEmergencyModal() {
+  document.getElementById("emergency-modal").classList.remove("hidden");
+}
+
+function closeEmergencyModal() {
+  document.getElementById("emergency-modal").classList.add("hidden");
+}
+
+function openTimetableModal() {
+  document.getElementById("timetable-modal").classList.remove("hidden");
+}
+
+function closeTimetableModal() {
+  document.getElementById("timetable-modal").classList.add("hidden");
+}
+
+// 全域 TTS 發音功能 (供緊急求救卡使用)
+window.playAudio = function(text) {
+  if ('speechSynthesis' in window) {
+    // 停止正在播放的語音
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ja-JP';
+    utterance.rate = 0.9; // 稍微放慢速度
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("您的瀏覽器不支援語音播放功能。");
+  }
+};
