@@ -5,6 +5,121 @@
 let exchangeRate = 0.22;
 let isJpyToTwd = true;
 
+const couponList = [
+  {
+    file: "日本BicCamera Coupon.webp",
+    name: "日本BicCamera",
+    keywords: ["biccamera", "bic camera"],
+  },
+  {
+    file: "唐吉軻德Coupon.webp",
+    name: "唐吉軻德",
+    keywords: ["donki", "don quijote", "donquijote"],
+  },
+  {
+    file: "福岡機場Coupon.webp",
+    name: "福岡機場",
+    keywords: ["fukuoka airport", "fuk"],
+  },
+  {
+    file: "日本松本清 Coupon.webp",
+    name: "日本松本清",
+    keywords: ["matsumoto kiyoshi", "matsukiyo", "matsumoto"],
+  },
+  {
+    file: "札幌藥妝 Coupon.webp",
+    name: "札幌藥妝",
+    keywords: ["sapporo", "satudora"],
+  },
+  {
+    file: "福岡藥妝店 Drug Eleven.webp",
+    name: "福岡藥妝店 Drug Eleven",
+    keywords: ["drug eleven"],
+  },
+  {
+    file: "大丸百貨、松阪屋百貨 Coupon.webp",
+    name: "大丸百貨、松阪屋百貨",
+    keywords: ["daimaru", "matsuzakaya"],
+  },
+  {
+    file: "西武百貨、SOGO百貨 Coupon.webp",
+    name: "西武百貨、SOGO百貨",
+    keywords: ["seibu", "sogo"],
+  },
+  { file: "SUGI藥局 Coupon.webp", name: "SUGI藥局", keywords: ["sugi"] },
+  {
+    file: "COSMOS科摩思 Coupon.webp",
+    name: "COSMOS科摩思",
+    keywords: ["cosmos"],
+  },
+  {
+    file: "Cocokara Fine Coupon.webp",
+    name: "Cocokara Fine",
+    keywords: ["cocokara"],
+  },
+  {
+    file: "JUNGLE 密林玩具店 Coupon.webp",
+    name: "JUNGLE 密林玩具店",
+    keywords: ["jungle"],
+  },
+  { file: "Laox Coupon.webp", name: "Laox", keywords: ["laox"] },
+  {
+    file: "Paris Miki 巴黎三城眼鏡.webp",
+    name: "Paris Miki 巴黎三城眼鏡",
+    keywords: ["paris", "miki"],
+  },
+  {
+    file: "YAMADA 山田家電 Coupon.webp",
+    name: "YAMADA 山田家電",
+    keywords: ["yamada"],
+  },
+  { file: "snow peak Coupon.webp", name: "snow peak", keywords: ["snow peak"] },
+  { file: "大賀藥局 Coupon.webp", name: "大賀藥局", keywords: ["ohga"] },
+  {
+    file: "日本Edion 愛電王 Coupon.webp",
+    name: "日本Edion 愛電王",
+    keywords: ["edion"],
+  },
+  {
+    file: "日本Sundrug尚都樂客 Coupon.webp",
+    name: "日本Sundrug尚都樂客",
+    keywords: ["sundrug"],
+  },
+  {
+    file: "東京 京王百貨新宿店 Coupon.webp",
+    name: "東京 京王百貨新宿店",
+    keywords: ["keio"],
+  },
+  {
+    file: "東京 東武百貨池袋本店 Coupon.webp",
+    name: "東京 東武百貨池袋本店",
+    keywords: ["tobu"],
+  },
+  {
+    file: "機能包 BRIEFING Coupon.webp",
+    name: "機能包 BRIEFING",
+    keywords: ["briefing"],
+  },
+  { file: "洋服の青山 Coupon.webp", name: "洋服の青山", keywords: ["aoyama"] },
+  { file: "福太郎藥妝店.webp", name: "福太郎藥妝店", keywords: ["fukutaro"] },
+  {
+    file: "運動用品 Alpen Group 愛蓬體育 Coupon.webp",
+    name: "運動用品 Alpen Group 愛蓬體育",
+    keywords: ["alpen"],
+  },
+  {
+    file: "運動用品 Victoria Coupon.webp",
+    name: "運動用品 Victoria",
+    keywords: ["victoria"],
+  },
+  {
+    file: "靜岡 杏林堂藥局 Coupon.webp",
+    name: "靜岡 杏林堂藥局",
+    keywords: ["kyorindo"],
+  },
+  { file: "鶴羽藥妝 Coupon.webp", name: "鶴羽藥妝", keywords: ["tsuruha"] },
+];
+
 function initConverter() {
   const savedRate = localStorage.getItem("fukuoka-rate");
   if (savedRate) {
@@ -19,7 +134,9 @@ function initConverter() {
     inputTop.addEventListener("input", function () {
       const val = parseFloat(this.value);
       if (!isNaN(val)) {
-        inputBottom.value = isJpyToTwd ? Math.round(val * exchangeRate) : Math.round(val / exchangeRate);
+        inputBottom.value = isJpyToTwd
+          ? Math.round(val * exchangeRate)
+          : Math.round(val / exchangeRate);
       } else {
         inputBottom.value = "";
       }
@@ -28,13 +145,24 @@ function initConverter() {
     inputBottom.addEventListener("input", function () {
       const val = parseFloat(this.value);
       if (!isNaN(val)) {
-        inputTop.value = isJpyToTwd ? Math.round(val / exchangeRate) : Math.round(val * exchangeRate);
+        inputTop.value = isJpyToTwd
+          ? Math.round(val / exchangeRate)
+          : Math.round(val * exchangeRate);
       } else {
         inputTop.value = "";
       }
     });
   }
   updateConverterUI();
+
+  // Coupon Init
+  const couponFilter = document.getElementById("coupon-filter");
+  if (couponFilter) {
+    couponFilter.addEventListener("input", (e) => {
+      renderCoupons(e.target.value);
+    });
+  }
+  renderCoupons("");
 }
 
 function swapCurrencies() {
@@ -56,11 +184,19 @@ function updateConverterUI() {
   const inputBottom = document.getElementById("input-bottom");
 
   if (isJpyToTwd) {
-    labelTop.textContent = "日幣 (JPY)"; symbolTop.textContent = "¥"; inputTop.placeholder = "輸入日幣";
-    labelBottom.textContent = "台幣 (TWD)"; symbolBottom.textContent = "NT$"; inputBottom.placeholder = "輸入台幣";
+    labelTop.textContent = "日幣 (JPY)";
+    symbolTop.textContent = "¥";
+    inputTop.placeholder = "輸入日幣";
+    labelBottom.textContent = "台幣 (TWD)";
+    symbolBottom.textContent = "NT$";
+    inputBottom.placeholder = "輸入台幣";
   } else {
-    labelTop.textContent = "台幣 (TWD)"; symbolTop.textContent = "NT$"; inputTop.placeholder = "輸入台幣";
-    labelBottom.textContent = "日幣 (JPY)"; symbolBottom.textContent = "¥"; inputBottom.placeholder = "輸入日幣";
+    labelTop.textContent = "台幣 (TWD)";
+    symbolTop.textContent = "NT$";
+    inputTop.placeholder = "輸入台幣";
+    labelBottom.textContent = "日幣 (JPY)";
+    symbolBottom.textContent = "¥";
+    inputBottom.placeholder = "輸入日幣";
   }
 }
 
@@ -95,7 +231,10 @@ async function fetchExchangeRate(silent = false) {
     console.error(e);
     if (!silent) alert("無法取得即時匯率，請檢查網路連線。");
     const btn = document.querySelector('button[onclick="fetchExchangeRate()"]');
-    if (btn) { btn.innerHTML = "☁️ Auto"; btn.disabled = false; }
+    if (btn) {
+      btn.innerHTML = "☁️ Auto";
+      btn.disabled = false;
+    }
   }
 }
 
@@ -122,5 +261,55 @@ function setJpy(amount) {
     const input = document.getElementById("input-bottom");
     input.value = amount;
     input.dispatchEvent(new Event("input"));
+  }
+}
+
+// ===== Coupon Features =====
+function renderCoupons(filterText = "") {
+  const grid = document.getElementById("coupon-grid");
+  if (!grid) return;
+
+  const keyword = filterText.toLowerCase().trim();
+  const filtered = couponList.filter((c) => {
+    const matchName = c.name.toLowerCase().includes(keyword);
+    const matchKeywords =
+      c.keywords && c.keywords.some((kw) => kw.toLowerCase().includes(keyword));
+    return matchName || matchKeywords;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-light); padding: 20px;">找不到符合的優惠券</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered
+    .map((coupon) => {
+      // Escape string for safety
+      const safeFile = encodeURIComponent(coupon.file).replace(/'/g, "\\'");
+      return `
+      <div class="coupon-card" onclick="openCouponModal('coupon/${safeFile}')">
+        <div class="coupon-img-container">
+          <img src="coupon/${encodeURIComponent(coupon.file)}" loading="lazy" alt="${coupon.name}" />
+        </div>
+        <div class="coupon-title">${coupon.name}</div>
+      </div>
+    `;
+    })
+    .join("");
+}
+
+function openCouponModal(src) {
+  const modal = document.getElementById("coupon-modal");
+  const img = document.getElementById("coupon-modal-img");
+  if (modal && img) {
+    img.src = src;
+    modal.classList.remove("hidden");
+  }
+}
+
+function closeCouponModal() {
+  const modal = document.getElementById("coupon-modal");
+  if (modal) {
+    modal.classList.add("hidden");
   }
 }
