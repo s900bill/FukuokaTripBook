@@ -530,9 +530,8 @@ header p {
 .expense-item-title {
   font-weight: 700;
   font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .expense-item-meta {
@@ -626,8 +625,8 @@ header p {
 
 .expense-day-body {
   overflow: hidden;
-  transition: max-height 0.25s ease, opacity 0.2s ease;
-  max-height: 2000px;
+  transition: max-height 0.4s ease, opacity 0.25s ease;
+  max-height: 9999px;
   opacity: 1;
   padding-top: 6px;
 }
@@ -639,9 +638,9 @@ header p {
 }
 
 .expense-list-scrollable {
-  max-height: 55vh;
+  max-height: 60vh;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: clip;
   padding-right: 4px;
   scroll-behavior: smooth;
 }
