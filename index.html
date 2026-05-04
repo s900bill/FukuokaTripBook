@@ -1,340 +1,241 @@
 <!doctype html>
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <meta name="theme-color" content="#C9604A" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="福岡行程" />
-    <meta
-      name="description"
-      content="福岡 5天4夜 旅行手冊 - 每日行程、記帳拆帳、實用日語、匯率換算"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="manifest" href="./manifest.json" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <title>不喊累旅行社</title>
-  </head>
 
-  <body>
-    <!-- Sakura canvas background -->
-    <canvas id="sakura-canvas"></canvas>
-    <!-- Error Overlay -->
-    <div id="error-ui" class="error-overlay hidden">
-      <h2>無法載入行程檔案</h2>
-      <p>
-        請確認資料夾中存有 trip.json，或者透過下方手動選取。若您是直接以檔案開啟
-        (file://)，請改用本機靜態伺服器（例如 Python 或 Node）。
-      </p>
-      <input
-        type="file"
-        id="file-input"
-        accept=".json"
-        style="margin: 20px 0"
-      />
-      <button
-        class="btn btn-primary"
-        onclick="document.getElementById('file-input').click()"
-      >
-        選擇 JSON 檔案
-      </button>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#C9604A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="福岡行程" />
+  <meta name="description" content="福岡 5天4夜 旅行手冊 - 每日行程、記帳拆帳、實用日語、匯率換算" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@100..900&display=swap"
+    rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>不喊累旅行社</title>
+</head>
 
-    <!-- Header -->
-    <header id="header-ui">
-      <div
-        class="container"
-        style="
+<body>
+  <!-- Sakura canvas background -->
+  <canvas id="sakura-canvas"></canvas>
+  <!-- Error Overlay -->
+  <div id="error-ui" class="error-overlay hidden">
+    <h2>無法載入行程檔案</h2>
+    <p>
+      請確認資料夾中存有 trip.json，或者透過下方手動選取。若您是直接以檔案開啟
+      (file://)，請改用本機靜態伺服器（例如 Python 或 Node）。
+    </p>
+    <input type="file" id="file-input" accept=".json" style="margin: 20px 0" />
+    <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+      選擇 JSON 檔案
+    </button>
+  </div>
+
+  <!-- Header -->
+  <header id="header-ui">
+    <div class="container" style="
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
-        "
-      >
-        <div>
-          <h1 id="trip-title">載入中...</h1>
-          <p id="trip-dates" style="margin-bottom: 0">--</p>
-        </div>
-        <div class="font-control">
-          <button
-            onclick="setFontSize('normal')"
-            id="font-normal"
-            class="active"
-            title="標準字體"
-          >
-            小
-          </button>
-          <button onclick="setFontSize('large')" id="font-large" title="大字體">
-            中
-          </button>
-          <button
-            onclick="setFontSize('xlarge')"
-            id="font-xlarge"
-            title="特大字體"
-          >
-            大
-          </button>
+        ">
+      <div>
+        <h1 id="trip-title">載入中...</h1>
+        <p id="trip-dates" style="margin-bottom: 0">--</p>
+      </div>
+      <div class="font-control">
+        <button onclick="setFontSize('normal')" id="font-normal" class="active" title="標準字體">
+          小
+        </button>
+        <button onclick="setFontSize('large')" id="font-large" title="大字體">
+          中
+        </button>
+        <button onclick="setFontSize('xlarge')" id="font-xlarge" title="特大字體">
+          大
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container" id="main-content">
+    <!-- Summary Tab -->
+    <div id="tab-summary" class="tab-view">
+      <div class="card">
+        <h3 style="margin-top: 0">旅程摘要</h3>
+        <p id="meta-notes" style="font-size: 0.88em; color: var(--text-light)"></p>
+        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 12px 0" />
+        <div id="summary-cards"></div>
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+          <button class="btn btn-primary" style="flex: 1; padding: 10px; background-color: #ef4444;"
+            onclick="openEmergencyModal()">🚨 緊急求助指南</button>
+          <button class="btn btn-primary" style="flex: 1; padding: 10px; background-color: #3b82f6;"
+            onclick="openTimetableModal()">🚆 交通時刻表</button>
         </div>
       </div>
-    </header>
-
-    <div class="container" id="main-content">
-      <!-- Summary Tab -->
-      <div id="tab-summary" class="tab-view">
-        <div class="card">
-          <h3 style="margin-top: 0">旅程摘要</h3>
-          <p
-            id="meta-notes"
-            style="font-size: 0.88em; color: var(--text-light)"
-          ></p>
-          <hr
-            style="border: 0; border-top: 1px solid #f1f5f9; margin: 12px 0"
-          />
-          <div id="summary-cards"></div>
-          <div style="display: flex; gap: 8px; margin-top: 12px;">
-            <button class="btn btn-primary" style="flex: 1; padding: 10px; background-color: #ef4444;" onclick="openEmergencyModal()">🚨 緊急求助指南</button>
-            <button class="btn btn-primary" style="flex: 1; padding: 10px; background-color: #3b82f6;" onclick="openTimetableModal()">🚆 交通時刻表</button>
-          </div>
-        </div>
-        <h3>行程總覽</h3>
-        <div id="overview-list"></div>
-        <h3>行程地圖</h3>
-        <div class="card" style="padding: 0; overflow: hidden">
-          <img
-            src="tripmap.webp"
-            loading="lazy"
-            decoding="async"
-            style="width: 100%; display: block"
-            alt="行程地圖"
-          />
-        </div>
+      <h3>行程總覽</h3>
+      <div id="overview-list"></div>
+      <h3>行程地圖</h3>
+      <div class="card" style="padding: 0; overflow: hidden">
+        <img src="tripmap.webp" loading="lazy" decoding="async" style="width: 100%; display: block" alt="行程地圖" />
       </div>
+    </div>
 
-      <!-- Daily Tab -->
-      <div id="tab-daily" class="tab-view hidden">
-        <div class="day-scroller" id="day-scroller"></div>
-        <div id="daily-controls" class="between" style="margin-bottom: 12px">
-          <div class="selector-group" id="plan-selector">
-            <button class="selector-btn active" onclick="switchPlan('A')">
-              方案 A
-            </button>
-            <button
-              class="selector-btn"
-              onclick="switchPlan('B')"
-              id="btn-plan-b"
-            >
-              方案 B
-            </button>
-          </div>
-          <button class="btn" style="padding: 6px 12px; font-size: 0.9em; background: #e0f2fe; color: #0369a1;" onclick="openTimetableModal()">🚆 時刻表</button>
+    <!-- Daily Tab -->
+    <div id="tab-daily" class="tab-view hidden">
+      <div class="day-scroller" id="day-scroller"></div>
+      <div id="daily-controls" class="between" style="margin-bottom: 12px">
+        <div class="selector-group" id="plan-selector">
+          <button class="selector-btn active" onclick="switchPlan('A')">
+            方案 A
+          </button>
+          <button class="selector-btn" onclick="switchPlan('B')" id="btn-plan-b">
+            方案 B
+          </button>
         </div>
-        <div id="day-detail-content" class="timeline"></div>
+        <button class="btn" style="padding: 6px 12px; font-size: 0.9em; background: #e0f2fe; color: #0369a1;"
+          onclick="openTimetableModal()">🚆 時刻表</button>
       </div>
+      <div id="day-detail-content" class="timeline"></div>
+    </div>
 
-      <!-- Lists Tab -->
-      <div id="tab-lists" class="tab-view hidden">
-        <h3>餐廳與店家清單</h3>
-        <div id="restaurant-tags" style="margin-bottom: 12px"></div>
-        <div style="display: flex; gap: 8px; margin-bottom: 8px">
-          <input
-            id="restaurant-filter"
-            placeholder="篩選餐廳 / 區域 / 標籤"
-            style="
+    <!-- Lists Tab -->
+    <div id="tab-lists" class="tab-view hidden">
+      <h3>餐廳與店家清單</h3>
+      <div id="restaurant-tags" style="margin-bottom: 12px"></div>
+      <div style="display: flex; gap: 8px; margin-bottom: 8px">
+        <input id="restaurant-filter" placeholder="篩選餐廳 / 區域 / 標籤" style="
               flex: 1;
               padding: 8px;
               border-radius: 8px;
               border: 1px solid #e2e8f0;
-            "
-          />
-          <button class="btn" onclick="renderLists()">搜尋</button>
-          <button class="btn" onclick="clearRestaurantFilter()">清除</button>
-        </div>
-        <div
-          id="restaurant-list"
-          style="max-height: 60vh; overflow-y: auto"
-        ></div>
-        <h3>待辦與購物項目</h3>
-        <div style="display: flex; gap: 8px; margin-bottom: 8px">
-          <input
-            id="todo-filter"
-            placeholder="篩選待辦/購物項目"
-            style="
+            " />
+        <button class="btn" onclick="renderLists()">搜尋</button>
+        <button class="btn" onclick="clearRestaurantFilter()">清除</button>
+      </div>
+      <div id="restaurant-list" style="max-height: 60vh; overflow-y: auto"></div>
+      <h3>待辦與購物項目</h3>
+      <div style="display: flex; gap: 8px; margin-bottom: 8px">
+        <input id="todo-filter" placeholder="篩選待辦/購物項目" style="
               flex: 1;
               padding: 8px;
               border-radius: 8px;
               border: 1px solid #e2e8f0;
-            "
-          />
-          <button class="btn" onclick="renderLists()">搜尋</button>
-        </div>
-        <div id="todo-list"></div>
+            " />
+        <button class="btn" onclick="renderLists()">搜尋</button>
       </div>
+      <div id="todo-list"></div>
+    </div>
 
-      <!-- Admin Tab (only visible when ?admin=1) -->
-      <div id="tab-admin" class="tab-view hidden">
-        <div class="admin-zone">
-          <h3>管理模式</h3>
-          <p>您可以匯出目前資料或產出 AI Prompt。</p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
-            <button class="btn" onclick="exportJSON()">匯出 JSON</button>
-            <button class="btn" onclick="copyPrompt()">複製 AI Prompt</button>
-            <button
-              class="btn"
-              onclick="document.getElementById('file-input-admin').click()"
-            >
-              匯入 JSON
-            </button>
-          </div>
-          <input
-            type="file"
-            id="file-input-admin"
-            class="hidden"
-            onchange="handleFile(this.files[0])"
-          />
+    <!-- Admin Tab (only visible when ?admin=1) -->
+    <div id="tab-admin" class="tab-view hidden">
+      <div class="admin-zone">
+        <h3>管理模式</h3>
+        <p>您可以匯出目前資料或產出 AI Prompt。</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+          <button class="btn" onclick="exportJSON()">匯出 JSON</button>
+          <button class="btn" onclick="copyPrompt()">複製 AI Prompt</button>
+          <button class="btn" onclick="document.getElementById('file-input-admin').click()">
+            匯入 JSON
+          </button>
         </div>
+        <input type="file" id="file-input-admin" class="hidden" onchange="handleFile(this.files[0])" />
       </div>
+    </div>
 
-      <!-- Checklist Tab -->
-      <div id="tab-checklist" class="tab-view hidden">
-        <h3>🎒 行前準備清單</h3>
-        <div class="card" style="margin-bottom: 16px">
-          <div
-            style="
+    <!-- Checklist Tab -->
+    <div id="tab-checklist" class="tab-view hidden">
+      <h3>🎒 行前準備清單</h3>
+      <div class="card" style="margin-bottom: 16px">
+        <div style="
               display: flex;
               justify-content: space-between;
               align-items: center;
               margin-bottom: 8px;
-            "
-          >
-            <span style="font-weight: 600">完成進度</span>
-            <span
-              id="progress-text"
-              style="color: var(--primary); font-weight: 600"
-              >0%</span
-            >
-          </div>
-          <div
-            style="
+            ">
+          <span style="font-weight: 600">完成進度</span>
+          <span id="progress-text" style="color: var(--primary); font-weight: 600">0%</span>
+        </div>
+        <div style="
               background: #e2e8f0;
               height: 8px;
               border-radius: 4px;
               overflow: hidden;
-            "
-          >
-            <div
-              id="progress-bar"
-              style="
+            ">
+          <div id="progress-bar" style="
                 background: var(--primary);
                 height: 100%;
                 width: 0%;
                 transition: width 0.3s;
-              "
-            ></div>
-          </div>
+              "></div>
         </div>
-        <div class="card" style="margin-bottom: 16px">
-          <div
-            style="
+      </div>
+      <div class="card" style="margin-bottom: 16px">
+        <div style="
               display: flex;
               gap: 8px;
               flex-wrap: wrap;
               justify-content: center;
-            "
-          >
-            <a
-              href="#cat-證件"
-              style="
+            ">
+          <a href="#cat-證件" style="
                 padding: 8px 16px;
                 background: #dbeafe;
                 color: var(--primary);
                 border-radius: 20px;
                 text-decoration: none;
                 font-size: 0.88em;
-              "
-              >📄 證件</a
-            >
-            <a
-              href="#cat-金錢"
-              style="
+              ">📄 證件</a>
+          <a href="#cat-金錢" style="
                 padding: 8px 16px;
                 background: #fef3c7;
                 color: #d97706;
                 border-radius: 20px;
                 text-decoration: none;
                 font-size: 0.88em;
-              "
-              >💰 金錢</a
-            >
-            <a
-              href="#cat-電子"
-              style="
+              ">💰 金錢</a>
+          <a href="#cat-電子" style="
                 padding: 8px 16px;
                 background: #ddd6fe;
                 color: #7c3aed;
                 border-radius: 20px;
                 text-decoration: none;
                 font-size: 0.88em;
-              "
-              >🔌 電子</a
-            >
-            <a
-              href="#cat-衣物"
-              style="
+              ">🔌 電子</a>
+          <a href="#cat-衣物" style="
                 padding: 8px 16px;
                 background: #fce7f3;
                 color: #db2777;
                 border-radius: 20px;
                 text-decoration: none;
                 font-size: 0.88em;
-              "
-              >👕 衣物</a
-            >
-            <a
-              href="#cat-藥品"
-              style="
+              ">👕 衣物</a>
+          <a href="#cat-藥品" style="
                 padding: 8px 16px;
                 background: #dcfce7;
                 color: #16a34a;
                 border-radius: 20px;
                 text-decoration: none;
                 font-size: 0.88em;
-              "
-              >💊 藥品</a
-            >
-            <a
-              href="#cat-其他"
-              style="
+              ">💊 藥品</a>
+          <a href="#cat-其他" style="
                 padding: 8px 16px;
                 background: #e0e7ff;
                 color: #4f46e5;
                 border-radius: 20px;
                 text-decoration: none;
                 font-size: 0.88em;
-              "
-              >📦 其他</a
-            >
-          </div>
+              ">📦 其他</a>
         </div>
-        <div
-          id="checklist-items"
-          style="
+      </div>
+      <div id="checklist-items" style="
             max-height: calc(100vh - 380px);
             overflow-y: auto;
             overflow-x: hidden;
-          "
-        ></div>
-        <div style="text-align: center; margin-top: 16px; padding-bottom: 16px">
-          <button
-            onclick="clearCompleted()"
-            style="
+          "></div>
+      <div style="text-align: center; margin-top: 16px; padding-bottom: 16px">
+        <button onclick="clearCompleted()" style="
               padding: 10px 24px;
               background: #ef4444;
               color: white;
@@ -342,15 +243,10 @@
               border-radius: 8px;
               cursor: pointer;
               opacity: 0.8;
-            "
-            onmouseover="this.style.opacity = '1'"
-            onmouseout="this.style.opacity = '0.8'"
-          >
-            🗑️ 清除已完成項目
-          </button>
-          <button
-            onclick="resetChecklist()"
-            style="
+            " onmouseover="this.style.opacity = '1'" onmouseout="this.style.opacity = '0.8'">
+          🗑️ 清除已完成項目
+        </button>
+        <button onclick="resetChecklist()" style="
               padding: 10px 24px;
               background: #64748b;
               color: white;
@@ -359,59 +255,41 @@
               cursor: pointer;
               opacity: 0.8;
               margin-left: 8px;
-            "
-            onmouseover="this.style.opacity = '1'"
-            onmouseout="this.style.opacity = '0.8'"
-          >
-            🔄 重置所有
-          </button>
-        </div>
+            " onmouseover="this.style.opacity = '1'" onmouseout="this.style.opacity = '0.8'">
+          🔄 重置所有
+        </button>
       </div>
+    </div>
 
-      <!-- Japanese Tab -->
-      <div id="tab-japanese" class="tab-view hidden">
-        <h3>🇯🇵 實用日語</h3>
-        <p style="color: var(--text-light); margin-bottom: 16px">
-          點擊卡片即可播放語音
-        </p>
-        <div
-          id="japanese-categories"
-          style="
+    <!-- Japanese Tab -->
+    <div id="tab-japanese" class="tab-view hidden">
+      <h3>🇯🇵 實用日語</h3>
+      <p style="color: var(--text-light); margin-bottom: 16px">
+        點擊卡片即可播放語音
+      </p>
+      <div id="japanese-categories" style="
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             padding-bottom: 4px;
             margin-bottom: 12px;
             -webkit-overflow-scrolling: touch;
-          "
-        ></div>
-        <div
-          id="japanese-list"
-          style="
+          "></div>
+      <div id="japanese-list" style="
             display: grid;
             gap: 12px;
             overflow-y: auto;
             max-height: calc(100vh - 220px);
-          "
-        ></div>
-      </div>
+          "></div>
+    </div>
 
-      <!-- Converter Tab -->
-      <div id="tab-converter" class="tab-view hidden">
-        <h3>💱 匯率試算</h3>
-        <div class="card">
-          <label
-            style="display: block; color: var(--text-light); margin-bottom: 4px"
-            >匯率 (1 JPY = ? TWD)</label
-          >
-          <div style="display: flex; gap: 10px; margin-bottom: 20px">
-            <input
-              type="number"
-              id="exchange-rate"
-              value="0.22"
-              step="0.001"
-              readonly
-              style="
+    <!-- Converter Tab -->
+    <div id="tab-converter" class="tab-view hidden">
+      <h3>💱 匯率試算</h3>
+      <div class="card">
+        <label style="display: block; color: var(--text-light); margin-bottom: 4px">匯率 (1 JPY = ? TWD)</label>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px">
+          <input type="number" id="exchange-rate" value="0.22" step="0.001" readonly style="
                 flex: 1;
                 padding: 12px;
                 border: 1px solid #e2e8f0;
@@ -419,66 +297,43 @@
                 border-radius: 8px;
                 font-size: 1.2em;
                 color: var(--text-light);
-              "
-            />
-            <button
-              class="btn"
-              onclick="fetchExchangeRate()"
-              title="從網路更新匯率"
-            >
-              更新
-            </button>
-          </div>
-          <div
-            id="converter-container"
-            style="
+              " />
+          <button class="btn" onclick="fetchExchangeRate()" title="從網路更新匯率">
+            更新
+          </button>
+        </div>
+        <div id="converter-container" style="
               display: flex;
               flex-direction: column;
               gap: 20px;
               align-items: center;
-            "
-          >
-            <div style="width: 100%" id="container-top">
-              <label
-                id="label-top"
-                style="
+            ">
+          <div style="width: 100%" id="container-top">
+            <label id="label-top" style="
                   display: block;
                   color: var(--text-light);
                   margin-bottom: 4px;
-                "
-                >日幣 (JPY)</label
-              >
-              <div style="position: relative">
-                <span
-                  id="symbol-top"
-                  style="
+                ">日幣 (JPY)</label>
+            <div style="position: relative">
+              <span id="symbol-top" style="
                     position: absolute;
                     left: 12px;
                     top: 50%;
                     transform: translateY(-50%);
                     font-size: 1.2em;
                     color: var(--text-light);
-                  "
-                  >¥</span
-                >
-                <input
-                  type="number"
-                  inputmode="decimal"
-                  id="input-top"
-                  placeholder="輸入日幣"
-                  style="
+                  ">¥</span>
+              <input type="number" inputmode="decimal" id="input-top" placeholder="輸入日幣" style="
                     width: 100%;
                     padding: 16px 16px 16px 36px;
                     border: 2px solid var(--primary);
                     border-radius: 12px;
                     font-size: 1.5em;
                     font-weight: bold;
-                  "
-                />
-              </div>
+                  " />
             </div>
-            <div
-              style="
+          </div>
+          <div style="
                 color: var(--text-light);
                 font-size: 1.5em;
                 cursor: pointer;
@@ -490,41 +345,25 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-              "
-              onclick="swapCurrencies()"
-              title="交換幣別"
-            >
-              ⇅
-            </div>
-            <div style="width: 100%" id="container-bottom">
-              <label
-                id="label-bottom"
-                style="
+              " onclick="swapCurrencies()" title="交換幣別">
+            ⇅
+          </div>
+          <div style="width: 100%" id="container-bottom">
+            <label id="label-bottom" style="
                   display: block;
                   color: var(--text-light);
                   margin-bottom: 4px;
-                "
-                >台幣 (TWD)</label
-              >
-              <div style="position: relative">
-                <span
-                  id="symbol-bottom"
-                  style="
+                ">台幣 (TWD)</label>
+            <div style="position: relative">
+              <span id="symbol-bottom" style="
                     position: absolute;
                     left: 12px;
                     top: 50%;
                     transform: translateY(-50%);
                     font-size: 1.2em;
                     color: var(--text-light);
-                  "
-                  >NT$</span
-                >
-                <input
-                  type="number"
-                  inputmode="decimal"
-                  id="input-bottom"
-                  placeholder="輸入台幣"
-                  style="
+                  ">NT$</span>
+              <input type="number" inputmode="decimal" id="input-bottom" placeholder="輸入台幣" style="
                     width: 100%;
                     padding: 16px 16px 16px 48px;
                     border: 2px solid #64748b;
@@ -532,572 +371,475 @@
                     font-size: 1.5em;
                     font-weight: bold;
                     background: #f1f5f9;
-                  "
-                />
-              </div>
+                  " />
             </div>
           </div>
-          <div
-            style="
+        </div>
+        <div style="
               margin-top: 24px;
               display: grid;
               grid-template-columns: repeat(3, 1fr);
               gap: 8px;
-            "
-          >
-            <button
-              class="btn"
-              style="justify-content: center; background: #e2e8f0"
-              onclick="setJpy(1000)"
-            >
-              ¥1,000
-            </button>
-            <button
-              class="btn"
-              style="justify-content: center; background: #e2e8f0"
-              onclick="setJpy(5000)"
-            >
-              ¥5,000
-            </button>
-            <button
-              class="btn"
-              style="justify-content: center; background: #e2e8f0"
-              onclick="setJpy(10000)"
-            >
-              ¥10,000
-            </button>
-          </div>
-        </div> <!-- Close Exchange Rate Card -->
+            ">
+          <button class="btn" style="justify-content: center; background: #e2e8f0" onclick="setJpy(1000)">
+            ¥1,000
+          </button>
+          <button class="btn" style="justify-content: center; background: #e2e8f0" onclick="setJpy(5000)">
+            ¥5,000
+          </button>
+          <button class="btn" style="justify-content: center; background: #e2e8f0" onclick="setJpy(10000)">
+            ¥10,000
+          </button>
+        </div>
+      </div> <!-- Close Exchange Rate Card -->
 
-        <h3 style="margin-top: 24px">🧾 退稅湊單計算機 (舊制)</h3>
-        <div class="card" style="margin-bottom: 24px;">
-          <p style="font-size: 0.85em; color: var(--text-light); margin-top: 0;">
-            2026年5月適用舊制：單店未稅滿 5,000 日圓可現場免稅。<br>
-            <small>*消耗品(藥妝/食品)需密封不可拆；一般物品不限。</small>
-          </p>
-          
-          <div id="taxfree-items" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-            <!-- Items added here -->
-          </div>
-          
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
-            <input type="text" id="taxfree-name" placeholder="商品名稱 (選填，預設：商品1)" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" />
-            <div style="display: flex; gap: 8px;">
-              <input type="number" id="taxfree-input" inputmode="decimal" placeholder="輸入金額" style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" />
-              <select id="taxfree-type" style="padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; width: 90px;">
-                <option value="taxed">含稅價</option>
-                <option value="untaxed">未稅價</option>
-              </select>
-              <button class="btn btn-primary" onclick="addTaxFreeItem()" style="padding: 10px 16px;">加入</button>
-            </div>
-          </div>
+      <h3 style="margin-top: 24px">🧾 退稅湊單計算機 (舊制)</h3>
+      <div class="card" style="margin-bottom: 24px;">
+        <p style="font-size: 0.85em; color: var(--text-light); margin-top: 0;">
+          2026年5月適用舊制：單店未稅滿 5,000 日圓可現場免稅。<br>
+          <small>*消耗品(藥妝/食品)需密封不可拆；一般物品不限。</small>
+        </p>
 
-          <div style="background: #f1f5f9; padding: 12px; border-radius: 8px;">
-            <div class="between" style="margin-bottom: 8px;">
-              <span style="font-weight: bold;">未稅總額</span>
-              <span id="taxfree-total" style="font-size: 1.2em; font-weight: bold;">¥0</span>
-            </div>
-            
-            <div style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
-              <div id="taxfree-progress" style="background: #ef4444; height: 100%; width: 0%; transition: width 0.3s, background 0.3s;"></div>
-            </div>
-            
-            <div class="between" style="font-size: 0.85em;">
-              <span id="taxfree-status" style="color: #ef4444;">還差 ¥5000 免稅</span>
-              <span>門檻 ¥5000</span>
-            </div>
-          </div>
-          
-          <div id="taxfree-result" class="hidden" style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1;">
-            <div class="between" style="color: #10b981; font-weight: bold;">
-              <span>✅ 達標！免稅後實付：</span>
-              <span id="taxfree-final-jpy" style="font-size: 1.2em;">¥0</span>
-            </div>
-            <div style="text-align: right; font-size: 0.85em; color: var(--text-light); margin-top: 4px;">
-              約合 <span id="taxfree-final-twd">NT$0</span>
-            </div>
-          </div>
-          <button class="btn" style="width: 100%; margin-top: 12px;" onclick="clearTaxFreeItems()">清空重算</button>
+        <div id="taxfree-items" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+          <!-- Items added here -->
         </div>
 
-        <h3 style="margin-top: 24px">🏷️ 購物優惠券</h3>
-        <div class="card">
-          <div style="display: flex; gap: 8px; margin-bottom: 16px">
-            <input
-              id="coupon-filter"
-              placeholder="🔍 搜尋優惠券 (例如: 藥妝)"
-              style="
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+          <input type="text" id="taxfree-name" placeholder="商品名稱 (選填，預設：商品1)"
+            style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" />
+          <div style="display: flex; gap: 8px;">
+            <input type="number" id="taxfree-input" inputmode="decimal" placeholder="輸入金額"
+              style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" />
+            <select id="taxfree-type"
+              style="padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; width: 90px;">
+              <option value="taxed">含稅價</option>
+              <option value="untaxed">未稅價</option>
+            </select>
+            <button class="btn btn-primary" onclick="addTaxFreeItem()" style="padding: 10px 16px;">加入</button>
+          </div>
+        </div>
+
+        <div style="background: #f1f5f9; padding: 12px; border-radius: 8px;">
+          <div class="between" style="margin-bottom: 8px;">
+            <span style="font-weight: bold;">未稅總額</span>
+            <span id="taxfree-total" style="font-size: 1.2em; font-weight: bold;">¥0</span>
+          </div>
+
+          <div style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+            <div id="taxfree-progress"
+              style="background: #ef4444; height: 100%; width: 0%; transition: width 0.3s, background 0.3s;"></div>
+          </div>
+
+          <div class="between" style="font-size: 0.85em;">
+            <span id="taxfree-status" style="color: #ef4444;">還差 ¥5000 免稅</span>
+            <span>門檻 ¥5000</span>
+          </div>
+        </div>
+
+        <div id="taxfree-result" class="hidden"
+          style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1;">
+          <div class="between" style="color: #10b981; font-weight: bold;">
+            <span>✅ 達標！免稅後實付：</span>
+            <span id="taxfree-final-jpy" style="font-size: 1.2em;">¥0</span>
+          </div>
+          <div style="text-align: right; font-size: 0.85em; color: var(--text-light); margin-top: 4px;">
+            約合 <span id="taxfree-final-twd">NT$0</span>
+          </div>
+        </div>
+        <button class="btn" style="width: 100%; margin-top: 12px;" onclick="clearTaxFreeItems()">清空重算</button>
+      </div>
+
+      <h3 style="margin-top: 24px">🏷️ 購物優惠券</h3>
+      <div class="card">
+        <div style="display: flex; gap: 8px; margin-bottom: 16px">
+          <input id="coupon-filter" placeholder="🔍 搜尋優惠券 (例如: 藥妝)" style="
                 flex: 1;
                 padding: 12px;
                 border-radius: 8px;
                 border: 1px solid #e2e8f0;
                 font-size: 1em;
-              "
-            />
-          </div>
-          <div id="coupon-grid" class="coupon-grid">
-            <!-- 優惠券會由 JS 產生 -->
-          </div>
+              " />
+        </div>
+        <div id="coupon-grid" class="coupon-grid">
+          <!-- 優惠券會由 JS 產生 -->
         </div>
       </div>
+    </div>
 
-      <!-- Expense Tab (NEW) -->
-      <div id="tab-expense" class="tab-view hidden">
-        <div
-          style="
+    <!-- Expense Tab (NEW) -->
+    <div id="tab-expense" class="tab-view hidden">
+      <div style="
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-          "
-        >
-          <div style="display: flex; flex-direction: column">
-            <h3 style="margin: 0">💰 旅途記帳</h3>
-            <div
-              id="expense-rate-display"
-              style="
+          ">
+        <div style="display: flex; flex-direction: column">
+          <h3 style="margin: 0">💰 旅途記帳</h3>
+          <div id="expense-rate-display" style="
                 font-size: 0.75em;
                 color: var(--text-light);
                 margin-top: 4px;
-              "
-            >
-              目前匯率：1 JPY = 0.22 TWD
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px">
-            <span id="firebase-status-badge" class="firebase-status offline"
-              >🔴 離線模式</span
-            >
-            <button
-              class="btn btn-primary"
-              onclick="openExpenseModal()"
-              style="padding: 8px 14px"
-            >
-              ＋ 新增
-            </button>
+              ">
+            目前匯率：1 JPY = 0.22 TWD
           </div>
         </div>
-
-        <!-- Summary Bar -->
-        <div class="expense-summary-bar" id="expense-summary-bar">
-          <div class="expense-summary-item">
-            <div class="label">總花費</div>
-            <div class="expense-summary-val-jpy">¥0</div>
-            <div class="expense-summary-val-twd">NT$0</div>
-          </div>
-          <div
-            style="width: 1px; background: #e8c9b8; opacity: 0.5; margin: 4px 0"
-          ></div>
-          <div class="expense-summary-item">
-            <div class="label">人均花費</div>
-            <div class="expense-summary-val-jpy">¥0</div>
-            <div class="expense-summary-val-twd">NT$0</div>
-          </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <span id="firebase-status-badge" class="firebase-status offline">🔴 離線模式</span>
+          <button class="btn btn-primary" onclick="openExpenseModal()" style="padding: 8px 14px">
+            ＋ 新增
+          </button>
         </div>
+      </div>
 
-        <!-- Settlement -->
-        <div class="between" style="margin: 16px 0 8px">
-          <div
-            class="expense-section-title"
-            style="margin: 0; cursor: pointer"
-            onclick="toggleSettlementView()"
-          >
-            <span>💸 結清建議</span>
-            <span
-              id="settlement-toggle-icon"
-              style="font-size: 1.2em; margin-left: 4px"
-              >🔽</span
-            >
-          </div>
-          <button
-            class="btn"
-            style="
+      <!-- Summary Bar -->
+      <div class="expense-summary-bar" id="expense-summary-bar">
+        <div class="expense-summary-item">
+          <div class="label">總花費</div>
+          <div class="expense-summary-val-jpy">¥0</div>
+          <div class="expense-summary-val-twd">NT$0</div>
+        </div>
+        <div style="width: 1px; background: #e8c9b8; opacity: 0.5; margin: 4px 0"></div>
+        <div class="expense-summary-item">
+          <div class="label">人均花費</div>
+          <div class="expense-summary-val-jpy">¥0</div>
+          <div class="expense-summary-val-twd">NT$0</div>
+        </div>
+      </div>
+
+      <!-- Settlement -->
+      <div class="between" style="margin: 16px 0 8px">
+        <div class="expense-section-title" style="margin: 0; cursor: pointer" onclick="toggleSettlementView()">
+          <span>💸 結清建議</span>
+          <span id="settlement-toggle-icon" style="font-size: 1.2em; margin-left: 4px">🔽</span>
+        </div>
+        <button class="btn" style="
               padding: 4px 10px;
               font-size: 0.8em;
               background: white;
               border: 1.5px solid #e8c9b8;
               color: var(--text-light);
-            "
-            onclick="openSettlementDetails()"
-          >
-            🔍 核對明細
-          </button>
-        </div>
-        <div
-          id="expense-settlement-container"
-          class="card"
-          style="padding: 12px"
-        >
-          <div
-            class="selector-group"
-            style="
+            " onclick="openSettlementDetails()">
+          🔍 核對明細
+        </button>
+      </div>
+      <div id="expense-settlement-container" class="card" style="padding: 12px">
+        <div class="selector-group" style="
               display: flex;
               width: 100%;
               margin-bottom: 12px;
               box-sizing: border-box;
-            "
-          >
-            <button
-              id="btn-settle-pairwise"
-              class="selector-btn active"
-              style="flex: 1"
-              onclick="setSettleMode('pairwise')"
-            >
-              兩兩結算 (直覺)
-            </button>
-            <button
-              id="btn-settle-global"
-              class="selector-btn"
-              style="flex: 1"
-              onclick="setSettleMode('global')"
-            >
-              最少筆數 (統籌)
-            </button>
-          </div>
-          <div id="expense-settlement-list">
-            <div style="color: var(--text-light); font-size: 0.88em">
-              新增帳目後自動計算結清方式
-            </div>
+            ">
+          <button id="btn-settle-pairwise" class="selector-btn active" style="flex: 1"
+            onclick="setSettleMode('pairwise')">
+            兩兩結算 (直覺)
+          </button>
+          <button id="btn-settle-global" class="selector-btn" style="flex: 1" onclick="setSettleMode('global')">
+            最少筆數 (統籌)
+          </button>
+        </div>
+        <div id="expense-settlement-list">
+          <div style="color: var(--text-light); font-size: 0.88em">
+            新增帳目後自動計算結清方式
           </div>
         </div>
+      </div>
 
-        <!-- Expense List -->
-        <div class="expense-section-title">
-          <span>📋 消費明細</span>
+      <!-- Expense List -->
+      <div class="between expense-section-title" style="margin-bottom: 8px;">
+        <span style="display: flex; align-items: center;">📋 消費明細</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button id="expense-toggle-all-btn" onclick="toggleAllDayGroups()"
+            style="padding: 4px 8px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; font-size: 0.8em; cursor: pointer; color: var(--text-light); font-weight: 600; white-space: nowrap;">全部收闔</button>
+          <select id="expense-filter-member" onchange="renderExpenseList()"
+            style="padding: 4px 8px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; font-size: 0.9em;">
+            <option value="ALL">全部人員</option>
+          </select>
         </div>
+      </div>
+      <div class="expense-list-scrollable" id="expense-list-scrollable">
+        <!-- <button class="expense-back-top" id="expense-back-top" onclick="scrollExpenseToTop()" title="回到頂部">&#8679;</button> -->
         <div id="expense-list-container"></div>
       </div>
     </div>
-    <!-- /container -->
+  </div>
+  <!-- /container -->
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-      <a class="nav-item active" onclick="switchTab('summary', this)">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>
-        總覽
-      </a>
-      <a class="nav-item" onclick="switchTab('daily', this)">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path
-            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"
-          />
-        </svg>
-        每日行程
-      </a>
-      <a
-        class="nav-item"
-        onclick="switchTab('lists', this)"
-        style="display: none"
-      >
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
-        </svg>
-        清單
-      </a>
-      <a class="nav-item" onclick="switchTab('expense', this)">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path
-            d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"
-          />
-        </svg>
-        記帳
-      </a>
-      <a class="nav-item" onclick="switchTab('japanese', this)">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
-          />
-        </svg>
-        日語翻譯
-      </a>
-      <a class="nav-item" onclick="switchTab('converter', this)">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M22 8l-4-4v3H3v2h15v3l4-4zM2 16l4 4v-3h15v-2H6v-3l-4 4z" />
-        </svg>
-        匯率
-      </a>
-      <a
-        class="nav-item"
-        onclick="switchTab('checklist', this)"
-        style="display: none"
-      >
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-        </svg>
-        準備清單
-      </a>
-    </nav>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item active" onclick="switchTab('summary', this)">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+      </svg>
+      總覽
+    </a>
+    <a class="nav-item" onclick="switchTab('daily', this)">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path
+          d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" />
+      </svg>
+      每日行程
+    </a>
+    <a class="nav-item" onclick="switchTab('lists', this)" style="display: none">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+      </svg>
+      清單
+    </a>
+    <a class="nav-item" onclick="switchTab('expense', this)">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path
+          d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+      </svg>
+      記帳
+    </a>
+    <a class="nav-item" onclick="switchTab('japanese', this)">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+      </svg>
+      日語翻譯
+    </a>
+    <a class="nav-item" onclick="switchTab('converter', this)">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path d="M22 8l-4-4v3H3v2h15v3l4-4zM2 16l4 4v-3h15v-2H6v-3l-4 4z" />
+      </svg>
+      匯率
+    </a>
+    <a class="nav-item" onclick="switchTab('checklist', this)" style="display: none">
+      <svg viewBox="0 0 24 24" class="icon">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+      </svg>
+      準備清單
+    </a>
+  </nav>
 
-    <!-- Settlement Details Modal -->
-    <div
-      id="settlement-details-modal"
-      class="expense-modal-overlay hidden"
-      onclick="if (event.target === this) closeSettlementDetails();"
-    >
-      <div
-        class="expense-modal"
-        style="max-height: 80vh; overflow: hidden; display: flex; flex-direction: column"
-      >
-        <div
-          style="
+  <!-- Settlement Details Modal -->
+  <div id="settlement-details-modal" class="expense-modal-overlay hidden"
+    onclick="if (event.target === this) closeSettlementDetails();">
+    <div class="expense-modal" style="max-height: 80vh; overflow: hidden; display: flex; flex-direction: column">
+      <div style="
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
             flex-shrink: 0;
-          "
-        >
-          <h3 style="margin: 0">🔍 個人帳本明細</h3>
-          <span
-            style="
+          ">
+        <h3 style="margin: 0">🔍 個人帳本明細</h3>
+        <span style="
               font-size: 1.5em;
               cursor: pointer;
               color: var(--text-light);
               line-height: 1;
-            "
-            onclick="closeSettlementDetails()"
-            >&times;</span
-          >
-        </div>
-        <p
-          style="
+            " onclick="closeSettlementDetails()">&times;</span>
+      </div>
+      <p style="
             font-size: 0.85em;
             color: var(--text-light);
             margin-top: 0;
             margin-bottom: 12px;
             flex-shrink: 0;
-          "
-        >
-          此列表僅計算尚未結清之項目。淨資產大於零代表他人需還款給您。
-        </p>
-        <div
-          id="settlement-details-list"
-          style="overflow-y: auto; flex: 1; padding-right: 8px;"
-        ></div>
-      </div>
+          ">
+        此列表僅計算尚未結清之項目。淨資產大於零代表他人需還款給您。
+      </p>
+      <div id="settlement-details-list" style="overflow-y: auto; flex: 1; padding-right: 8px;"></div>
     </div>
+  </div>
 
-    <!-- Expense Add Modal -->
-    <div
-      id="expense-modal"
-      class="expense-modal-overlay hidden"
-      onclick="if (event.target === this) closeExpenseModal();"
-    >
-      <div class="expense-modal" style="max-height: 85vh; overflow: hidden; display: flex; flex-direction: column;">
-        <h3 style="flex-shrink: 0;">＋ 新增消費</h3>
+  <!-- Expense Add Modal -->
+  <div id="expense-modal" class="expense-modal-overlay hidden"
+    onclick="if (event.target === this) closeExpenseModal();">
+    <div class="expense-modal" style="max-height: 85vh; overflow: hidden; display: flex; flex-direction: column;">
+      <h3 id="expense-modal-title" style="flex-shrink: 0;">＋ 新增消費</h3>
+      <input type="hidden" id="exp-edit-id" value="" />
 
-        <div style="overflow-y: auto; flex: 1; padding-right: 8px;">
-          <div class="expense-form-group">
-            <label>日期</label>
-            <input type="date" id="exp-date" />
-          </div>
+      <div style="overflow-y: auto; flex: 1; padding-right: 8px;">
+        <div class="expense-form-group">
+          <label>日期</label>
+          <input type="date" id="exp-date" />
+        </div>
 
-          <div class="expense-form-group">
-            <label>消費說明</label>
-            <input type="text" id="exp-desc" placeholder="例：午餐 由布まぶし" />
-          </div>
+        <div class="expense-form-group">
+          <label>消費說明</label>
+          <input type="text" id="exp-desc" placeholder="例：午餐 由布まぶし" />
+        </div>
 
-          <div class="expense-form-group">
-            <label>金額</label>
-            <div style="display: flex; gap: 8px; align-items: center">
-              <div style="flex: 1">
-                <div
-                  style="
+        <div class="expense-form-group">
+          <label>金額</label>
+          <div style="display: flex; gap: 8px; align-items: center">
+            <div style="flex: 1">
+              <div style="
                     font-size: 0.8em;
                     color: var(--text-light);
                     margin-bottom: 4px;
-                  "
-                >
-                  日幣 (JPY)
-                </div>
-                <input
-                  type="number"
-                  id="exp-amount-jpy"
-                  inputmode="decimal"
-                  placeholder="¥0"
-                  min="0"
-                />
+                  ">
+                日幣 (JPY)
               </div>
-              <div style="color: var(--text-light); padding-top: 16px">⇌</div>
-              <div style="flex: 1">
-                <div
-                  style="
+              <input type="number" id="exp-amount-jpy" inputmode="decimal" placeholder="¥0" min="0" />
+            </div>
+            <div style="color: var(--text-light); padding-top: 16px">⇌</div>
+            <div style="flex: 1">
+              <div style="
                     font-size: 0.8em;
                     color: var(--text-light);
                     margin-bottom: 4px;
-                  "
-                >
-                  台幣 (TWD)
-                </div>
-                <input
-                  type="number"
-                  id="exp-amount-twd"
-                  inputmode="decimal"
-                  placeholder="NT$0"
-                  min="0"
-                />
+                  ">
+                台幣 (TWD)
               </div>
+              <input type="number" id="exp-amount-twd" inputmode="decimal" placeholder="NT$0" min="0" />
             </div>
           </div>
-
-          <div class="expense-form-group">
-            <label>付款人</label>
-            <select id="exp-paid-by"></select>
-          </div>
-
-          <div class="expense-form-group">
-            <label>均攤對象（點選切換）</label>
-            <div class="member-chips" id="exp-split-chips"></div>
-          </div>
-
-          <div class="expense-form-group">
-            <label>類別</label>
-            <div class="category-chips" id="exp-cat-chips"></div>
-          </div>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 20px; flex-shrink: 0;">
-          <button
-            class="btn"
-            onclick="closeExpenseModal()"
-            style="flex: 1; background: #e2e8f0"
-          >
-            取消
+        <div class="expense-form-group">
+          <label>付款人</label>
+          <select id="exp-paid-by"></select>
+        </div>
+
+        <div class="expense-form-group">
+          <label>均攤對象（點選切換）</label>
+          <div class="member-chips" id="exp-split-chips"></div>
+        </div>
+
+        <div class="expense-form-group">
+          <label>類別</label>
+          <div class="category-chips" id="exp-cat-chips"></div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px; flex-shrink: 0;">
+        <button class="btn" onclick="closeExpenseModal()" style="flex: 1; background: #e2e8f0">
+          取消
+        </button>
+        <button id="expense-submit-btn" class="btn btn-primary" onclick="submitExpense()" style="flex: 2">
+          確認新增
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coupon Fullscreen Modal -->
+  <div id="coupon-modal" class="coupon-modal-overlay hidden" onclick="closeCouponModal()">
+    <div class="coupon-modal-close" onclick="closeCouponModal()">&times;</div>
+    <img id="coupon-modal-img" src="" alt="Coupon" />
+  </div>
+
+  <!-- Emergency Modal -->
+  <div id="emergency-modal" class="expense-modal-overlay hidden"
+    onclick="if (event.target === this) closeEmergencyModal();">
+    <div class="expense-modal" style="max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;">
+      <div class="between" style="margin-bottom: 16px; flex-shrink: 0;">
+        <h3 style="margin: 0">🚨 緊急求助指南</h3>
+        <span style="font-size: 1.5em; cursor: pointer; color: var(--text-light); line-height: 1;"
+          onclick="closeEmergencyModal()">&times;</span>
+      </div>
+
+      <div style="overflow-y: auto; flex: 1; padding-right: 8px;">
+        <h4 style="color: #ef4444; border-bottom: 2px solid #ef4444; padding-bottom: 4px; margin-top: 0;">急難救助聯絡方式</h4>
+        <p><strong>台北駐大阪經濟文化辦事處 福岡分處</strong></p>
+        <p>電話：092-734-2810<br>
+          急難救助行動電話：090-1922-9740<br>
+          (日本境內直撥，專供緊急求助之用)</p>
+
+        <h4
+          style="color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin-top: 16px;">
+          護照遺失處理步驟</h4>
+        <ol style="padding-left: 20px; font-size: 0.9em; line-height: 1.5;">
+          <li>就近至警察署報案，取得「遺失物受理證明書」。</li>
+          <li>準備2吋大頭照2張、身分證件影本。</li>
+          <li>聯繫福岡分處，申請「入國證明書」以供搭機返台。</li>
+        </ol>
+
+        <h4 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 4px; margin-top: 16px;">急難實用日語
+          (點擊發音)</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;" id="emergency-phrases">
+          <button class="btn" style="justify-content: flex-start; text-align: left;"
+            onclick="window.playAudio ? playAudio('パスポートをなくしました。') : null">
+            <div style="font-size: 0.8em; color: var(--text-light);">我護照不見了</div>
+            <div>パスポートをなくしました。<br><small>(Pasupōto o nakushimashita)</small></div>
           </button>
-          <button
-            class="btn btn-primary"
-            onclick="submitExpense()"
-            style="flex: 2"
-          >
-            確認新增
+          <button class="btn" style="justify-content: flex-start; text-align: left;"
+            onclick="window.playAudio ? playAudio('救急車を呼んでください。') : null">
+            <div style="font-size: 0.8em; color: var(--text-light);">請幫我叫救護車</div>
+            <div>救急車を呼んでください。<br><small>(Kyūkyūsha o yonde kudasai)</small></div>
+          </button>
+          <button class="btn" style="justify-content: flex-start; text-align: left;"
+            onclick="window.playAudio ? playAudio('道に迷いました。ホテルまでお願いできますか？') : null">
+            <div style="font-size: 0.8em; color: var(--text-light);">我迷路了，可以載我到飯店嗎？</div>
+            <div>道に迷いました。ホテルまでお願いできますか？<br><small>(Michi ni mayoimashita. Hoteru made onegai dekimasu ka)</small></div>
+          </button>
+          <button class="btn"
+            style="justify-content: flex-start; text-align: left; border: 2px solid #ef4444; background: #fef2f2;"
+            onclick="window.playAudio ? playAudio('この住所までお願いします。福岡市中央区春吉。LA CHIC Stay Hakata') : null">
+            <div style="font-size: 0.8em; color: #ef4444; font-weight: bold;">🚕 計程車導航卡 (給司機看)</div>
+            <div style="font-size: 1.1em; color: #000;">この住所までお願いします：<br>福岡市中央区春吉2-4-7<br>LA CHIC Stay Hakata</div>
           </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Coupon Fullscreen Modal -->
-    <div
-      id="coupon-modal"
-      class="coupon-modal-overlay hidden"
-      onclick="closeCouponModal()"
-    >
-      <div class="coupon-modal-close" onclick="closeCouponModal()">&times;</div>
-      <img id="coupon-modal-img" src="" alt="Coupon" />
-    </div>
+  <!-- Timetable Modal -->
+  <div id="timetable-modal" class="expense-modal-overlay hidden"
+    onclick="if (event.target === this) closeTimetableModal();">
+    <div class="expense-modal" style="max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;">
+      <div class="between" style="margin-bottom: 16px; flex-shrink: 0;">
+        <h3 style="margin: 0">🚆 專屬交通時刻表</h3>
+        <span style="font-size: 1.5em; cursor: pointer; color: var(--text-light); line-height: 1;"
+          onclick="closeTimetableModal()">&times;</span>
+      </div>
 
-    <!-- Emergency Modal -->
-    <div
-      id="emergency-modal"
-      class="expense-modal-overlay hidden"
-      onclick="if (event.target === this) closeEmergencyModal();"
-    >
-      <div class="expense-modal" style="max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;">
-        <div class="between" style="margin-bottom: 16px; flex-shrink: 0;">
-          <h3 style="margin: 0">🚨 緊急求助指南</h3>
-          <span style="font-size: 1.5em; cursor: pointer; color: var(--text-light); line-height: 1;" onclick="closeEmergencyModal()">&times;</span>
+      <div style="overflow-y: auto; flex: 1; padding-right: 8px;">
+        <p style="font-size: 0.85em; color: var(--text-light); margin-top: 0;">支援離線查看，提供本次行程關鍵班次資訊。</p>
+
+        <h4 style="margin-top: 16px; margin-bottom: 8px;">Day 2: 去程 - 龜之井巴士</h4>
+        <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
+          <strong>天神高速巴士總站 → 由布院站前</strong><br>
+          您預約的班次：<span style="color: var(--primary); font-weight: bold;">08:25 發車</span><br>
+          預計抵達時間：10:59<br>
+          <small>*請提早 15 分鐘抵達乘車月台</small>
         </div>
-        
-        <div style="overflow-y: auto; flex: 1; padding-right: 8px;">
-          <h4 style="color: #ef4444; border-bottom: 2px solid #ef4444; padding-bottom: 4px; margin-top: 0;">急難救助聯絡方式</h4>
-          <p><strong>台北駐大阪經濟文化辦事處 福岡分處</strong></p>
-          <p>電話：092-734-2810<br>
-             急難救助行動電話：090-1922-9740<br>
-             (日本境內直撥，專供緊急求助之用)</p>
 
-          <h4 style="color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin-top: 16px;">護照遺失處理步驟</h4>
-          <ol style="padding-left: 20px; font-size: 0.9em; line-height: 1.5;">
-            <li>就近至警察署報案，取得「遺失物受理證明書」。</li>
-            <li>準備2吋大頭照2張、身分證件影本。</li>
-            <li>聯繫福岡分處，申請「入國證明書」以供搭機返台。</li>
-          </ol>
+        <h4 style="margin-top: 16px; margin-bottom: 8px;">Day 2: 回程 - JR 由布院之森</h4>
+        <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
+          <strong>由布院 → 博多</strong><br>
+          您預約的班次：<span style="color: var(--primary); font-weight: bold;">15:56 發車</span> (由布院之森 4 號)<br>
+          預計抵達時間：18:10<br>
+          <small>*全車指定席，請務必準時上車</small>
+        </div>
 
-          <h4 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 4px; margin-top: 16px;">急難實用日語 (點擊發音)</h4>
-          <div style="display: flex; flex-direction: column; gap: 8px;" id="emergency-phrases">
-            <button class="btn" style="justify-content: flex-start; text-align: left;" onclick="window.playAudio ? playAudio('パスポートをなくしました。') : null">
-              <div style="font-size: 0.8em; color: var(--text-light);">我護照不見了</div>
-              <div>パスポートをなくしました。<br><small>(Pasupōto o nakushimashita)</small></div>
-            </button>
-            <button class="btn" style="justify-content: flex-start; text-align: left;" onclick="window.playAudio ? playAudio('救急車を呼んでください。') : null">
-              <div style="font-size: 0.8em; color: var(--text-light);">請幫我叫救護車</div>
-              <div>救急車を呼んでください。<br><small>(Kyūkyūsha o yonde kudasai)</small></div>
-            </button>
-            <button class="btn" style="justify-content: flex-start; text-align: left;" onclick="window.playAudio ? playAudio('道に迷いました。ホテルまでお願いできますか？') : null">
-              <div style="font-size: 0.8em; color: var(--text-light);">我迷路了，可以載我到飯店嗎？</div>
-              <div>道に迷いました。ホテルまでお願いできますか？<br><small>(Michi ni mayoimashita. Hoteru made onegai dekimasu ka)</small></div>
-            </button>
-            <button class="btn" style="justify-content: flex-start; text-align: left; border: 2px solid #ef4444; background: #fef2f2;" onclick="window.playAudio ? playAudio('この住所までお願いします。福岡市中央区春吉。LA CHIC Stay Hakata') : null">
-              <div style="font-size: 0.8em; color: #ef4444; font-weight: bold;">🚕 計程車導航卡 (給司機看)</div>
-              <div style="font-size: 1.1em; color: #000;">この住所までお願いします：<br>福岡市中央区春吉2-4-7<br>LA CHIC Stay Hakata</div>
-            </button>
-          </div>
+        <h4 style="margin-top: 16px; margin-bottom: 8px;">Day 4: 西鐵特急 (柳川/太宰府)</h4>
+        <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
+          <strong>天神 ↔ 柳川 (特急)</strong><br>
+          去程：08:00 搭乘，約 08:49 抵達。<br>
+          班距：約每 30 分鐘一班特急。<br>
+          <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
+          <strong>柳川 → 太宰府</strong><br>
+          路線：柳川搭乘特急至「二日市站」，轉乘太宰府線至「太宰府站」。車程約 40 分鐘。<br>
+          <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
+          <strong>太宰府 → 博多/天神 (回程)</strong><br>
+          路線：太宰府搭乘至「二日市站」，轉乘西鐵大牟田線至「西鐵福岡(天神)站」。車程約 25 分鐘。<br>
+          <small>*若要回博多，可在天神轉乘地鐵機場線，或搭公車直達博多站。</small>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Timetable Modal -->
-    <div
-      id="timetable-modal"
-      class="expense-modal-overlay hidden"
-      onclick="if (event.target === this) closeTimetableModal();"
-    >
-      <div class="expense-modal" style="max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;">
-        <div class="between" style="margin-bottom: 16px; flex-shrink: 0;">
-          <h3 style="margin: 0">🚆 專屬交通時刻表</h3>
-          <span style="font-size: 1.5em; cursor: pointer; color: var(--text-light); line-height: 1;" onclick="closeTimetableModal()">&times;</span>
-        </div>
-        
-        <div style="overflow-y: auto; flex: 1; padding-right: 8px;">
-          <p style="font-size: 0.85em; color: var(--text-light); margin-top: 0;">支援離線查看，提供本次行程關鍵班次資訊。</p>
-          
-          <h4 style="margin-top: 16px; margin-bottom: 8px;">Day 2: 去程 - 龜之井巴士</h4>
-          <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
-            <strong>天神高速巴士總站 → 由布院站前</strong><br>
-            您預約的班次：<span style="color: var(--primary); font-weight: bold;">08:25 發車</span><br>
-            預計抵達時間：10:59<br>
-            <small>*請提早 15 分鐘抵達乘車月台</small>
-          </div>
+  <!-- Firebase SDK (compat version for simple usage) -->
+  <!-- NOTE: If you configure Firebase in js/expense.js, uncomment these two lines -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-          <h4 style="margin-top: 16px; margin-bottom: 8px;">Day 2: 回程 - JR 由布院之森</h4>
-          <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
-            <strong>由布院 → 博多</strong><br>
-            您預約的班次：<span style="color: var(--primary); font-weight: bold;">15:56 發車</span> (由布院之森 4 號)<br>
-            預計抵達時間：18:10<br>
-            <small>*全車指定席，請務必準時上車</small>
-          </div>
+  <!-- App Modules (order matters: shared globals defined in app.js first) -->
+  <script src="./js/checklist.js"></script>
+  <script src="./js/japanese.js"></script>
+  <script src="./js/converter.js"></script>
+  <script src="./js/admin.js"></script>
+  <script src="./js/lists.js"></script>
+  <script src="./js/daily.js"></script>
+  <script src="./js/expense.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/sakura.js" defer></script>
+</body>
 
-          <h4 style="margin-top: 16px; margin-bottom: 8px;">Day 4: 西鐵特急 (柳川/太宰府)</h4>
-          <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
-            <strong>天神 ↔ 柳川 (特急)</strong><br>
-            去程：08:00 搭乘，約 08:49 抵達。<br>
-            班距：約每 30 分鐘一班特急。<br>
-            <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
-            <strong>柳川 → 太宰府</strong><br>
-            路線：柳川搭乘特急至「二日市站」，轉乘太宰府線至「太宰府站」。車程約 40 分鐘。<br>
-            <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
-            <strong>太宰府 → 博多/天神 (回程)</strong><br>
-            路線：太宰府搭乘至「二日市站」，轉乘西鐵大牟田線至「西鐵福岡(天神)站」。車程約 25 分鐘。<br>
-            <small>*若要回博多，可在天神轉乘地鐵機場線，或搭公車直達博多站。</small>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Firebase SDK (compat version for simple usage) -->
-    <!-- NOTE: If you configure Firebase in js/expense.js, uncomment these two lines -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-    <!-- App Modules (order matters: shared globals defined in app.js first) -->
-    <script src="./js/checklist.js"></script>
-    <script src="./js/japanese.js"></script>
-    <script src="./js/converter.js"></script>
-    <script src="./js/admin.js"></script>
-    <script src="./js/lists.js"></script>
-    <script src="./js/daily.js"></script>
-    <script src="./js/expense.js"></script>
-    <script src="./js/app.js"></script>
-    <script src="./js/sakura.js" defer></script>
-  </body>
 </html>
