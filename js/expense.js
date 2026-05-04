@@ -165,6 +165,33 @@ function addExpense(expData) {
   }
 }
 
+function updateExpense(id, expData) {
+  const rate = parseFloat(localStorage.getItem(EXPENSE_RATE_KEY)) || 0.22;
+  const updates = {
+    date: expData.date,
+    desc: expData.desc,
+    amountJPY: expData.amountJPY,
+    amountTWD: Math.round(expData.amountJPY * rate),
+    paidBy: expData.paidBy,
+    splitWith: expData.splitWith,
+    category: expData.category || "other",
+  };
+
+  if (isFirebaseConnected && expenseRef) {
+    expenseRef.child(id).update(updates);
+  } else {
+    const idx = expenses.findIndex((e) => e.id === id);
+    if (idx !== -1) {
+      expenses[idx] = { ...expenses[idx], ...updates };
+      expenses.sort((a, b) => (a.date > b.date ? 1 : a.date < b.date ? -1 : 0));
+      saveExpensesLocal();
+      renderExpenseList();
+      renderSettlement();
+      renderExpenseSummaryBar();
+    }
+  }
+}
+
 function deleteExpense(id) {
   if (!confirm("確定要刪除這筆記錄嗎？")) return;
   if (isFirebaseConnected && expenseRef) {
@@ -213,7 +240,9 @@ function renderExpenseSummaryBar() {
   const perPersonJPY = expenseMembers.length > 0
     ? Math.round(totalJPY / expenseMembers.length)
     : 0;
-  const perPersonTWD = Math.round(perPersonJPY * rate);
+  const perPersonTWD = expenseMembers.length > 0
+    ? Math.round(totalTWD / expenseMembers.length)
+    : 0;
 
   bar.innerHTML = `
     <div class="expense-summary-item">
@@ -238,58 +267,180 @@ function renderExpenseList() {
   const container = document.getElementById("expense-list-container");
   if (!container) return;
 
-  if (expenses.length === 0) {
+  const filterMember = document.getElementById("expense-filter-member")?.value || "ALL";
+  let displayExpenses = expenses;
+  if (filterMember !== "ALL") {
+    displayExpenses = expenses.filter(e =>
+      e.paidBy === filterMember ||
+      (e.splitWith && e.splitWith.includes(filterMember)) ||
+      (!e.splitWith || e.splitWith.length === 0)
+    );
+  }
+
+  if (displayExpenses.length === 0) {
     container.innerHTML =
-      '<div style="text-align:center; color:var(--text-light); padding:40px 0">還沒有任何記錄，點 ＋ 新增第一筆！</div>';
+      '<div style="text-align:center; color:var(--text-light); padding:40px 0">沒有符合的記錄。</div>';
     return;
   }
 
   // Group by date
   const groups = {};
-  expenses.forEach((e) => {
+  displayExpenses.forEach((e) => {
     if (!groups[e.date]) groups[e.date] = [];
     groups[e.date].push(e);
   });
 
   let html = "";
-  Object.keys(groups)
-    .sort()
-    .forEach((date) => {
-      const dateObj = new Date(date);
-      const dayStr = dateObj.toLocaleDateString("zh-TW", {
-        month: "numeric",
-        day: "numeric",
-        weekday: "short",
-      });
-      const dayTotal = groups[date].reduce((s, e) => s + (e.amountJPY || 0), 0);
-      html += `<div class="expense-day-header">${dayStr} &nbsp;·&nbsp; 小計 ¥${dayTotal.toLocaleString()}</div>`;
-      groups[date].forEach((e) => {
-        const splitStr =
-          e.splitWith && e.splitWith.length > 0
-            ? `${e.paidBy} 付 · ${e.splitWith.length}人均攤`
-            : `${e.paidBy} 付`;
-        html += `
-        <div class="expense-item" style="${e.isSettled ? "opacity:0.6;" : ""}">
-          <div class="expense-item-emoji">${getCatEmoji(e.category)}</div>
-          <div class="expense-item-body">
-            <div class="expense-item-title">${e.isSettled ? "✅[已結清] " : ""}${e.desc}</div>
-            <div class="expense-item-meta">${splitStr}</div>
-          </div>
-          <div class="expense-item-amount">
-            <div class="expense-item-jpy" style="${e.isSettled ? "text-decoration:line-through" : ""}">¥${(e.amountJPY || 0).toLocaleString()}</div>
-            <div class="expense-item-twd">NT$${(e.amountTWD || 0).toLocaleString()}</div>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-left:4px;">
-            <button class="delete-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
-            <button onclick="toggleSettleExpense('${e.id}', ${!!e.isSettled})" style="border:none; background:#e2e8f0; color:#475569; font-size:0.7em; padding:2px 6px; border-radius:4px; cursor:pointer;" title="標示結清">
-              ${e.isSettled ? "復原" : "結清"}
-            </button>
-          </div>
-        </div>
-      `;
-      });
+  let overallUnsettledShare = 0;
+  const sortedDates = Object.keys(groups).sort();
+  // Determine which day to auto-expand: most recent only (rest collapsed)
+  const latestDate = sortedDates[sortedDates.length - 1];
+
+  sortedDates.forEach((date) => {
+    const isLatest = date === latestDate;
+    const dateObj = new Date(date);
+    const dayStr = dateObj.toLocaleDateString("zh-TW", {
+      month: "numeric",
+      day: "numeric",
+      weekday: "short",
     });
-  container.innerHTML = html;
+    const itemCount = groups[date].length;
+    const dayTotal = groups[date].reduce((s, e) => s + (e.amountTWD || 0), 0);
+    let dayPersonalShare = 0;
+    let itemsHtml = "";
+
+    groups[date].forEach((e) => {
+      const isAll = !e.splitWith || e.splitWith.length === 0 || e.splitWith.length === expenseMembers.length;
+      const splitArray = isAll ? expenseMembers : e.splitWith;
+
+      // Build split info HTML
+      let splitInfoHtml;
+      if (isAll) {
+        splitInfoHtml = `<div class="expense-item-meta">${e.paidBy} 付 &middot; 全員均攤</div>`;
+      } else {
+        const chips = splitArray.map(m => {
+          const isPayer = m === e.paidBy;
+          return `<span class="split-chip${isPayer ? ' split-chip--payer' : ''}">${m}${isPayer ? ' 💳' : ''}</span>`;
+        }).join('');
+        splitInfoHtml = `
+          <div class="expense-item-meta" style="margin-bottom:3px;">${e.paidBy} 付 &middot; 均攤 ${splitArray.length} 人</div>
+          <div class="expense-split-chips">${chips}</div>`;
+      }
+
+      let personalShareHtml = "";
+      if (filterMember !== "ALL") {
+        if (splitArray.includes(filterMember)) {
+          const share = (e.amountTWD || 0) / splitArray.length;
+          if (!e.isSettled) {
+            dayPersonalShare += share;
+            overallUnsettledShare += share;
+          }
+          const roundedShare = Math.round(share);
+          personalShareHtml = `<div style="color:#ef4444;font-size:0.82em;margin-top:4px;font-weight:bold">${filterMember} 應負擔: NT$${roundedShare.toLocaleString()}</div>`;
+        } else {
+          personalShareHtml = `<div style="color:var(--text-light);font-size:0.82em;margin-top:4px;">無須負擔</div>`;
+        }
+      }
+
+      itemsHtml += `
+      <div class="expense-item" style="${e.isSettled ? "opacity:0.6;" : ""}">
+        <div class="expense-item-emoji">${getCatEmoji(e.category)}</div>
+        <div class="expense-item-body">
+          <div class="expense-item-title">${e.isSettled ? "✅[已結清] " : ""}${e.desc}</div>
+          ${splitInfoHtml}
+          ${personalShareHtml}
+        </div>
+        <div class="expense-item-amount">
+          <div class="expense-item-jpy" style="${e.isSettled ? "text-decoration:line-through" : ""}">¥${(e.amountJPY || 0).toLocaleString()}</div>
+          <div class="expense-item-twd">NT$${(e.amountTWD || 0).toLocaleString()}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-left:4px;">
+          <div style="display:flex;gap:8px;">
+            <button onclick="editExpense('${e.id}')" title="編輯" style="border:none;background:transparent;font-size:1em;cursor:pointer;padding:0;margin:0;opacity:0.7;">✏️</button>
+            <button class="delete-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
+          </div>
+          <button onclick="toggleSettleExpense('${e.id}',${!!e.isSettled})" style="border:none;background:#e2e8f0;color:#475569;font-size:0.7em;padding:2px 6px;border-radius:4px;cursor:pointer;">
+            ${e.isSettled ? "復原" : "結清"}
+          </button>
+        </div>
+      </div>`;
+    });
+
+    let headerInfo = filterMember !== "ALL"
+      ? `NT$${dayTotal.toLocaleString()} &middot; <span style="color:#ef4444">應負擔 NT$${Math.round(dayPersonalShare).toLocaleString()}</span>`
+      : `NT$${dayTotal.toLocaleString()}`;
+
+    const collapsedClass = isLatest ? "" : "collapsed";
+    html += `
+      <div class="expense-day-header ${collapsedClass}" onclick="toggleDayGroup(this)">
+        <span>${dayStr} &nbsp;·&nbsp; ${headerInfo} &nbsp;·&nbsp; <span style="opacity:0.55">${itemCount}筆</span></span>
+        <span class="toggle-arrow">▼</span>
+      </div>
+      <div class="expense-day-body ${collapsedClass}">${itemsHtml}</div>`;
+  });
+
+  if (filterMember !== "ALL") {
+    const headerHtml = `
+    <div style="background:#fef2f2;border:1px solid #fecaca;padding:10px;border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-weight:bold;color:#b91c1c;">未結清之應負擔總額</span>
+      <div style="font-size:1.1em;font-weight:bold;color:#ef4444;">NT$${Math.round(overallUnsettledShare).toLocaleString()}</div>
+    </div>`;
+    container.innerHTML = headerHtml + html;
+  } else {
+    container.innerHTML = html;
+  }
+
+  // Set up scroll watcher for back-to-top button
+  const scrollEl = document.getElementById("expense-list-scrollable");
+  const backTopBtn = document.getElementById("expense-back-top");
+  if (scrollEl && backTopBtn) {
+    scrollEl.onscroll = () => {
+      backTopBtn.classList.toggle("visible", scrollEl.scrollTop > 80);
+    };
+  }
+
+  syncToggleAllBtn();
+}
+
+function toggleDayGroup(headerEl) {
+  headerEl.classList.toggle("collapsed");
+  const body = headerEl.nextElementSibling;
+  if (body && body.classList.contains("expense-day-body")) {
+    body.classList.toggle("collapsed");
+  }
+}
+
+function scrollExpenseToTop() {
+  const scrollEl = document.getElementById("expense-list-scrollable");
+  if (scrollEl) scrollEl.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function toggleAllDayGroups() {
+  const headers = document.querySelectorAll("#expense-list-container .expense-day-header");
+  const bodies  = document.querySelectorAll("#expense-list-container .expense-day-body");
+  if (headers.length === 0) return;
+
+  // Check if any is currently expanded (not collapsed)
+  const anyExpanded = Array.from(headers).some(h => !h.classList.contains("collapsed"));
+
+  headers.forEach(h => {
+    if (anyExpanded) h.classList.add("collapsed");
+    else h.classList.remove("collapsed");
+  });
+  bodies.forEach(b => {
+    if (anyExpanded) b.classList.add("collapsed");
+    else b.classList.remove("collapsed");
+  });
+
+  syncToggleAllBtn();
+}
+
+function syncToggleAllBtn() {
+  const btn = document.getElementById("expense-toggle-all-btn");
+  if (!btn) return;
+  const headers = document.querySelectorAll("#expense-list-container .expense-day-header");
+  const anyExpanded = Array.from(headers).some(h => !h.classList.contains("collapsed"));
+  btn.textContent = anyExpanded ? "全部收闔" : "全部展開";
 }
 
 function toggleSettlementView() {
@@ -338,14 +489,14 @@ function renderSettlement() {
     if (e.isSettled) return;
     const splitCount = e.splitWith ? e.splitWith.length : expenseMembers.length;
     if (splitCount === 0) return;
-    const shareJPY = (e.amountJPY || 0) / splitCount;
+    const shareTWD = (e.amountTWD || 0) / splitCount;
 
-    if (paidOut[e.paidBy] !== undefined) paidOut[e.paidBy] += e.amountJPY || 0;
-    if (balance[e.paidBy] !== undefined) balance[e.paidBy] += e.amountJPY || 0;
+    if (paidOut[e.paidBy] !== undefined) paidOut[e.paidBy] += e.amountTWD || 0;
+    if (balance[e.paidBy] !== undefined) balance[e.paidBy] += e.amountTWD || 0;
 
     (e.splitWith || expenseMembers).forEach((member) => {
-      if (fairShare[member] !== undefined) fairShare[member] += shareJPY;
-      if (balance[member] !== undefined) balance[member] -= shareJPY;
+      if (fairShare[member] !== undefined) fairShare[member] += shareTWD;
+      if (balance[member] !== undefined) balance[member] -= shareTWD;
     });
   });
 
@@ -376,8 +527,7 @@ function renderSettlement() {
         <span style="font-weight:600">${t.to}</span>
       </div>
       <div class="settlement-amount">
-        ¥${Math.round(t.amount).toLocaleString()}
-        <div style="font-size:0.75em; color:var(--text-light)">NT$${Math.round(t.amount * rate).toLocaleString()}</div>
+        NT$${Math.round(t.amount).toLocaleString()}
       </div>
     </div>
   `,
@@ -442,7 +592,7 @@ function settlePairwise() {
       const splitWith = e.splitWith && e.splitWith.length > 0 ? e.splitWith : expenseMembers;
       if (splitWith.length === 0) return;
       
-      const share = (e.amountJPY || 0) / splitWith.length;
+      const share = (e.amountTWD || 0) / splitWith.length;
       splitWith.forEach(debtor => {
           if (debtor !== e.paidBy && owes[debtor]) {
               owes[debtor][e.paidBy] += share;
@@ -507,13 +657,12 @@ function openSettlementDetails() {
                 <strong style="font-size: 1.1em; color: var(--text);">🧑 ${m}</strong>
              </div>
              <div style="color: ${statusColor}; font-weight: bold; text-align: right;">
-               <div style="font-size: 1.1em;">${statusText} ${sign}${Math.round(bal).toLocaleString()}</div>
-               <div style="font-size: 0.8em; opacity: 0.8; margin-top: 2px;">TWD ${Math.round(bal * rate).toLocaleString()}</div>
+               <div style="font-size: 1.1em;">${statusText} ${sign}NT$${Math.round(bal).toLocaleString()}</div>
              </div>
            </div>
            <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: var(--text-light);">
-             <span>實際墊付: ¥${Math.round(paid).toLocaleString()}</span>
-             <span>應負擔: ¥${Math.round(fair).toLocaleString()}</span>
+             <span>實際墊付: NT$${Math.round(paid).toLocaleString()}</span>
+             <span>應負擔: NT$${Math.round(fair).toLocaleString()}</span>
            </div>
         </div>
         `;
@@ -537,6 +686,16 @@ function renderExpensePage() {
     paidByEl.innerHTML = expenseMembers
       .map((m) => `<option value="${m}">${m}</option>`)
       .join("");
+  }
+
+  const filterEl = document.getElementById("expense-filter-member");
+  if (filterEl) {
+    const currentVal = filterEl.value;
+    filterEl.innerHTML = `<option value="ALL">全部人員</option>` + 
+      expenseMembers.map((m) => `<option value="${m}">${m}</option>`).join("");
+    if (currentVal && currentVal !== "ALL" && expenseMembers.includes(currentVal)) {
+      filterEl.value = currentVal;
+    }
   }
 
   // Populate split-with chips
@@ -634,6 +793,52 @@ function selectCategory(el) {
 }
 
 function openExpenseModal() {
+  const titleEl = document.getElementById("expense-modal-title");
+  if (titleEl) titleEl.textContent = "＋ 新增消費";
+  const btnEl = document.getElementById("expense-submit-btn");
+  if (btnEl) btnEl.textContent = "確認新增";
+  const editIdEl = document.getElementById("exp-edit-id");
+  if (editIdEl) editIdEl.value = "";
+  
+  document.getElementById("expense-modal").classList.remove("hidden");
+}
+
+function editExpense(id) {
+  const e = expenses.find(x => x.id === id);
+  if (!e) return;
+  
+  document.getElementById("exp-date").value = e.date || "";
+  document.getElementById("exp-desc").value = e.desc || "";
+  document.getElementById("exp-amount-jpy").value = e.amountJPY || "";
+  document.getElementById("exp-amount-twd").value = e.amountTWD || "";
+  document.getElementById("exp-paid-by").value = e.paidBy || expenseMembers[0];
+  
+  // reset all split chips to not selected
+  document.querySelectorAll("#exp-split-chips .person-chip").forEach(c => c.classList.remove("selected"));
+  const selectAllChip = document.getElementById("chip-select-all");
+  
+  if (!e.splitWith || e.splitWith.length === 0 || e.splitWith.length === expenseMembers.length) {
+    document.querySelectorAll("#exp-split-chips .person-chip").forEach(c => c.classList.add("selected"));
+    if(selectAllChip) selectAllChip.classList.add("selected");
+  } else {
+    if(selectAllChip) selectAllChip.classList.remove("selected");
+    e.splitWith.forEach(m => {
+      const chip = document.querySelector(`#exp-split-chips .person-chip[data-member="${m}"]`);
+      if (chip) chip.classList.add("selected");
+    });
+  }
+
+  document.querySelectorAll(".cat-chip").forEach(c => {
+    c.classList.toggle("selected", c.dataset.cat === (e.category || "other"));
+  });
+
+  const titleEl = document.getElementById("expense-modal-title");
+  if (titleEl) titleEl.textContent = "✏️ 編輯消費";
+  const btnEl = document.getElementById("expense-submit-btn");
+  if (btnEl) btnEl.textContent = "確認修改";
+  const editIdEl = document.getElementById("exp-edit-id");
+  if (editIdEl) editIdEl.value = id;
+  
   document.getElementById("expense-modal").classList.remove("hidden");
 }
 
@@ -642,6 +847,14 @@ function closeExpenseModal() {
   document.getElementById("exp-amount-jpy").value = "";
   document.getElementById("exp-amount-twd").value = "";
   document.getElementById("exp-desc").value = "";
+  
+  const editIdEl = document.getElementById("exp-edit-id");
+  if (editIdEl) editIdEl.value = "";
+  const titleEl = document.getElementById("expense-modal-title");
+  if (titleEl) titleEl.textContent = "＋ 新增消費";
+  const btnEl = document.getElementById("expense-submit-btn");
+  if (btnEl) btnEl.textContent = "確認新增";
+  
   // Reset all split chips to selected
   document
     .querySelectorAll(".member-chip")
@@ -657,6 +870,7 @@ function submitExpense() {
   const amtJpyEl = document.getElementById("exp-amount-jpy");
   const descEl = document.getElementById("exp-desc");
   const paidByEl = document.getElementById("exp-paid-by");
+  const editIdEl = document.getElementById("exp-edit-id");
 
   const date = dateEl.value;
   const amountJPY = parseInt(amtJpyEl.value);
@@ -681,6 +895,10 @@ function submitExpense() {
     return;
   }
 
-  addExpense({ date, amountJPY, desc, paidBy, splitWith, category });
+  if (editIdEl && editIdEl.value) {
+    updateExpense(editIdEl.value, { date, amountJPY, desc, paidBy, splitWith, category });
+  } else {
+    addExpense({ date, amountJPY, desc, paidBy, splitWith, category });
+  }
   closeExpenseModal();
 }
